@@ -1,0 +1,184 @@
+@font-face {
+  font-family: "Hugo";
+  src: url("../../assets/fonts/HugosHandTwo.woff") format('woff');
+}
+
+@font-face {
+  font-family: "Gill Sans";
+  src: url("../../assets/fonts/GillSansW01Medium.woff2") format("woff");
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+ul {
+  display: none;
+}
+
+body {
+  color: #3f728a;
+  font-family: "Inter";
+}
+
+.header {
+  
+}
+
+.header-brand  {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 1.2rem 6.4rem;
+  background-color: #e9eeee;
+}
+
+.brand-box {
+  display: block;
+}
+
+.brand-img {
+  width: 35rem;
+}
+
+.header-btn {
+  align-self: center;
+}
+
+.btn {
+  font-size: 1.8rem;
+  background-color: #3f728a;
+  color: #efefef;
+  padding: 1.2rem 2.4rem;
+  font-weight: 500;
+  font-family: "Inter";
+
+  text-decoration: none;
+  display: block;
+  border-radius: 1rem;
+}
+
+.icon-links {
+  display: flex;
+  flex-direction: row;
+  gap: 2.4rem;
+  align-self: center;
+  align-items: center;
+}
+
+.icon-link:link,
+.icon-link:visited {
+  text-decoration: none;
+  color: #204c4d;
+  padding: 0.4rem 1.2rem;
+}
+
+.cart-link:active,
+.cart-link:hover {
+  border: 1px solid #204c4d;
+  border-radius: 1rem;
+}
+
+
+.account-link:active .icon .path,
+.account-link:hover .icon .path {
+  fill: #235456;
+  stroke: #122a2b;
+}
+
+
+.cart-link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+
+.cost {
+  font-size: 1.8rem;
+}
+
+.icon {
+  width: 3.6rem;
+  height: 3.6rem;
+}
+
+.header-nav {
+  padding: 1.2rem 5.6rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #235456;
+}
+
+.main-nav {
+  display: flex;
+  flex-direction: row;
+  gap: 3.6rem;
+}
+
+.nav-link:link,
+.nav-link:visited {
+  text-decoration: none;
+  font-size: 1.8rem;
+  color: #e9eeee;
+  font-family: "Gill Sans";
+  transition: all 500ms;
+}
+
+.nav-link:hover,
+.nav-link:active {
+  
+}
+
+.search-form {
+  width: 30%;
+  font-size: 1.6rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.8rem;
+  color: #e9eeee;
+}
+
+.search-input {
+  font-family: "Gill Sans";
+  font-size: 1.6rem;
+  padding: 0.8rem 1.2rem;
+  color: #071111;
+  border-radius: 1rem;
+  width: 80%;
+}
+
+.search-input::placeholder {
+  color: #7b989a;
+}
+
+.submit-btn {
+  background-color: inherit;
+  color: #e9eeee;
+  border: none;
+  transition: all 0.5s;
+}
+
+.submit-btn:hover,
+.submit-btn:active {
+  cursor: pointer;
+  color: #44D83C;
+}
+
+
+
+
+
+
+
+
