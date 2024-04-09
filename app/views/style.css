@@ -28,7 +28,23 @@ body {
 }
 
 .header {
-  
+  /* margin-bottom: 4.8rem; */
+}
+
+.margin-button-very-small {
+  margin-bottom: 1.2rem;;
+}
+
+.margin-bottom-smaller {
+  margin-bottom: 1.8rem;
+}
+
+.margin-bottom-small {
+  margin-bottom: 2.4rem;
+}
+
+.margin-bottom-medium {
+  margin-bottom: 4.8rem;
 }
 
 .header-brand  {
@@ -37,6 +53,11 @@ body {
   justify-content: space-between;
   padding: 1.2rem 6.4rem;
   background-color: #e9eeee;
+}
+
+.heading-secondary {
+  font-size: 3.6rem;
+  font-family: "Hugo";
 }
 
 .brand-box {
@@ -136,7 +157,7 @@ body {
 
 .nav-link:hover,
 .nav-link:active {
-  
+  text-decoration: underline;
 }
 
 .search-form {
@@ -173,6 +194,56 @@ body {
 .submit-btn:active {
   cursor: pointer;
   color: #44D83C;
+}
+
+.hero-container {
+  display: flex;
+  flex-direction: row;
+  background-color: #e9eeee;
+}
+
+.hero-text-box {
+  width: 40%;
+  padding: 1.2rem 3.6rem;
+  background-color: #183233;
+}
+
+.hero-heading {
+  color: #e9eeee;
+}
+
+.hero-description {
+  font-size: 2rem;
+  font-family: "Gill Sans";
+  color: #e9eeee;
+  line-height: 1.2;
+  letter-spacing: 1px;
+}
+
+.hero-img-box {
+  width: 60%;
+}
+
+.hero-img {
+  width: 100%;
+  border-radius: 1rem;
+  border: 1px solid #bdcccc;
+}
+
+.btns {
+  display: flex;
+  flex-direction: row;
+  gap: 3.6rem;
+}
+
+.btn--outline {
+  background-color: #465b5c;
+  color: #e9eeee;
+}
+
+.btn--full {
+  font-weight: 600;
+  padding: 1.2rem 3.6rem;
 }
 
 

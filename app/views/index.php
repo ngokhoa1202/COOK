@@ -53,7 +53,29 @@
       </form>
     </div>
   </header>
-  <main class="main"></main>
+  <main class="main">
+    <section class="section-hero">
+      <div class="hero-container">
+        <div class="hero-text-box">
+          <p class="heading-secondary hero-heading margin-bottom-medium">
+            Nourishing food, with
+            <br>
+            fresh ingredients from
+            <br>
+            organic farms
+          </p>
+          <p class="hero-description margin-bottom-small">We understand the pressure of modern life and your need to have a balanced nutrition. Tailored to your personal tastes and nutritional needs.</p>
+          <div class="btns">
+            <a class="btn btn--full">Follow us</a>
+            <a class="btn btn--outline">Learn more</a>
+          </div>
+        </div>
+        <div class="hero-img-box">
+          <img src="../../assets/img/hero-meal.png" class="hero-img">
+        </div>
+      </div>
+    </section>
+  </main>
   <footer class="footer"></footer>
 </body>
 
