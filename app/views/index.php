@@ -65,13 +65,26 @@
             organic farms
           </p>
           <p class="hero-description margin-bottom-small">We understand the pressure of modern life and your need to have a balanced nutrition. Tailored to your personal tastes and nutritional needs.</p>
-          <div class="btns">
-            <a class="btn btn--full">Follow us</a>
-            <a class="btn btn--outline">Learn more</a>
+          <div class="btns margin-bottom-small">
+            <a class="btn btn--full" href="#">Order now</a>
+            <a class="btn btn--outline" href="#">Learn more</a>
+          </div>
+          <div class="delivered-meal">
+            <div class="delivered-face">
+              <img src="../../assets/img/hero/customer/customer-1.jpg" alt="A customer portrait" class="customer-icon">
+              <img src="../../assets/img/hero/customer/customer-2.jpg" alt="A customer portrait" class="customer-icon">
+              <img src="../../assets/img/hero/customer/customer-3.jpg" alt="A customer portrait" class="customer-icon">
+              <img src="../../assets/img/hero/customer/customer-4.jpg" alt="A customer portrait" class="customer-icon">
+              <img src="../../assets/img/hero/customer/customer-5.jpg" alt="A customer portrait" class="customer-icon">
+              <img src="../../assets/img/hero/customer/customer-6.jpg" alt="A customer portrait" class="customer-icon">
+            </div>
+            <div class="delivered-message">
+              <span class="delivered-number">100000+</span> ordered meals 2023
+            </div>
           </div>
         </div>
         <div class="hero-img-box">
-          <img src="../../assets/img/hero-meal.png" class="hero-img">
+          <img src="../../assets/img/hero/hero-meal.png" class="hero-img" alt="A tasty spring roll with savoury sauce">
         </div>
       </div>
     </section>
