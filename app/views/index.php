@@ -54,7 +54,7 @@
     </div>
   </header>
   <main class="main">
-    <section class="section-hero">
+    <section class="section-hero margin-bottom-medium">
       <div class="hero-container">
         <div class="hero-text-box">
           <p class="heading-secondary hero-heading margin-bottom-medium">
@@ -86,6 +86,32 @@
         <div class="hero-img-box">
           <img src="../../assets/img/hero/hero-meal.png" class="hero-img" alt="A tasty spring roll with savoury sauce">
         </div>
+      </div>
+    </section>
+
+    <section class="feature-section">
+      <p class="heading-secondary feature-heading margin-bottom-small">&quot;Excellent meals for a balanced diet&quot; &horbar; BBC Review</p>
+      <p class="heading-secondary feature-heading margin-bottom-small">&quot;Such a beautiful catering service&quot; &horbar; Gordon Ramsay</p>
+      <div class="feature-container">
+        <a class="feature-link" href="#">
+          <div class="feature-img-container margin-bottom-very-small">
+            <img src="../../assets/img/feature-box/new-dish.jpg" alt="A tasty plate with bacon and tomato sauce" class="feature-img">
+          </div>
+
+          <p class="heading-tertiary">What's new</p>
+        </a>
+        <a class="feature-link" href="#">
+          <div class="feature-img-container margin-bottom-very-small">
+            <img src="../../assets/img/feature-box/offer.jpg" alt="A tasty plate with bacon and tomato sauce" class="feature-img">
+          </div>
+          <p class="heading-tertiary">Our offers</p>
+        </a>
+        <a class="feature-link" href="#">
+          <div class="feature-img-container margin-bottom-very-small">
+            <img src="../../assets/img/feature-box/bestseller.jpg" alt="A tasty plate with bacon and tomato sauce" class="feature-img">
+          </div>
+          <p class="heading-tertiary">Bestsellers</p>
+        </a>
       </div>
     </section>
   </main>

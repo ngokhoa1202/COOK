@@ -31,7 +31,7 @@ body {
   /* margin-bottom: 4.8rem; */
 }
 
-.margin-button-very-small {
+.margin-bottom-very-small {
   margin-bottom: 1.2rem;;
 }
 
@@ -60,6 +60,11 @@ body {
   font-family: "Hugo";
 }
 
+.heading-tertiary {
+  font-size: 2.4rem;
+  font-family: "Hugo";
+}
+
 .brand-box {
   display: block;
 }
@@ -71,6 +76,8 @@ body {
 .header-btn {
   align-self: center;
 }
+
+
 
 .btn:link,
 .btn:visited {
@@ -303,6 +310,44 @@ body {
   padding: 0.8rem;
   border-radius: 1rem;
 }
+
+.feature-section {
+  text-align: center;
+}
+
+.feature-heading {
+  color: #40615f;
+}
+
+.feature-container {
+  display: flex;
+  flex-direction: row;
+  gap: 2.4rem;
+  padding: 2.4rem 14.4rem; 
+}
+
+.feature-link:link,
+.feature-link:visited {
+  display: block;
+  text-decoration: none;
+  color: #40615f;
+  transition: all 0.5s;
+}
+
+.feature-link:hover,
+.feature-link:active {
+  transform: translate(0, -1.2rem);
+}
+
+.feature-img {
+  width: 100%;
+  height: auto;
+  border-radius: 1rem;
+  transition: all 0.5s;
+}
+
+
+
 
 
 
