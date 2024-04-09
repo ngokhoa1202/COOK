@@ -89,7 +89,7 @@
       </div>
     </section>
 
-    <section class="feature-section">
+    <section class="feature-section margin-bottom-medium">
       <p class="heading-secondary feature-heading margin-bottom-small">&quot;Excellent meals for a balanced diet&quot; &horbar; BBC Review</p>
       <p class="heading-secondary feature-heading margin-bottom-small">&quot;Such a beautiful catering service&quot; &horbar; Gordon Ramsay</p>
       <div class="feature-container">
@@ -112,6 +112,35 @@
           </div>
           <p class="heading-tertiary">Bestsellers</p>
         </a>
+      </div>
+    </section>
+
+    <section class="section-partner margin-bottom-medium">
+      <p class="heading-tertiary margin-bottom-small">We are published by</p>
+      <div class="partner-container">
+        <img src="../../assets/img/partner/business-insider.png" class="partner-logo" alt="Business Insider brand logo">
+        <img src="../../assets/img/partner/forbes.png" class="partner-logo" alt="Forbes brand logo">
+        <img src="../../assets/img/partner/techcrunch.png" class="partner-logo" alt="Techcrunch brand logo">
+        <img src="../../assets/img/partner/the-new-york-times.png" class="partner-logo" alt="The New York Times brand logo">
+        <img src="../../assets/img/partner/usa-today.png" class="partner-logo" alt="USA Today brand logo">
+      </div>
+    </section>
+
+    <section class="section-party margin-bottom-medium">
+      <a class="party-link" href="#">
+        <div class="party-box">
+          <img src="../../assets/img/party/party-1.jpg" class="party-img" alt="A party image">
+          <img src="../../assets/img/party/party-2.jpg" class="party-img" alt="A party image">
+          <img src="../../assets/img/party/party-3.jpg" class="party-img" alt="Let's party slogan">
+        </div>
+      </a>
+    </section>
+
+    <section class="section-feature-icon">
+      <div class="featured-container">
+        <div class="featured-item">
+
+        </div>
       </div>
     </section>
   </main>

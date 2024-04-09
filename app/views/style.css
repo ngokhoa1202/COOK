@@ -346,6 +346,46 @@ body {
   transition: all 0.5s;
 }
 
+.section-partner {
+  text-align: center;
+}
+
+.partner-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 2.4rem 9.6rem;
+}
+
+.partner-logo {
+  height: 3.2rem;
+  opacity: 0.5;
+  filter: brightness(50%);
+}
+
+.party-link:link,
+.party-link:visited {
+  
+}
+
+.party-link:hover,
+.party-link:active {
+  cursor: pointer;
+}
+
+.party-box {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.party-img {
+  width: 33.33%;
+}
+
+
+
+
 
 
 
