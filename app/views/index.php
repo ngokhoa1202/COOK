@@ -136,15 +136,95 @@
       </a>
     </section>
 
-    <section class="section-feature-icon">
+    <section class="section-feature-icon margin-bottom-medium">
       <div class="featured-container">
         <div class="featured-item">
+          <ion-icon name="restaurant-outline" class="featured-img margin-bottom-very-small"></ion-icon>
 
+          <p class="heading-tertiary margin-bottom-small">Savoury</p>
+          <p class="featured-description">
+            Our happiness is to bring you the best recipe. Leave your comment, and you can enjoy your mother-like dishes.
+          </p>
+        </div>
+        <div class="featured-item">
+          <ion-icon name="fitness-outline" class="featured-img margin-bottom-very-small"></ion-icon>
+          <p class="heading-tertiary margin-bottom-small">Balanced</p>
+          <p class="featured-description">
+            We do care about the nutrient and mineral content. If you are following a balanced diet, you are just in the right place.
+          </p>
+        </div>
+        <div class="featured-item">
+          <ion-icon name="leaf-outline" class="featured-img margin-bottom-very-small"></ion-icon>
+          <p class="heading-tertiary margin-bottom-small">Fresh &amp; Organic</p>
+          <p class="featured-description">
+            We say no with GMO produces. All of our raw materials are certified by DEA.
+          </p>
+        </div>
+        <div class="featured-item">
+          <ion-icon name="hourglass-outline" class="featured-img margin-bottom-very-small"></ion-icon>
+          <p class="heading-tertiary margin-bottom-small">Save time</p>
+          <p class="featured-description">
+            You have no time to prepare for your lunch? No problem, we will tackle it for you.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-carousel margin-bottom-medium">
+      <div class="container">
+        <a class="carousel-link margin-bottom-small" href="#">
+          <p class="heading-secondary">Bestsellers</p>
+        </a>
+        <div class="carousel-container">
+          <a class="carousel-back-link">
+            <ion-icon name="arrow-back-outline" class="arrow-back-icon"></ion-icon>
+          </a>
+          <div class="carousel-item">
+            <img src="../../assets/img/carousel/meal-1.jpg" alt="Chicken Alexander dish" class="carousel-img margin-bottom-very-small">
+            <p class="carousel-dish-name margin-bottom-very-small">Chicken Alexander</p>
+          </div>
+          <div class="carousel-item">
+            <img src="../../assets/img/carousel/meal-2.jpg" alt="Smoke Haddock &amp; Bacon Grutin" class="carousel-img margin-bottom-very-small">
+            <p class="carousel-dish-name margin-bottom-very-small">Smoke Haddock &amp; Bacon Gratin</p>
+          </div>
+          <div class="carousel-item">
+            <img src="../../assets/img/carousel/meal-3.jpg" alt="Salmon &amp; Asparagus Gratin" class="carousel-img margin-bottom-very-small">
+            <p class="carousel-dish-name">Salmon &amp; Asparagus Gratin</p>
+          </div>
+          <div class="carousel-item">
+            <img src="../../assets/img/carousel/meal-4.jpg" alt="Roasted Vegetable Lasagne" class="carousel-img margin-bottom-very-small">
+            <p class="carousel-dish-name margin-bottom-very-small">Roasted Vegetable Lasagne</p>
+          </div>
+          <div class="carousel-item">
+            <img src="../../assets/img/carousel/meal-5.jpg" alt="Beef Stroganoff" class="carousel-img margin-bottom-very-small">
+            <p class="carousel-dish-name margin-bottom-very-small">Beef Stroganoff</p>
+          </div>
+          <a class="carousel-forward-link">
+            <ion-icon name="arrow-forward-outline" class="arrow-forward-icon"></ion-icon>
+          </a>
         </div>
       </div>
     </section>
   </main>
+
+  <section class="section-hero-organic">
+    <div class="organic-container">
+      <div class="organic-img-box">
+        <img src="../../assets/img/hero-organic/organic-farm.jpg" alt="Organic farms and cultivating methods" class="organic-img">
+      </div>
+      <div class="organic-text-box">
+        <p class="heading-primary organic-title margin-bottom-medium">Fresh ingredients, Originated right the way</p>
+        <p class="organic-description margin-bottom-small">
+          A nutritional meal begins with fresh ingredients. We're proud to collaborate with the best American farmers. Together, we've raised the animal welfare and adopting more sustainable ways to product high quality foods.
+        </p>
+        <a class="organic-link"href="#">Our stories</a>
+      </div>
+    </div>
+  </section>
   <footer class="footer"></footer>
+
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
 
 </html>

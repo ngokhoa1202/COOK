@@ -47,6 +47,10 @@ body {
   margin-bottom: 4.8rem;
 }
 
+.container {
+  text-align: center;
+}
+
 .header-brand  {
   display: flex;
   flex-direction: row;
@@ -55,14 +59,22 @@ body {
   background-color: #e9eeee;
 }
 
+.heading-primary,
+.heading-secondary,
+.heading-tertiary {
+  font-family: "Hugo";
+}
+
+.heading-primary {
+  font-size: 4.8rem;
+}
+
 .heading-secondary {
   font-size: 3.6rem;
-  font-family: "Hugo";
 }
 
 .heading-tertiary {
   font-size: 2.4rem;
-  font-family: "Hugo";
 }
 
 .brand-box {
@@ -382,6 +394,148 @@ body {
 .party-img {
   width: 33.33%;
 }
+
+.featured-container {
+  display: flex;
+  flex-direction: row;
+  padding: 2.4rem 7.2rem;
+  justify-content: space-between;
+}
+
+.featured-item {
+  width: 20%;
+}
+
+
+.featured-img {
+  width: 3.2rem;
+  height: 3.2rem;
+  padding: 0.8rem;
+  color: #7b989a;
+  background-color: #e9eeee;
+  border-radius: 50%;
+}
+
+.featured-description {
+  font-size: 1.6rem;
+  line-height: 1.5;
+}
+
+.carousel-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 4.8rem;
+  position: relative;
+}
+
+.carousel-item {
+  width: 18%;
+  box-shadow: 0 1.8rem 2.4rem rgba(24, 50, 51, 0.25);
+  transition: all 0.5s ease;
+}
+
+.carousel-item:hover,
+.carousel-item:active {
+  transform: translate(0, -1.2rem);
+  cursor: pointer;
+  box-shadow: 0 2.4rem 3.6rem rgba(18, 42, 43, 0.5);
+}
+
+.carousel-img {
+  width: 100%;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.carousel-dish-name {
+  font-size: 1.6rem;
+  font-family: "Inter";
+  padding: 0 1.8rem;
+}
+
+.carousel-link {
+  display: block;
+  text-decoration: none;
+  color: #40615f;
+}
+
+.carousel-forward-link,
+.carousel-back-link {
+  position: absolute;
+  display: block;
+  background-color: #3f728a;
+  padding: 0.8rem;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.carousel-back-link {
+  top: 45%;
+  left: 0%;
+  transform: translate(20%, -60%);
+}
+
+.carousel-forward-link {
+  top: 45%;
+  right: 0%;
+  transform: translate(-20%, -60%);
+}
+
+.arrow-back-icon,
+.arrow-forward-icon {
+  color: #e9eeee;
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.organic-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.organic-img-box {
+  width: 60%;
+}
+
+.organic-img {
+  width: 100%;
+}
+
+.organic-text-box {
+  width: 40%;
+  padding: 9.6rem 2.4rem 0 2.4rem;
+}
+
+.organic-title {
+  color: #122a2b;
+}
+
+.organic-description {
+  color: #204c4d;
+  font-size: 1.8rem;
+  line-height: 1.5;
+}
+
+.organic-link:link,
+.organic-link:visited {
+  color: #799494;
+  font-size: 1.8rem;
+  text-decoration: underline;
+  transition: all 0.5s ease;
+}
+
+.organic-link:hover,
+.organic-link:active {
+  color: #0d1e1f;
+}
+
+
+
+
 
 
 
