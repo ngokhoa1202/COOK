@@ -19,7 +19,7 @@ html {
 }
 
 ul {
-  display: none;
+  list-style: none;
 }
 
 body {
@@ -43,12 +43,24 @@ body {
   margin-bottom: 2.4rem;
 }
 
+.margin-bottom-rather-small {
+  margin-bottom: 3.6rem;
+}
+
 .margin-bottom-medium {
   margin-bottom: 4.8rem;
 }
 
 .container {
   text-align: center;
+}
+
+.grid {
+  display: grid;
+}
+
+.grid--4-cols {
+  grid-template-columns: 1.5fr 1.5fr 1fr 1fr;
 }
 
 .header-brand  {
@@ -532,6 +544,96 @@ body {
 .organic-link:active {
   color: #0d1e1f;
 }
+
+.footer {
+  background-color: #fffcf8;
+}
+
+.footer-container {
+  padding: 3.6rem 12.8rem;
+  border-top: 1px solid rgba(24, 50, 51, 0.2);
+}
+
+.brand-col {
+  grid-column: 1 / 2;
+  display: flex;
+  flex-direction: column;
+  gap: 3.6rem;
+  padding: 0 0.8rem;
+}
+
+.footer-brand-img {
+  width: 80%;
+}
+
+.copyright {
+  font-size: 1.2rem;
+}
+
+.media-links {
+  display: flex;
+  flex-direction: row;
+  gap: 2.4rem;
+}
+
+.footer-link:link,
+.footer-link:visited {
+  text-decoration: none;
+  transition: all 0.5s ease;
+  color: #3f728a;
+}
+
+.footer-link:hover,
+.footer-link:active {
+  color: #122a2b;
+  cursor: pointer;
+}
+
+.media-icon {
+  width: 2.4rem;
+  height: 2.4rem;
+}
+
+.contact-col {
+  grid-column: 2 / 3;
+  padding: 0 0.8rem;
+}
+
+.tel-link,
+.email-link {
+  font-size: 1.4rem;
+}
+
+.footer-heading {
+  font-weight: 500;
+}
+
+.home-address {
+  font-size: 1.6rem;
+}
+
+.account-col {
+  grid-column: 3 / 4;
+  padding: 0 0.8rem;
+}
+
+.account-links,
+.about-us-links {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.account-link,
+.about-us-link {
+  font-size: 1.6rem;
+}
+
+.resource-col {
+  grid-column: 4 / 5;
+}
+
+
 
 
 

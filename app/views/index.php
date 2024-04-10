@@ -207,7 +207,7 @@
     </section>
   </main>
 
-  <section class="section-hero-organic">
+  <section class="section-hero-organic margin-bottom-medium">
     <div class="organic-container">
       <div class="organic-img-box">
         <img src="../../assets/img/hero-organic/organic-farm.jpg" alt="Organic farms and cultivating methods" class="organic-img">
@@ -217,11 +217,79 @@
         <p class="organic-description margin-bottom-small">
           A nutritional meal begins with fresh ingredients. We're proud to collaborate with the best American farmers. Together, we've raised the animal welfare and adopting more sustainable ways to product high quality foods.
         </p>
-        <a class="organic-link"href="#">Our stories</a>
+        <a class="organic-link" href="#">Our stories</a>
       </div>
     </div>
   </section>
-  <footer class="footer"></footer>
+  <footer class="footer">
+    <div class="grid grid--4-cols footer-container">
+      <div class="brand-col">
+        <img src="../../assets/img/brand.svg" class="footer-brand-img">
+        <ul class="media-links">
+          <li>
+            <a class="media-link footer-link">
+              <ion-icon name="logo-twitter" class="media-icon"></ion-icon>
+            </a>
+          </li>
+          <li>
+            <a class="media-link footer-link">
+              <ion-icon name="logo-instagram" class="media-icon"></ion-icon>
+            </a>
+          </li>
+          <li>
+            <a class="media-link footer-link" href="#">
+              <ion-icon name="logo-tiktok" class="media-icon"></ion-icon>
+            </a>
+          </li>
+          <li>
+            <a class="media-link footer-link" href="#">
+              <ion-icon name="logo-facebook" class="media-icon"></ion-icon>
+            </a>
+          </li>
+          <li>
+            <a class="media-link footer-link" href="#">
+              <ion-icon name="logo-reddit" class="media-icon"></ion-icon>
+            </a>
+          </li>
+        </ul>
+        <p class="copyright">Copyright &copy; 2025 by COOK Inc. All rights reserved.</p>
+      </div>
+      <div class="contact-col">
+        <p class="heading-tertiary footer-heading margin-bottom-small">Contact us</p>
+        <p class="home-address margin-bottom-rather-small">The COOK Kitchen Sittingbourne Kent ME10 3HH, 623 Harrison St., 2nd Floor, San Francisco, CA 94107</p>
+        <a href="tel:01732-759000" class="tel-link margin-bottom-small footer-link">01732 759000</a>
+        <a href="mailto:customerservice@cookfood.com.us" class="email-link margin-bottom-small footer-link">customerservice@cookfood.com.us</a>
+      </div>
+      <div class="account-col">
+        <p class="heading-tertiary footer-heading margin-bottom-small">Account</p>
+        <ul class="account-links">
+          <li>
+            <a class="account-link footer-link" href="#">Sign up</a>
+          </li>
+          <li>
+            <a class="account-link footer-link" href="#">Log in</a>
+          </li>
+        </ul>
+      </div>
+      <div class="about-us-col">
+        <p class="heading-tertiary footer-heading margin-bottom-small">About us</p>
+        <ul class="about-us-links">
+          <li>
+            <a class="about-us-link footer-link" href="#">About COOK</a>
+          </li>
+          <li>
+            <a class="about-us-link footer-link" href="#">Our partners</a>
+          </li>
+          <li>
+            <a class="about-us-link footer-link" href="#">FAQs</a>
+          </li>
+          <li>
+            <a class="about-us-link footer-link" href="#">Our staffs</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </footer>
 
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
