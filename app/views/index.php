@@ -14,7 +14,7 @@
     <nav class="header-brand">
       <a href="#" class="btn header-btn">Follow us</a>
       <a href="#" class="brand-box">
-        <img src="../../assets/img/brand.svg" class="brand-img">
+        <img src="../../assets/img/brand.svg" class="brand-img" alt="Our brand logo">
       </a>
       <div class="icon-links">
         <a href="#" class="icon-link account-link">
@@ -97,7 +97,6 @@
           <div class="feature-img-container margin-bottom-very-small">
             <img src="../../assets/img/feature-box/new-dish.jpg" alt="A tasty plate with bacon and tomato sauce" class="feature-img">
           </div>
-
           <p class="heading-tertiary">What's new</p>
         </a>
         <a class="feature-link" href="#">
@@ -205,26 +204,27 @@
         </div>
       </div>
     </section>
+
+    <section class="section-hero-organic margin-bottom-medium">
+      <div class="organic-container">
+        <div class="organic-img-box">
+          <img src="../../assets/img/hero-organic/organic-farm.jpg" alt="Organic farms and cultivating methods" class="organic-img">
+        </div>
+        <div class="organic-text-box">
+          <p class="heading-primary organic-title margin-bottom-medium">Fresh ingredients, Originated right the way</p>
+          <p class="organic-description margin-bottom-small">
+            A nutritional meal begins with fresh ingredients. We're proud to collaborate with the best American farmers. Together, we've raised the animal welfare and adopting more sustainable ways to product high quality foods.
+          </p>
+          <a class="organic-link" href="#">Our stories</a>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <section class="section-hero-organic margin-bottom-medium">
-    <div class="organic-container">
-      <div class="organic-img-box">
-        <img src="../../assets/img/hero-organic/organic-farm.jpg" alt="Organic farms and cultivating methods" class="organic-img">
-      </div>
-      <div class="organic-text-box">
-        <p class="heading-primary organic-title margin-bottom-medium">Fresh ingredients, Originated right the way</p>
-        <p class="organic-description margin-bottom-small">
-          A nutritional meal begins with fresh ingredients. We're proud to collaborate with the best American farmers. Together, we've raised the animal welfare and adopting more sustainable ways to product high quality foods.
-        </p>
-        <a class="organic-link" href="#">Our stories</a>
-      </div>
-    </div>
-  </section>
   <footer class="footer">
     <div class="grid grid--4-cols footer-container">
       <div class="brand-col">
-        <img src="../../assets/img/brand.svg" class="footer-brand-img">
+        <img src="../../assets/img/brand.svg" class="footer-brand-img" alt="Our brand logo">
         <ul class="media-links">
           <li>
             <a class="media-link footer-link">

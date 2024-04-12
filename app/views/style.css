@@ -28,7 +28,7 @@ body {
 }
 
 .header {
-  /* margin-bottom: 4.8rem; */
+  
 }
 
 .margin-bottom-very-small {
@@ -69,6 +69,11 @@ body {
   justify-content: space-between;
   padding: 1.2rem 6.4rem;
   background-color: #e9eeee;
+}
+
+.header-brand *:focus {
+  outline: none;
+  box-shadow: 0 0 0.8rem #183233;
 }
 
 .heading-primary,
@@ -133,6 +138,11 @@ body {
   align-items: center;
 }
 
+.icon-links *:focus {
+  box-shadow: none;
+  outline: 0.2rem dashed #235456;
+}
+
 .icon-link:link,
 .icon-link:visited {
   text-decoration: none;
@@ -186,8 +196,16 @@ body {
   gap: 3.6rem;
 }
 
+.main-nav *:focus {
+  outline: none;
+  box-shadow: 0 0 0.8rem #bdcccc;
+}
+
 .nav-link:link,
 .nav-link:visited {
+  display: block;
+  padding: 0.8rem;
+  border-radius: 1rem;
   text-decoration: none;
   font-size: 1.8rem;
   color: #e9eeee;
@@ -208,6 +226,11 @@ body {
   align-items: center;
   gap: 0.8rem;
   color: #e9eeee;
+}
+
+.search-form *:focus {
+  outline: none;
+  box-shadow: 0 0 0.8em #bdcccc;
 }
 
 .search-input {
@@ -267,13 +290,14 @@ body {
 
 .hero-img {
   width: 100%;
-  border-radius: 1rem;
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
   border: 1px solid #bdcccc;
   transition: all 0.5s ease;
 }
 
 .hero-img:hover {
-  transform: scale(1.2, 1.2);
+  transform: scale(1.1, 1.1);
 }
 
 .btns {
@@ -347,7 +371,12 @@ body {
   display: flex;
   flex-direction: row;
   gap: 2.4rem;
-  padding: 2.4rem 14.4rem; 
+  padding: 2.4rem 14.4rem;
+}
+
+.feature-container *:focus {
+  outline: none;
+  box-shadow: 0 0 2.4rem rgba(24, 50, 51, 0.5);
 }
 
 .feature-link:link,
@@ -443,7 +472,7 @@ body {
 
 .carousel-item {
   width: 18%;
-  box-shadow: 0 1.8rem 2.4rem rgba(24, 50, 51, 0.25);
+  box-shadow: 1.2rem 1.2rem 1.2rem rgba(24, 50, 51, 0.1);
   transition: all 0.5s ease;
 }
 
@@ -451,7 +480,7 @@ body {
 .carousel-item:active {
   transform: translate(0, -1.2rem);
   cursor: pointer;
-  box-shadow: 0 2.4rem 3.6rem rgba(18, 42, 43, 0.5);
+  box-shadow: 0 1.2rem 2.4rem rgba(18, 42, 43, 0.2);
 }
 
 .carousel-img {
@@ -629,7 +658,7 @@ body {
   font-size: 1.6rem;
 }
 
-.resource-col {
+.about-us-col {
   grid-column: 4 / 5;
 }
 
