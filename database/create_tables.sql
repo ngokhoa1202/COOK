@@ -13,21 +13,21 @@ CREATE TABLE users (
 CREATE TABLE menus (
     menu_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     menu_name VARCHAR(255) UNIQUE NOT NULL,
-    description VARCHAR(255) NULL,
+    description VARCHAR(255) NULL
 );
 
 CREATE TABLE categories (
     category_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     menu_id INT NOT NULL,
     description VARCHAR(255) NULL,
-    FOREIGN KEY (menu_id) REFERENCES menus(menu_id),
+    FOREIGN KEY (menu_id) REFERENCES menus(menu_id)
 );
 
 CREATE TABLE types (
     type_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     category_id INT NOT NULL,
     description VARCHAR(255) NULL,
-    FOREIGN KEY (category_id) REFERENCES categories(category_id),
+    FOREIGN KEY (category_id) REFERENCES categories(category_id)
 );
 
 CREATE TABLE products (
@@ -35,15 +35,15 @@ CREATE TABLE products (
     type_id INT NOT NULL,
     product_name VARCHAR(255) NOT NULL,
     description VARCHAR(255) NULL,
-    FOREIGN KEY type_id REFERENCES types(type_id),
+    FOREIGN KEY (type_id) REFERENCES types(type_id)
 );
 
 CREATE TABLE product_images (
     image_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    product_id INT NOT NULL
-    image_name VARCHAR(255) NOT NULL
+    product_id INT NOT NULL,
+    image_name VARCHAR(255) NOT NULL,
     image_url VARCHAR(4096),
-    FOREIGN KEY product_id REFERENCES products(product_id),
+    FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
 
 CREATE TABLE serves (
@@ -54,7 +54,7 @@ CREATE TABLE serves (
     discount INT NOT NULL DEFAULT 0,
     status BOOLEAN NOT NULL DEFAULT 1,
     instruction varchar(8192) NULL,
-    FOREIGN KEY product_id REFERENCES products(product_id),
+    FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
 
 CREATE TABLE nutritions (
@@ -63,7 +63,7 @@ CREATE TABLE nutritions (
     typical_values VARCHAR(255) NOT NULL,
     per_100g VARCHAR(32),
     per_portion VARCHAR(32),
-    FOREIGN KEY serve_id REFERENCES serves(serve_id),
+    FOREIGN KEY (serve_id) REFERENCES serves(serve_id)
 );
 
 CREATE TABLE ingredients (
@@ -71,7 +71,7 @@ CREATE TABLE ingredients (
     serve_id int NOT NULL,
     ingredient_name VARCHAR(255) NOT NULL,
     percentage VARCHAR(16),
-    FOREIGN KEY serve_id REFERENCES serves (serve_id),
+    FOREIGN KEY (serve_id) REFERENCES serves (serve_id)
 );
 
 CREATE TABLE comments (
@@ -82,8 +82,8 @@ CREATE TABLE comments (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     like_count INT NOT NULL DEFAULT 0,
-    FOREIGN KEY user_id REFERENCES users(user_id),
-    FOREIGN KEY product_id REFERENCES products(product_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
 
 CREATE TABLE orders (
@@ -96,8 +96,8 @@ CREATE TABLE orders (
     delivery_date DATE NOT NULL DEFAULT (CURRENT_DATE),
     leave_order_when_absent VARCHAR(255) NULL,
     payment_method VARCHAR(255) NULL,
-    FOREIGN KEY user_id REFERENCES users(user_id),
-)
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
 
 CREATE TABLE order_products (
     order_product_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -105,9 +105,6 @@ CREATE TABLE order_products (
     serve_id INT NOT NULL,
     quantity INT NOT NULL DEFAULT 1,
     total_product_cost INT NOT NULL DEFAULT 0,
-    FOREIGN KEY order_id REFERENCES orders(order_id),
-    FOREIGN KEY serve_id REFERENCES serves(serve_id),
+    FOREIGN KEY (order_id) REFERENCES orders(order_id),
+    FOREIGN KEY (serve_id) REFERENCES serves(serve_id)
 );
-
-
-
