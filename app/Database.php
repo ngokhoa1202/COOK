@@ -26,6 +26,10 @@ class Database {
       throw new PDOException($ex->getMessage(), (int) $ex->getCode());
     }
   }
+
+  public function __call($callback, $arguments) {
+    return call_user_func_array([$this->pdo, $callback], $arguments);
+  }
 }
 
 ?>

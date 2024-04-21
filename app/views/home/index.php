@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +10,6 @@
 </head>
 
 <body>
-  <h1><?php echo $dir ?></h1>
   <header class="header">
     <nav class="header-brand">
       <a href="#" class="btn header-btn">Follow us</a>
