@@ -302,6 +302,12 @@ body {
   box-shadow: 0 0 1.8rem rgba(24, 50, 51, 0.2);
 }
 
+.error {
+  font-size: 1.4rem;
+  color: red;
+  padding: 0 1.2rem;
+}
+
 /********************************
 ********RADIO BUTTONS************
 *********************************

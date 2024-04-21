@@ -7,6 +7,8 @@
   <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
   <link rel="stylesheet" href="/views/login/style.css">
   <script defer src="/views/login/script.js"></script>
+  <script defer type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script defer nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
   <title>Log in</title>
 </head>
 
@@ -60,7 +62,8 @@
         <p class="heading-secondary log-in-title margin-bottom-small">Log in or Sign up</p>
         <form class="login-form" novalidate>
           <label class="heading-tertiary block margin-bottom-tiny" for="email-input">Email address</label>
-          <input type="text" class="text-input margin-bottom-rather-small" id="email-input" placeholder="example@abc.com" required name="email" maxlength="60">
+          <input type="email" class="text-input margin-bottom-tiny" id="email-input" placeholder="example@abc.com" required name="email" maxlength="60">
+          <p class="error email-error margin-bottom-rather-small"></p>
 
           <p class="heading-tertiary margin-bottom-smaller">Have you already signed up?</p>
           <label class="radio-container" for="signup-radio" id="signup">
@@ -75,14 +78,17 @@
           </label>
           <div class="active login-accordion">
             <label class="heading-tertiary block margin-bottom-tiny" for="login-password-input">Password</label>
-            <input type="password" class="text-input margin-bottom-rather-small" id="login-password-input" placeholder="********" required name="password" maxlength="60" minlength="8">
+            <input type="password" class="text-input margin-bottom-tiny" id="login-password-input" placeholder="********" required name="password" maxlength="60" minlength="8">
+            <p class="error login-password-error margin-bottom-rather-small"></p>
             <button type="submit" class="btn">Log in</button>
           </div>
           <div class="hidden signup-accordion">
             <label class="heading-tertiary block margin-bottom-tiny" for="signup-password-input">Password</label>
-            <input type="password" class="text-input margin-bottom-rather-small" id="signup-password-input" placeholder="********" required name="password" maxlength="60" minlength="8">
+            <input type="password" class="text-input margin-bottom-tiny" id="signup-password-input" placeholder="********" required name="password" maxlength="60" minlength="8">
+            <p class="error email-error margin-bottom-rather-small"></p>
             <label class="heading-tertiary block margin-bottom-tiny" for="confirm-password-input">Confirm password</label>
-            <input type="password" class="text-input margin-bottom-rather-small" id="confirm-password-input" placeholder="********" required name="password" maxlength="60" minlength="8">
+            <input type="password" class="text-input margin-bottom-tiny" id="confirm-password-input" placeholder="********" required name="password" maxlength="60" minlength="8">
+            <p class="error email-error margin-bottom-rather-small"></p>
             <button type="submit" class="btn">Sign up</button>
           </div>
         </form>
@@ -160,9 +166,6 @@
       </div>
     </div>
   </footer>
-
-  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
 
 </html>
