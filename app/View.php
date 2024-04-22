@@ -23,9 +23,9 @@ class View {
 
   public function render(): string {
     try {
-      $viewPath = VIEW_PATH . "/" . $this->view . "/" . DEFAULT_VIEW_FILE;
-      $stylePath = VIEW_PATH . "/" . $this->view . "/" . DEFAULT_STYLE_FILE;
-      $scriptPath = VIEW_PATH . "/" . $this->view . "/" . DEFAULT_SCRIPT_FILE;
+      $viewPath = VIEW_PATH . "/" . $this->view . "/" . App::DEFAULT_VIEW_FILE;
+      $stylePath = VIEW_PATH . "/" . $this->view . "/" . App::DEFAULT_STYLE_FILE;
+      $scriptPath = VIEW_PATH . "/" . $this->view . "/" . App::DEFAULT_SCRIPT_FILE;
       if (!file_exists($viewPath) || !file_exists($stylePath) || !file_exists($scriptPath)) {
         throw new ViewNotFoundException();
       }

@@ -1,4 +1,4 @@
-const SERVER_URL = "/views/login/index.php";
+const SERVER_URL = "/login";
 const MIN_PASSWORD_LENGTH = 8;
 const EMAIL_PATTERN = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -101,7 +101,7 @@ function validateConfirmPassword() {
     } else if (confirmPasswordInput.value !== signupPasswordInput.value) {
       reject(WRONG_CONFIRM_PASSWORD);
     } else {
-      resolve(signupPasswordInput.value);
+      resolve(true);
     }
   });
 }
@@ -109,64 +109,112 @@ function validateConfirmPassword() {
 const loginForm = document.querySelector(".login-form");
 loginForm.addEventListener("submit", function(e) {
   e.preventDefault();
-
   /**
    * 
    * @returns {boolean}
    */
   function isLoggingIn() {
-    return document.querySelector(".active").classList.contains("login-accordion");
+    return document.querySelector(".login-accordion").classList.contains("active");
   }
 
   /**
    * 
    * @param {FormData} formData 
    */
-  function submitLoginData(formData) {
-    console.log("Submit successully")
+  function submitData(formData) {
+    fetch(
+      SERVER_URL, 
+      {
+        method: "POST",
+        body: formData
+      }
+    ).then((response) => {
+      if (!response.ok) {
+        throw new Error("Your network connection is not stable")
+      }
+      return response.json();
+    }).then((data) => {
+      console.log("Receive: ", data);
+    }).catch((error) => {
+      alert(error);
+    })
   }
 
-  let validatedEmail = "";
-  let validatedPassword = "";
-  if (isLoggingIn) {
-    const emailError = document.querySelector(".email-error");
-    const loginPasswordError = document.querySelector(".login-password-error");
-    const emailPromise = (
-      validateEmail()
-      .then((email) => {
-        validatedEmail = email;
-      })
-      .catch((msg) => {
-        emailError.textContent = msg;
-      })
-      .finally(() => {
-        console.log(validatedEmail);
-        console.log(validatedPassword);
-      })
-    );
-    
-    const passwordPromise = (
-      validateLoginPassword()
-      .then((password) => {
-        validatedPassword = password;
-      })
-      .catch((msg) => {
-        loginPasswordError.textContent = msg;
-      })  
-      .finally(() => {
+  const emailError = document.querySelector(".email-error");
+  const loginPasswordError = document.querySelector(".login-password-error");
+  const signupPasswordError = document.querySelector(".signup-password-error");
+  const confirmPasswordError = document.querySelector(".confirm-password-error");
 
-      })
-    );
+  const emailValidatorPromise = validateEmail()
+    .then((email) => {
+      validatedEmail = email;
+    })
+    .catch((msg) => {
+      emailError.textContent = msg;
+    })
+    .finally(() => {});
 
-    Promise.allSettled([emailPromise, passwordPromise]).then(() => {
+  const loginPasswordValidatorPromise = validateLoginPassword()
+    .then((password) => {
+      validatedPassword = password;
+    })
+    .catch((msg) => {
+      loginPasswordError.textContent = msg;
+    })
+    .finally(() => {});
+
+  const confirmPasswordValidatorPromise = validateConfirmPassword()
+    .then((isMatched) => {
+      matchedPassword = true;
+    })
+    .catch((msg) => {
+      confirmPasswordError.textContent = msg;
+    })
+    .finally(() => {});
+  
+  const signupPasswordValidatorPromise = validateSignupPassword()
+    .then((password) => {
+      validatedPassword = password;
+    })
+    .catch((msg) => {
+      signupPasswordError.textContent = msg;
+    })
+    .finally(() => {});
+
+  function handleLoginData() {
+    Promise.allSettled([emailValidatorPromise, loginPasswordValidatorPromise]).then(() => {
       if (validatedEmail && validatedPassword) {
-        const formData = new FormData();
+        const formData = new FormData();  
         formData.append("email", validatedEmail);
         formData.append("password", validatedPassword);
-        submitLoginData(formData);
+        submitData(formData);
       }
     });
-  }   
+  }
+
+  function handleSignupData() {
+    Promise.allSettled([emailValidatorPromise, signupPasswordValidatorPromise, confirmPasswordValidatorPromise]).then(() => {
+      if (validatedEmail && validatedPassword && matchedPassword) {
+        const formData = new FormData();
+        formData.append("signup", true);
+        formData.append("email", validatedEmail);
+        formData.append("password", validatedPassword);
+        submitData(formData);
+      }
+    });
+  }
+
+ 
+  let validatedEmail = "";
+  let validatedPassword = "";
+  let matchedPassword = false;
+  if (isLoggingIn()) {
+    handleLoginData();
+  } else { // signup
+    handleSignupData();
+  }
 });
+
+
 
 

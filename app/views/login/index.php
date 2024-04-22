@@ -76,19 +76,19 @@
             <input type="radio" name="sign-up" id="login-radio" class="radio-input" value="yes">
             <span class="radio-checkmark"></span>
           </label>
-          <div class="active login-accordion">
+          <div class="hidden login-accordion">
             <label class="heading-tertiary block margin-bottom-tiny" for="login-password-input">Password</label>
             <input type="password" class="text-input margin-bottom-tiny" id="login-password-input" placeholder="********" required name="password" maxlength="60" minlength="8">
             <p class="error login-password-error margin-bottom-rather-small"></p>
             <button type="submit" class="btn">Log in</button>
           </div>
-          <div class="hidden signup-accordion">
+          <div class="active signup-accordion">
             <label class="heading-tertiary block margin-bottom-tiny" for="signup-password-input">Password</label>
             <input type="password" class="text-input margin-bottom-tiny" id="signup-password-input" placeholder="********" required name="password" maxlength="60" minlength="8">
-            <p class="error email-error margin-bottom-rather-small"></p>
+            <p class="error signup-password-error margin-bottom-rather-small"></p>
             <label class="heading-tertiary block margin-bottom-tiny" for="confirm-password-input">Confirm password</label>
             <input type="password" class="text-input margin-bottom-tiny" id="confirm-password-input" placeholder="********" required name="password" maxlength="60" minlength="8">
-            <p class="error email-error margin-bottom-rather-small"></p>
+            <p class="error confirm-password-error margin-bottom-rather-small"></p>
             <button type="submit" class="btn">Sign up</button>
           </div>
         </form>

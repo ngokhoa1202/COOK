@@ -18,6 +18,9 @@ class Configuration {
       ],
       "encryption" => [
         "password" => $env["EN_PASSWORD"]
+      ],
+      "avatar" => [
+        "password" => $env["ICON_AVATAR"]
       ]
     ];
   }
