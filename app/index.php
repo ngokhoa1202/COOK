@@ -14,7 +14,12 @@ $router = new Router();
 $router
   ->get("/", [\App\Controller\HomeController::class, "index"])
   ->get("/login", [\App\Controller\LoginController::class, "index"])
-  ->post("/login", [\App\Controller\LoginController::class, "login"]);
+  ->post("/login", [\App\Controller\LoginController::class, "login"])
+  ->get("/menu", [\App\Controller\MenuController::class, "index"])
+  ->get("/menu/all", [\App\Controller\MenuController::class, "readAllMenus"])
+  ->post("/menu/new", [\App\Controller\MenuController::class, "createMenu"])
+  ->post("menu/category/new", [\App\Controller\MenuController::class, "createCategory"]);
+  
 $config = new Configuration($_ENV);
 
 $app = App::make(

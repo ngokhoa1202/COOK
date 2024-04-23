@@ -6,6 +6,7 @@ namespace App;
 
 use PDO;
 use PDOException;
+use PDOStatement;
 
 class Database {
   private PDO $pdo;
@@ -30,6 +31,31 @@ class Database {
   public function __call($callback, $arguments) {
     return call_user_func_array([$this->pdo, $callback], $arguments);
   }
+
+  public function beginTransaction(): bool {
+    return $this->pdo->beginTransaction();
+  }
+
+  public function commit(): bool {
+    return $this->pdo->commit();
+  }
+
+  public function rollBack(): bool {
+    return $this->pdo->rollBack();
+  }
+
+  public function prepare(string $query): false | PDOStatement {
+    return $this->pdo->prepare($query);
+  }
+
+  public function inTransaction(): bool {
+    return $this->pdo->inTransaction();
+  }
+
+  public function lastInsertId(string $name = null): string {
+    return $this->pdo->lastInsertId($name);
+  }
+
 }
 
 ?>
