@@ -43,7 +43,8 @@ class MenuController {
 
   public function createCategory(): string {
     try {
-      if (!array_key_exists("menu_name", $_POST) || !array_key_exists("description", $_POST)) {
+      if (!array_key_exists("menu_name", $_POST) || !array_key_exists("description", $_POST) ||
+        !array_key_exists("category_name", $_POST)) {
         throw new BadRequestException();
       }
     } catch (BadRequestException $ex) {
@@ -53,8 +54,9 @@ class MenuController {
 
     $menuName = filter_input(INPUT_POST, "menu_name", FILTER_SANITIZE_SPECIAL_CHARS);
     $menuId = MenuModel::findMenuIdByName($menuName);
-    $description = filter_input(INPUT_POST, "descript", FILTER_SANITIZE_SPECIAL_CHARS);
-    $categoryModel = new CategoryModel($menuId, $description);
+    $description = filter_input(INPUT_POST, "description", FILTER_SANITIZE_SPECIAL_CHARS);
+    $categoryName = filter_input(INPUT_POST, "category_name", FILTER_SANITIZE_SPECIAL_CHARS);
+    $categoryModel =  CategoryModel::make($menuId, $categoryName, $description);
     if ($categoryModel->create() === -1) {
       return json_encode(static::CREATE_CATEGORY_FAILURE_MSG);
     }
