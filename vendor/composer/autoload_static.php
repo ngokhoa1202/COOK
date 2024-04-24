@@ -91,7 +91,20 @@ class ComposerStaticInit9e644c951d0278367abc4cc3c9400431
     );
 
     public static $classMap = array (
+        'App\\App' => __DIR__ . '/../..' . '/app/App.php',
         'App\\Configuration' => __DIR__ . '/../..' . '/app/Configuration.php',
+        'App\\Controller\\HomeController' => __DIR__ . '/../..' . '/app/Controller/HomeController.php',
+        'App\\Controller\\LoginController' => __DIR__ . '/../..' . '/app/Controller/LoginController.php',
+        'App\\Database' => __DIR__ . '/../..' . '/app/Database.php',
+        'App\\Encryption' => __DIR__ . '/../..' . '/app/Encryption.php',
+        'App\\Exception\\RouteNotFoundException' => __DIR__ . '/../..' . '/app/Exception/RouteNotFoundException.php',
+        'App\\Exception\\ViewNotFoundException' => __DIR__ . '/../..' . '/app/Exception/ViewNotFoundException.php',
+        'App\\Model\\Model' => __DIR__ . '/../..' . '/app/Model/Model.php',
+        'App\\Model\\UserModel' => __DIR__ . '/../..' . '/app/Model/UserModel.php',
+        'App\\Model\\UserRole' => __DIR__ . '/../..' . '/app/Model/UserRole.php',
+        'App\\Model\\UserStatus' => __DIR__ . '/../..' . '/app/Model/UserStatus.php',
+        'App\\Router' => __DIR__ . '/../..' . '/app/Router.php',
+        'App\\View' => __DIR__ . '/../..' . '/app/View.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Brick\\Math\\BigDecimal' => __DIR__ . '/..' . '/brick/math/src/BigDecimal.php',
         'Brick\\Math\\BigInteger' => __DIR__ . '/..' . '/brick/math/src/BigInteger.php',
