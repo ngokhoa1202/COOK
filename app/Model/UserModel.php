@@ -4,6 +4,9 @@ namespace App\Model;
 
 use App\App;
 use App\Database;
+use App\Exception\BadQueryException;
+use App\Exception\ForbiddenException;
+use PDO;
 use PDOException;
 
 class UserModel extends Model {
@@ -25,6 +28,8 @@ class UserModel extends Model {
   public const WRONG_PASSWORD_PATTERN = "Wrong password pattern";
   public const TOO_SHORT_PASSWORD = "At least 8 characters for password";
   public const WRONG_CONFIRM_PASSWORD = "Wrong connfirmed password";
+  public const EMAIL_NOT_EXIST_MSG = "Email does not exist";
+  public const WRONG_PASSWORD_MSG = "Wrong password";
 
   private function __construct(string $username, string $email, string $password, string $avatar, string $role, 
     string $status) {
@@ -152,6 +157,78 @@ class UserModel extends Model {
     return true;
   }
 
+  private function checkEmailExist(): bool {
+    $emailExist = true;
+    try {
+      $this->database->beginTransaction();
+      $query = "SELECT COUNT(*) FROM users WHERE users.email = :email";
+      $stmt = $this->database->prepare($query);
+      $stmt->bindValue(":email", $this->email);
+      if (!$stmt->execute()) {
+        throw new BadQueryException();
+      }
+      if ($stmt->fetchColumn() === 0) {
+        $emailExist = false;
+      }
+      $this->database->commit();
+    } catch (PDOException | BadQueryException $ex) {
+      if ($this->database->inTransaction()) {
+        $this->database->rollBack();
+      }
+      $emailExist = false;
+    }
+
+    return $emailExist;
+  }
+
+  /**
+   * Check if a user with email, password and role exists in database. If wrong email, or wrong password, return 
+   * an associative array. If true, return a user model
+   *
+   * @return UserModel | array
+   */
+  public function verify(): UserModel | array {
+    if (! $this->checkEmailExist()) {
+      return ["email" => static::EMAIL_NOT_EXIST_MSG];
+    }
+    $result = $this;
+
+    try {
+      $this->database->beginTransaction();
+      $query = "SELECT * FROM users WHERE users.email = :email AND users.password = :password";
+      $stmt = $this->database->prepare($query);
+      $stmt->bindValue(":email", $this->email);
+      $stmt->bindValue(":password", $this->password);
+      if (! $stmt->execute()) {
+        throw new BadQueryException();
+      }
+      $userArr = $stmt->fetch(PDO::FETCH_ASSOC);
+      if (empty($userArr)) {
+        $result = ["password" => static::WRONG_PASSWORD_MSG];
+      }
+      else {
+        $this->userId = $userArr["user_id"];
+        $this->role = $userArr["role"];
+      }
+     
+      $this->database->commit();
+    } catch (PDOException | BadQueryException $ex) {
+      if ($this->database->inTransaction()) {
+        $this->database->rollBack();
+      }
+      $this->userId = -1;
+    }
+
+    return $result;
+  }
+
+  public function isAdmin() {
+    return $this->role === UserRole::getRole(UserRole::ADMIN);
+  }
+
+  public function getRole(): string {
+    return $this->role;
+  }
 }
 
 

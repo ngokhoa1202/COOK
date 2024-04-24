@@ -32,7 +32,7 @@ class LoginController {
       }
     } catch (BadRequestException $ex) {
       header("HTTP/1.1 400 Bad Request");
-      echo View::make("error/400");
+      return View::make("error/400");
     }
     
     $email = $_POST["email"];
