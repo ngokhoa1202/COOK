@@ -18,7 +18,8 @@ $router
   ->get("/menu", [\App\Controller\MenuController::class, "index"])
   ->get("/menu/all", [\App\Controller\MenuController::class, "readAllMenus"])
   ->post("/menu/new", [\App\Controller\MenuController::class, "createMenu"])
-  ->post("/menu/category/new", [\App\Controller\MenuController::class, "createCategory"]);
+  ->post("/menu/category/new", [\App\Controller\MenuController::class, "createCategory"])
+  ->post("/menu/category/type/new", [\App\Controller\MenuController::class, "createType"]);
   
 $config = new Configuration($_ENV);
 

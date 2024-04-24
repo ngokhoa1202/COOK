@@ -28,7 +28,7 @@ class CategoryModel extends Model {
 
     try {
       $this->database->beginTransaction();
-      $query = "INSERT INTO categories(menu_id, `description`, category_name) VALUES (:menuId, :categoryName ,:description)";
+      $query = "INSERT INTO categories(menu_id, category_name, `description`) VALUES (:menuId, :categoryName ,:description)";
       $stmt = $this->database->prepare($query);
       $stmt->bindValue(':menuId', $this->menuId);
       $stmt->bindValue(":categoryName", $this->categoryName);
@@ -48,7 +48,7 @@ class CategoryModel extends Model {
   }
 
   public static function getAllCategories(): array {
-    $categories = [];
+    $categories = []; 
     try {
       App::getDatabaseConnection()->beginTransaction();
       $query = "SELECT * FROM category";
@@ -64,6 +64,28 @@ class CategoryModel extends Model {
     }
     return $categories;
   }
+
+  public static function findCategoryIdByMenuNameAndCategoryName(string $menuName, string $categoryName): int {
+    $categoryId = -1;
+    try {
+      App::getDatabaseConnection()->beginTransaction();
+      $query = "SELECT * FROM categories WHERE categories.category_name = :categoryName";
+      $stmt = App::getDatabaseConnection()->prepare($query);
+      $stmt->bindValue(":categoryName", $categoryName);
+      if (! $stmt->execute()) {
+        throw new BadQueryException();
+      }
+      $categoryId = $stmt->fetch(PDO::FETCH_ASSOC)["category_id"];
+      App::getDatabaseConnection()->commit();
+    } catch (PDOException | BadQueryException $ex) {
+      if (App::getDatabaseConnection()->inTransaction()) {
+        App::getDatabaseConnection()->rollBack();
+      }
+      $categoryId = -1;
+    }
+    return $categoryId;
+  }
+
 }
 
 ?>
