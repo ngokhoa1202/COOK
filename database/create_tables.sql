@@ -34,7 +34,7 @@ CREATE TABLE products (
     product_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     type_id INT NOT NULL,
     product_name VARCHAR(255) NOT NULL,
-    description VARCHAR(255) NULL,
+    `description` VARCHAR(255) NULL,
     FOREIGN KEY (type_id) REFERENCES types(type_id)
 );
 
@@ -108,3 +108,4 @@ CREATE TABLE order_products (
     FOREIGN KEY (order_id) REFERENCES orders(order_id),
     FOREIGN KEY (serve_id) REFERENCES serves(serve_id)
 );
+

@@ -1,0 +1,488 @@
+@font-face {
+  font-family: "Hugo";
+  src: url("../../../../assets/fonts/HugosHandTwo.woff") format('woff');
+}
+
+@font-face {
+  font-family: "Gill Sans";
+  src: url("../../../../assets/fonts/GillSansW01Medium.woff2") format("woff");
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+ul {
+  list-style: none;
+}
+
+body {
+  color: #3f728a;
+  font-family: "Inter";
+}
+
+.header {
+  
+}
+
+.margin-bottom-tiny {
+  margin-bottom: 0.4rem;
+}
+
+.margin-bottom-rather-tiny {
+  margin-bottom: 0.8rem;
+}
+
+.margin-bottom-very-small {
+  margin-bottom: 1.2rem;
+}
+
+.margin-bottom-smaller {
+  margin-bottom: 1.8rem;
+}
+
+.margin-bottom-small {
+  margin-bottom: 2.4rem;
+}
+
+.margin-bottom-rather-small {
+  margin-bottom: 3.6rem;
+}
+
+.margin-bottom-medium {
+  margin-bottom: 4.8rem;
+}
+
+.margin-bottom-large {
+  margin-bottom: 6.4rem;
+}
+
+.block {
+  display: block
+}
+
+.container {
+  text-align: center;
+}
+
+.grid {
+  display: grid;
+}
+
+.grid--4-cols {
+  grid-template-columns: 1.5fr 1.5fr 1fr 1fr;
+}
+
+.header-brand  {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 1.2rem 6.4rem;
+  background-color: #e9eeee;
+}
+
+.heading-primary,
+.heading-secondary,
+.heading-tertiary {
+  font-family: "Hugo";
+}
+
+.heading-primary {
+  font-size: 4.8rem;
+}
+
+.heading-secondary {
+  font-size: 3.6rem;
+}
+
+.heading-tertiary {
+  font-size: 2.4rem;
+}
+
+.brand-box {
+  display: block;
+}
+
+.brand-img {
+  width: 35rem;
+}
+
+.active {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}
+
+.header-btn {
+  align-self: center;
+}
+
+.btn:link,
+.btn:visited,
+.btn {
+  font-size: 1.8rem;
+  background-color: #3f728a;
+  color: #efefef;
+  padding: 1.2rem 2.4rem;
+  font-weight: 500;
+  font-family: "Inter";
+
+  text-decoration: none;
+  display: block;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: all 0.5s;
+  border: none;
+}
+
+.btn:hover,
+.btn:active {
+  background-color: #325b6e;
+  color: #f2f2f2;
+}
+
+.icon-links {
+  display: flex;
+  flex-direction: row;
+  gap: 2.4rem;
+  align-self: center;
+  align-items: center;
+}
+
+.icon-link:link,
+.icon-link:visited {
+  text-decoration: none;
+  color: #204c4d;
+  padding: 0.4rem 1.2rem;
+}
+
+.cart-link:active,
+.cart-link:hover {
+  border: 1px solid #204c4d;
+  border-radius: 1rem;
+}
+
+
+.account-link:active .icon .path,
+.account-link:hover .icon .path {
+  fill: #235456;
+  stroke: #122a2b;
+}
+
+
+.cart-link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+
+.cost {
+  font-size: 1.8rem;
+}
+
+.icon {
+  width: 3.6rem;
+  height: 3.6rem;
+}
+
+.header-nav {
+  padding: 1.2rem 5.6rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #235456;
+}
+
+.main-nav {
+  display: flex;
+  flex-direction: row;
+  gap: 3.6rem;
+}
+
+.nav-link:link,
+.nav-link:visited {
+  text-decoration: none;
+  font-size: 1.8rem;
+  color: #e9eeee;
+  font-family: "Gill Sans";
+  transition: all 500ms;
+}
+
+.nav-link:hover,
+.nav-link:active {
+  text-decoration: underline;
+}
+
+.search-form {
+  width: 30%;
+  font-size: 1.6rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.8rem;
+  color: #e9eeee;
+}
+
+.search-input {
+  font-family: "Gill Sans";
+  font-size: 1.6rem;
+  padding: 0.8rem 1.2rem;
+  color: #071111;
+  border-radius: 1rem;
+  width: 80%;
+}
+
+.search-input::placeholder {
+  color: #7b989a;
+}
+
+.submit-btn {
+  background-color: inherit;
+  color: #e9eeee;
+  border: none;
+  transition: all 0.5s;
+}
+
+.submit-btn:hover,
+.submit-btn:active {
+  cursor: pointer;
+  color: #44D83C;
+}
+
+.main {
+}
+
+.section-log-in {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 6.4rem 4.8rem;
+  background-image: 
+    linear-gradient(rgba(79, 118, 120, 0.4), rgba(145, 170, 171, 0.4)),
+    url("../../../../assets/img/enjoy-food.jpg");
+  ;
+  background-size: cover;
+  z-index: -1;
+}
+
+
+.login-container {
+  width: 40%;
+  z-index: 1;
+  background-color: #e9eeee;
+  border: 1px solid #235456;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.4rem;
+  border-radius: 1rem;
+}
+
+.text-input {
+  width: 100%;
+  padding: 0.8rem 1.2rem;
+  font-size: 1.8rem;
+  font-family: inherit;
+  border-radius: 1rem;
+}
+
+.text-input:focus {
+  outline: none;
+  box-shadow: 0 0 1.8rem rgba(24, 50, 51, 0.2);
+}
+
+.error {
+  font-size: 1.4rem;
+  color: red;
+  padding: 0 1.2rem;
+}
+
+/********************************
+********RADIO BUTTONS************
+*********************************
+*/
+
+.radio-container {
+  display: block;
+  cursor: pointer;
+  position: relative; 
+  user-select: none;
+  margin: 0 3.6rem 1.8rem 3.6rem;
+  padding: 0 3.6rem;
+  font-size: 1.8rem;
+}
+
+.radio-input { /* disable browser's default radio */
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.radio-checkmark {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(0, -50%);
+  height: 2.4rem;
+  width: 2.4rem;
+  border-radius: 50%;
+  background-color: #d3dddd;
+}
+
+.radio-container:hover .radio-checkmark {
+  background-color: #4f7678;
+}
+
+.radio-input:checked ~ .radio-checkmark { /* must use subsequent sibling selector ~ */
+  background-color: #4f7678;
+}
+
+.radio-checkmark:after { /* create the indicator - hide when not checked */
+  content: ""; 
+  position: absolute;
+  display: none;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background-color: #e9eeee;
+}
+
+.radio-input:checked ~ .radio-checkmark:after { /* show when check the radio */
+  display: block;
+}
+
+/********************************
+****LOGIN - SIGNUP ACCORDION*****
+*********************************
+*/
+
+.sign-up-accordion {
+  display: block;
+}
+
+.log-in-accordion {
+  display: none;
+}
+
+/********************************
+**********FOOTER************8****
+*********************************
+*/
+.footer {
+  background-color: #fffcf8;
+}
+
+.footer-container {
+  padding: 3.6rem 12.8rem;
+  border-top: 1px solid rgba(24, 50, 51, 0.2);
+}
+
+.brand-col {
+  grid-column: 1 / 2;
+  display: flex;
+  flex-direction: column;
+  gap: 3.6rem;
+  padding: 0 0.8rem;
+}
+
+.footer-brand-img {
+  width: 80%;
+}
+
+.copyright {
+  font-size: 1.2rem;
+}
+
+.media-links {
+  display: flex;
+  flex-direction: row;
+  gap: 2.4rem;
+}
+
+.footer-link:link,
+.footer-link:visited {
+  text-decoration: none;
+  transition: all 0.5s ease;
+  color: #3f728a;
+}
+
+.footer-link:hover,
+.footer-link:active {
+  color: #122a2b;
+  cursor: pointer;
+}
+
+.media-icon {
+  width: 2.4rem;
+  height: 2.4rem;
+}
+
+.contact-col {
+  grid-column: 2 / 3;
+  padding: 0 0.8rem;
+}
+
+.tel-link,
+.email-link {
+  font-size: 1.4rem;
+}
+
+.footer-heading {
+  font-weight: 500;
+}
+
+.home-address {
+  font-size: 1.6rem;
+}
+
+.account-col {
+  grid-column: 3 / 4;
+  padding: 0 0.8rem;
+}
+
+.account-links,
+.about-us-links {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.account-link,
+.about-us-link {
+  font-size: 1.6rem;
+}
+
+.about-us-col {
+  grid-column: 4 / 5;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
