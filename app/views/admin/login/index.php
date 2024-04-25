@@ -15,6 +15,7 @@
 <body>
   <header class="header">
     <nav class="header-brand">
+      <a href="/" class="btn header-btn">Back to home</a>
       <a href="#" class="brand-box">
         <img src="/assets/img/brand.svg" class="brand-img" alt="Our brand logo">
       </a>
@@ -23,7 +24,7 @@
   <main class="main">
     <section class="section-log-in margin-bottom-very-large">
       <div class="login-container">
-        <p class="heading-secondary log-in-title margin-bottom-small">Log in</p>
+        <p class="heading-secondary log-in-title margin-bottom-small">Admin log in</p>
         <form class="login-form" novalidate>
           <label class="heading-tertiary block margin-bottom-tiny" for="email-input">Email address</label>
           <input type="email" class="text-input margin-bottom-tiny" id="email-input" placeholder="example@abc.com" required name="email" maxlength="60">

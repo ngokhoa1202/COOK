@@ -71,6 +71,46 @@ body {
   margin-bottom: 9.6rem;
 }
 
+.margin-right-tiny {
+  margin-right: 0.4rem;
+}
+
+.margin-right-rather-tiny {
+  margin-right: 0.8rem;
+}
+
+.margin-right-very-small {
+  margin-right: 1.2rem;
+}
+
+.margin-right-smaller {
+  margin-right: 1.8rem;
+}
+
+.margin-right-small {
+  margin-right: 2.4rem;
+}
+
+.margin-right-rather-small {
+  margin-right: 3.6rem;
+}
+
+.margin-right-medium {
+  margin-right: 4.8rem;
+}
+
+.margin-right-large {
+  margin-right: 6.4rem;
+}
+
+.margin-right-larger {
+  margin-right: 8.0rem;
+}
+
+.margin-right-very-large {
+  margin-right: 9.6rem;
+}
+
 .block {
   display: block
 }
@@ -88,9 +128,7 @@ body {
 }
 
 .header-brand  {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
+  position: relative;
   padding: 1.2rem 6.4rem;
   background-color: #e9eeee;
 }
@@ -115,6 +153,10 @@ body {
 
 .brand-box {
   display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .brand-img {
@@ -129,10 +171,6 @@ body {
   display: none;
 }
 
-.header-btn {
-  align-self: center;
-}
-
 .btn:link,
 .btn:visited,
 .btn {
@@ -144,7 +182,6 @@ body {
   font-family: "Inter";
 
   text-decoration: none;
-  display: block;
   border-radius: 1rem;
   cursor: pointer;
   transition: all 0.5s;
@@ -155,6 +192,10 @@ body {
 .btn:active {
   background-color: #325b6e;
   color: #f2f2f2;
+}
+
+.header-btn {
+  display: inline-block;
 }
 
 .icon-links {

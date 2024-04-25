@@ -192,6 +192,61 @@ body {
 }
 
 /**************************************
+******SEARCH SECTION*******************
+***************************************
+*/
+
+.section-search {
+  width: 100%;
+}
+
+.search-form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1.8rem;
+}
+
+.search-form *:focus {
+  outline: none;
+  box-shadow: 0 0 0.8rem rgba(35, 43, 46, 0.25);
+}
+
+.search-input {
+  font-family: "Inter";
+  font-size: 1.8rem;
+  width: 50%;
+  padding: 1.2rem 2.4rem;
+  border-radius: 1rem;
+  border: 1px solid #45565c;
+}
+
+.search-input::placeholder {
+  color: #ccc;
+}
+
+.search-btn {
+  padding: 0.8rem;
+  border: none;
+  background-color: #fff;
+}
+
+
+.search-icon {
+  width: 3.2rem;
+  height: 3.2rem;
+  color: #576c73;
+  transition: all 0.5s ease;
+}
+
+.search-icon:hover,
+.search-icon:active {
+  cursor: pointer;
+  color: #344145;
+  stroke: 1.2;
+}
+
+/**************************************
 ******SUMMARY CARDS********************
 ***************************************
 */
@@ -244,6 +299,81 @@ body {
 .summary-card:nth-child(even) .summary-icon {
   color: #3a5f3a;
 }
+
+/**************************************
+******SECTION PRODUCT DASHBOARD********
+***************************************
+*/
+
+.section-dashboard {
+  width: 100%;
+}
+
+.products-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.products-table thead tr {
+  font-family: "Gill Sans";
+  font-size: 1.6rem;
+  text-align: left;
+  font-weight: 400;
+  color: #bbb;
+}
+
+.products-table thead tr th {
+  padding: 1.2rem;
+}
+
+.products-table tbody tr {
+  border-radius: 1rem;
+}
+
+.products-table tbody tr:nth-child(odd) {
+  background-color: #eff7fa;
+}
+
+.products-table tbody tr:nth-child(even) {
+  background-color: #e9fce9;
+}
+
+.products-table tbody td {
+  font-size: 1.8rem;
+  padding: 1.2rem;
+  text-align: left;
+}
+
+.products-table tbody td:last-child .action-form {
+  display: flex;
+  flex-direction: row;
+  gap: 1.2rem;
+}
+
+.btn {
+  display: block;
+  color: inherit;
+  background-color: inherit;
+  border: none;
+}
+
+.btn:hover,
+.btn:active {
+  cursor: pointer;
+}
+
+.table-icon {
+  width: 2.4rem;
+  height: 2.4rem;
+  color: #7997a1;
+  transition: all 0.5s ease;
+}
+
+.table-icon:hover,
+.table-icon:active {
+  color: #111617;
+}
+
 
 /**************************************
 ******FOOTER***************************

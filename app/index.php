@@ -20,7 +20,9 @@ $router
   ->post("/menu/new", [\App\Controller\MenuController::class, "createMenu"])
   ->post("/menu/category/new", [\App\Controller\MenuController::class, "createCategory"])
   ->post("/menu/category/type/new", [\App\Controller\MenuController::class, "createType"])
-  ->get("/admin/login", [\App\Controller\AdminController::class, "index"])
+  ->get("/admin/login", [\App\Controller\AdminController::class, "getAdminLoginView"])
+  ->get("/admin", [\App\Controller\AdminController::class, "index"])
+  ->get("/admin/users", [\App\Controller\AdminController::class, "getAdminUsersView"])
   ->post("/admin/login", [\App\Controller\AdminController::class, "login"]);
   
 $config = new Configuration($_ENV);
