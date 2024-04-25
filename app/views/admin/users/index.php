@@ -9,7 +9,7 @@
   <script defer src="/views/admin/users/script.js"></script>
   <script async type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script async nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-  <title>COOK - Products</title>
+  <title>COOK Admin - Products</title>
 </head>
 
 <body>
@@ -95,11 +95,20 @@
         </div>
       </section>
 
+      <section class="section-button margin-bottom-small">
+        <div class="button-container">
+          <button class="btn btn--new-user">
+            <ion-icon name="person-add-outline" class="add-icon icon-link"></ion-icon>
+            <p>New user</p>
+          </button>
+        </div>
+      </section>
+
       <section class="section-search margin-bottom-small">
         <form class="search-form">
           <input type="search" placeholder="Enter an email" class="search-input">
-          <button type="submit" class="search-btn">
-            <ion-icon name="search-outline" class="search-icon"></ion-icon>
+          <button type="submit" class="search-btn btn">
+            Search
           </button>
         </form>
       </section>
@@ -108,12 +117,12 @@
         <table class="products-table">
           <thead>
             <tr>
-              <th>Id</th>
-              <th>Email</th>
-              <th>Avatar</th>
-              <th>Role</th>
-              <th>Status</th>
-              <th>Action</th>
+              <th class="table-header-id">Id</th>
+              <th class="table-header-email">Email</th>
+              <th class="table-header-avatar">Avatar</th>
+              <th class="table-header-role">Role</th>
+              <th class="table-header-status">Status</th>
+              <th class="table-header-action">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -125,10 +134,10 @@
               <td>online</td>
               <td>
                 <form class="action-form">
-                  <button type="submit" class="btn-edit btn">
+                  <button type="submit" class="btn--edit table-btn">
                     <ion-icon name="pencil-outline" class="table-icon"></ion-icon>
                   </button>
-                  <button type="submit" class="btn-delete btn">
+                  <button type="submit" class="btn--delete table-btn">
                     <ion-icon name="trash-outline" class="table-icon"></ion-icon>
                   </button>
                 </form>
@@ -142,10 +151,10 @@
               <td>online</td>
               <td>
                 <form class="action-form">
-                  <button type="submit" class="btn-edit btn">
+                  <button type="submit" class="btn--edit table-btn">
                     <ion-icon name="pencil-outline" class="table-icon"></ion-icon>
                   </button>
-                  <button type="submit" class="btn-delete btn">
+                  <button type="submit" class="btn--delete table-btn">
                     <ion-icon name="trash-outline" class="table-icon"></ion-icon>
                   </button>
                 </form>
@@ -159,10 +168,10 @@
               <td>online</td>
               <td>
                 <form class="action-form">
-                  <button type="submit" class="btn-edit btn">
+                  <button type="submit" class="btn--edit table-btn">
                     <ion-icon name="pencil-outline" class="table-icon"></ion-icon>
                   </button>
-                  <button type="submit" class="btn-delete btn">
+                  <button type="submit" class="btn--delete table-btn">
                     <ion-icon name="trash-outline" class="table-icon"></ion-icon>
                   </button>
                 </form>
@@ -176,10 +185,10 @@
               <td>online</td>
               <td>
                 <form class="action-form">
-                  <button type="submit" class="btn-edit btn">
+                  <button type="submit" class="btn--edit table-btn">
                     <ion-icon name="pencil-outline" class="table-icon"></ion-icon>
                   </button>
-                  <button type="submit" class="btn-delete btn">
+                  <button type="submit" class="btn--delete table-btn">
                     <ion-icon name="trash-outline" class="table-icon"></ion-icon>
                   </button>
                 </form>
@@ -193,10 +202,10 @@
               <td>online</td>
               <td>
                 <form class="action-form">
-                  <button type="submit" class="btn-edit btn">
+                  <button type="submit" class="btn-edit table-btn">
                     <ion-icon name="pencil-outline" class="table-icon"></ion-icon>
                   </button>
-                  <button type="submit" class="btn-delete btn">
+                  <button type="submit" class="btn-delete table-btn">
                     <ion-icon name="trash-outline" class="table-icon"></ion-icon>
                   </button>
                 </form>
@@ -210,10 +219,10 @@
               <td>online</td>
               <td>
                 <form class="action-form">
-                  <button type="submit" class="btn-edit btn">
+                  <button type="submit" class="btn--edit table-btn">
                     <ion-icon name="pencil-outline" class="table-icon"></ion-icon>
                   </button>
-                  <button type="submit" class="btn-delete btn">
+                  <button type="submit" class="btn--delete table-btn">
                     <ion-icon name="trash-outline" class="table-icon"></ion-icon>
                   </button>
                 </form>
@@ -227,10 +236,10 @@
               <td>online</td>
               <td>
                 <form class="action-form">
-                  <button type="submit" class="btn-edit btn">
+                  <button type="submit" class="btn--edit table-btn">
                     <ion-icon name="pencil-outline" class="table-icon"></ion-icon>
                   </button>
-                  <button type="submit" class="btn-delete btn">
+                  <button type="submit" class="btn--delete table-btn">
                     <ion-icon name="trash-outline" class="table-icon"></ion-icon>
                   </button>
                 </form>
@@ -244,10 +253,10 @@
               <td>online</td>
               <td>
                 <form class="action-form">
-                  <button type="submit" class="btn-edit btn">
+                  <button type="submit" class="btn--edit table-btn">
                     <ion-icon name="pencil-outline" class="table-icon"></ion-icon>
                   </button>
-                  <button type="submit" class="btn-delete btn">
+                  <button type="submit" class="btn--delete table-btn">
                     <ion-icon name="trash-outline" class="table-icon"></ion-icon>
                   </button>
                 </form>
@@ -261,10 +270,10 @@
               <td>online</td>
               <td>
                 <form class="action-form">
-                  <button type="submit" class="btn-edit btn">
+                  <button type="submit" class="btn-edit table-btn">
                     <ion-icon name="pencil-outline" class="table-icon"></ion-icon>
                   </button>
-                  <button type="submit" class="btn-delete btn">
+                  <button type="submit" class="btn-delete table-btn">
                     <ion-icon name="trash-outline" class="table-icon"></ion-icon>
                   </button>
                 </form>
@@ -278,10 +287,10 @@
               <td>online</td>
               <td>
                 <form class="action-form">
-                  <button type="submit" class="btn-edit btn">
+                  <button type="submit" class="btn--edit table-btn">
                     <ion-icon name="pencil-outline" class="table-icon"></ion-icon>
                   </button>
-                  <button type="submit" class="btn-delete btn">
+                  <button type="submit" class="btn--delete table-btn">
                     <ion-icon name="trash-outline" class="table-icon"></ion-icon>
                   </button>
                 </form>
@@ -295,10 +304,10 @@
               <td>online</td>
               <td>
                 <form class="action-form">
-                  <button type="submit" class="btn-edit btn">
+                  <button type="submit" class="btn--edit table-btn">
                     <ion-icon name="pencil-outline" class="table-icon"></ion-icon>
                   </button>
-                  <button type="submit" class="btn-delete btn">
+                  <button type="submit" class="btn--delete table-btn">
                     <ion-icon name="trash-outline" class="table-icon"></ion-icon>
                   </button>
                 </form>
@@ -343,6 +352,30 @@
       <p class="copyright">Copyright &copy; 2025 by COOK Inc. All rights reserved.</p>
     </div>
   </footer>
+
+  <div class="new-user-modal hidden">
+    <button class="btn--close-modal">&times;</button>
+    <h2 class="heading-secondary margin-bottom-small">Create a new user</h2>
+    <form class="modal-form" novalidate>
+      <label class="label" for="email-input">Email</label>
+      <input type="email" placeholder="Email" class="input" name="email" id="email-input">
+      <label class="label" for="password-input">Password</label>
+      <input type="password" placeholder="********" class="input" name="password" id="password-input">
+      <label class="label" for="confirm-password-input">Confirm password</label>
+      <input type="password" placeholder="********" class="input" name="confirm-password" id="confirm-password-input">
+      <label class="label" for="avatar-input">Avatar</label>
+      <input type="file" name="avatar" class="input avatar-input" name="avatar" id="avatar-input">
+      <label class="label" class="role-select">Role</label>
+      <select class="select select--role" id="role-select">
+        <option class="option" value="">Choose a role&hellip;</option>
+        <option class="option" value="member">member</option>
+        <option class="option" value="admin">admin</option>
+      </select>
+      <button type="submit" class="btn btn--submit">Create new user</button>
+    </form>
+  </div>
+
+  <div class="overlay hidden"></div>
 </body>
 
 </html>
