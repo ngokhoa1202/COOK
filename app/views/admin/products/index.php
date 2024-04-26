@@ -9,7 +9,7 @@
   <script defer src="/views/admin/users/script.js"></script>
   <script async type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script async nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-  <title>COOK Admin - Users</title>
+  <title>COOK Admin - Products</title>
 </head>
 
 <body>
@@ -358,35 +358,20 @@
     <h2 class="heading-secondary margin-bottom-small">Create a new user</h2>
     <form class="modal-form" novalidate>
       <label class="label" for="email-input">Email</label>
-      <div class="input-info">
-        <input type="email" placeholder="Email" class="input" name="email" id="email-input">
-        <p class="error email-error"></p>
-      </div>
+      <input type="email" placeholder="Email" class="input" name="email" id="email-input">
       <label class="label" for="password-input">Password</label>
-      <div class="input-info">
-        <input type="password" placeholder="********" class="input" name="password" id="password-input">
-        <p class="error password-error"></p>
-      </div>
+      <input type="password" placeholder="********" class="input" name="password" id="password-input">
       <label class="label" for="confirm-password-input">Confirm password</label>
-      <div class="input-info">
-        <input type="password" placeholder="********" class="input" name="confirm-password" id="confirm-password-input">
-        <p class="error confirm-password-error"></p>
-      </div>
+      <input type="password" placeholder="********" class="input" name="confirm-password" id="confirm-password-input">
       <label class="label" for="avatar-input">Avatar</label>
-      <div class="input-info">
-        <input type="file" name="avatar" class="input avatar-input" name="avatar" id="avatar-input">
-      </div>
-
+      <input type="file" name="avatar" class="input avatar-input" name="avatar" id="avatar-input">
       <label class="label" class="role-select">Role</label>
-      <div class="input-info">
-        <select class="select select--role" id="role-select">
-          <option class="option" value="">Choose a role&hellip;</option>
-          <option class="option" value="member">member</option>
-          <option class="option" value="admin">admin</option>
-        </select>
-        <p class="error"></p>
-      </div>
-      <button type="submit" class="btn btn--submit margin-top-small">Create new user</button>
+      <select class="select select--role" id="role-select">
+        <option class="option" value="">Choose a role&hellip;</option>
+        <option class="option" value="member">member</option>
+        <option class="option" value="admin">admin</option>
+      </select>
+      <button type="submit" class="btn btn--submit">Create new user</button>
     </form>
   </div>
 
