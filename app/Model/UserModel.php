@@ -70,22 +70,16 @@ class UserModel extends Model {
       $stmt->bindValue(":password", $this->password);
       $stmt->bindValue(":avatar", $this->avatar);
       $stmt->bindValue(":role", $this->role);
-      // $stmt->execute([
-      //   "username" => $this->username,
-      //   "email" => $this->email,
-      //   "password" => $this->password,
-      //   "avatar" => $this->avatar,
-      //   "role" => $this->role,
-      //   "status" => $this->status
-      // ]);
+      $stmt->bindValue(":status", $this->status);
+      $stmt->execute();
+      $this->userId = $this->database->lastInsertId();
       $this->database->commit();
     } catch (PDOException $ex) {
       if ($this->database->inTransaction()) {
         $this->database->rollBack();
       }
-      return -1;
+      $this->userId = -1;
     }
-    $this->userId = $this->database->lastInsertId();
     return $this->userId;
   }
 
@@ -113,6 +107,10 @@ class UserModel extends Model {
     if (is_array($error)) {
       return $error;
     }
+    $error = static::validateRole($role);
+    if (is_array($error)) {
+      return $error;
+    }
     return true;
   }
 
@@ -124,7 +122,7 @@ class UserModel extends Model {
    */
   private static function validateEmail(string &$email): bool | array {
     $validatedEmail = filter_var($email, FILTER_VALIDATE_EMAIL);
-    if (!$validatedEmail) {
+    if (! $validatedEmail) {
       return ["email" => static::WRONG_EMAIL_PATTERN];
     }
     $email = $validatedEmail;
@@ -144,6 +142,19 @@ class UserModel extends Model {
       return false;
     }
     $password = App::getEncryptionConfiguration()->hashPassword($validatedPlainPassword);
+    return true;
+  }
+
+  private static function validateRole(string &$role): bool | array {
+    $validatedRole = filter_var($role, FILTER_SANITIZE_SPECIAL_CHARS);
+    if (! $validatedRole) {
+      return ["role" => "Role does not exist"];
+    }
+    $roles = static::getAllRoles();
+    if (! in_array($validatedRole, $roles)) {
+      return ["role" => "Role does not exist"];
+    }
+    $role = $validatedRole;
     return true;
   }
 
@@ -228,6 +239,28 @@ class UserModel extends Model {
 
   public function getRole(): string {
     return $this->role;
+  }
+
+  public static function getAllRoles(): array {
+    $roles = [];
+    try {
+      App::getDatabaseConnection()->beginTransaction();
+      $query = "SELECT DISTINCT `role` FROM users";
+      $stmt = App::getDatabaseConnection()->prepare($query);
+      if (! $stmt->execute()) {
+        throw new BadQueryException();
+      }
+      while (($row = $stmt->fetch(PDO::FETCH_ASSOC))) {
+        array_push($roles, $row["role"]);
+      }
+
+      App::getDatabaseConnection()->commit();
+    } catch (PDOException | BadQueryException) {
+      if (App::getDatabaseConnection()->inTransaction()) {
+        App::getDatabaseConnection()->rollBack();
+      }
+    }
+    return $roles;
   }
 }
 

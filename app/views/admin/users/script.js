@@ -194,7 +194,7 @@ newUserModalForm.addEventListener("submit", function (e) {
     })
     .finally(() => {});
   
-  function handleSignupData() {
+  function handleNewUserData() {
     Promise.allSettled([
       emailValidatorPromise,
       passwordValidatorPromise,
@@ -205,12 +205,13 @@ newUserModalForm.addEventListener("submit", function (e) {
         formData.append("signup", true);
         formData.append("email", validatedEmail);
         formData.append("password", validatedPassword);
+        formData.append("confirm_password", validatedPassword);
         formData.append("role", validatedRole)
         submitData(formData);
       }
     });
   }
-  handleSignupData();
+  handleNewUserData();
 });
 
 /*********************************************************
@@ -292,7 +293,7 @@ passwordInput.addEventListener("focusout", function(e) {
 confirmPasswordInput.addEventListener("focus", function(e) {
   validateConfirmPassword()
     .then((isMatched) => {
-      matchedPassword = true;
+      matchedPassword = isMatched;
       confirmPasswordError.textContent = "";
     })
     .catch((msg) => {

@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\App;
 use App\Exception\BadQueryException;
+use App\Exception\BadRequestException;
 use App\Exception\ForbiddenException;
 use App\Model\UserModel;
 use App\Model\UserRole;
@@ -13,6 +14,7 @@ use App\View;
 
 class AdminController {
   public const ADMIN_LOGIN_SUCCESS_MSG = "Admin logged in successfully";
+  public const CREATE_USER_SUCCESS_MSG = "User created successfully";
   protected const SESSION_USER_ID = "user_id";
   protected const SESSION_LAST_GENERATED = "last_generated";
   protected const SESSION_USER_USERNAME = "user_username";
@@ -89,14 +91,31 @@ class AdminController {
     }
   }
 
-  public function getAdminUsersView(): View {
+  public function getAdminUsersView(): View | string {
     return View::make("admin/users");
   }
 
-  public function createUser(): string{
+  public function createUser(): string {
+    try {
+      if (!array_key_exists("email", $_POST) || ! array_key_exists("password", $_POST) 
+        || ! array_key_exists("role", $_POST) || ! array_key_exists("confirm_password", $_POST)
+      ) {
+        throw new BadRequestException();
+      }
+    } catch (BadRequestException $ex) {
+      header("HTTP/1.1 400 Bad Request");
+      echo View::make("error/400");
+    }
     $email = $_POST["email"];
+    $password = $_POST["password"];
+    $confirmPassword = $_POST["confirm_password"];
     $role = $_POST["role"];
-    return json_encode($email);
+    $userModel = UserModel::make($email, $email, $password, $confirmPassword, "", $role, UserStatus::getStatus((UserStatus::OFFLINE)));
+    if (is_array($userModel)) {
+      return json_encode($userModel);
+    }
+    $userModel->create();
+    return json_encode(static::CREATE_USER_SUCCESS_MSG);
   }
 }
 

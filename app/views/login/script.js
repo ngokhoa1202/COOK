@@ -199,6 +199,7 @@ loginForm.addEventListener("submit", function(e) {
         formData.append("signup", true);
         formData.append("email", validatedEmail);
         formData.append("password", validatedPassword);
+        formData.append("confirm_password", validatedPassword);
         submitData(formData);
       }
     });
