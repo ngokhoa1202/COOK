@@ -92,6 +92,12 @@ class AdminController {
   public function getAdminUsersView(): View {
     return View::make("admin/users");
   }
+
+  public function createUser(): string{
+    $email = $_POST["email"];
+    $role = $_POST["role"];
+    return json_encode($email);
+  }
 }
 
 ?>

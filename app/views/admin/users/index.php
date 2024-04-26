@@ -384,7 +384,7 @@
           <option class="option" value="member">member</option>
           <option class="option" value="admin">admin</option>
         </select>
-        <p class="error"></p>
+        <p class="error role-error"></p>
       </div>
       <button type="submit" class="btn btn--submit margin-top-small">Create new user</button>
     </form>

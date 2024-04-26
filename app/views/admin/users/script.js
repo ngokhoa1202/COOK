@@ -45,7 +45,9 @@ const REQUIRED_CONFIRM_PASSWORD_MSG = "Confirm password is required";
 const WRONG_PASSWORD_PATTERN = "Wrong password pattern";
 const TOO_SHORT_PASSWORD = "At least 8 characters for password";
 const WRONG_CONFIRM_PASSWORD = "Wrong connfirmed password";
-
+const REQUIRED_ROLE_MSG = "Role is required";
+const ROLE_VALUES = ["admin", "member"];
+const WRONG_ROLE = "Wrong role value";
 
 const emailInput = document.querySelector("#email-input");
 /**
@@ -101,15 +103,33 @@ function validateConfirmPassword() {
   });
 }
 
+const roleSelect = document.querySelector("#role-select");
+/**
+ *
+ * @returns {Promise}
+ */
+function validateRole() {
+  return new Promise((resolve, reject) => {
+    if (! roleSelect.value) {
+      reject(REQUIRED_ROLE_MSG);
+    } else if (! ROLE_VALUES.includes(roleSelect.value)) {
+      reject(WRONG_ROLE);
+    } else {
+      resolve(roleSelect.value);
+    }
+  });
+}
+
 const newUserModalForm = document.querySelector(".modal-form");
 const emailError = document.querySelector(".email-error");
 const passwordError = document.querySelector(".password-error");
 const confirmPasswordError = document.querySelector(".confirm-password-error");
+const roleError = document.querySelector(".role-error");
 
 let validatedEmail = "";
 let validatedPassword = "";
 let matchedPassword = false;
-
+let validatedRole = "";
 /**
  *
  * @param {FormData} formData
@@ -165,17 +185,27 @@ newUserModalForm.addEventListener("submit", function (e) {
     })
     .finally(() => {});
   
+  const roleValidatorPromise = validateRole().
+    then((role) => {
+      validatedRole = role;
+    })
+    .catch((msg) => {
+      roleError.textContent = msg;
+    })
+    .finally(() => {});
+  
   function handleSignupData() {
     Promise.allSettled([
       emailValidatorPromise,
       passwordValidatorPromise,
       confirmPasswordValidatorPromise,
     ]).then(() => {
-      if (validatedEmail && validatedPassword && matchedPassword) {
+      if (validatedEmail && validatedPassword && matchedPassword && validatedRole) {
         const formData = new FormData();
         formData.append("signup", true);
         formData.append("email", validatedEmail);
         formData.append("password", validatedPassword);
+        formData.append("role", validatedRole)
         submitData(formData);
       }
     });

@@ -23,6 +23,7 @@ $router
   ->get("/admin/login", [\App\Controller\AdminController::class, "getAdminLoginView"])
   ->get("/admin", [\App\Controller\AdminController::class, "index"])
   ->get("/admin/users", [\App\Controller\AdminController::class, "getAdminUsersView"])
+  ->post("/admin/users/new", [\App\Controller\AdminController::class, "createUser"])
   ->post("/admin/login", [\App\Controller\AdminController::class, "login"]);
   
 $config = new Configuration($_ENV);
