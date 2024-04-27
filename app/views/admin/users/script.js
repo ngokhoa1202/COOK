@@ -302,6 +302,41 @@ confirmPasswordInput.addEventListener("focus", function(e) {
     .finally(() => {});
 });
 
+confirmPasswordInput.addEventListener("input", function(e) {
+  validateConfirmPassword()
+    .then((isMatched) => {
+      matchedPassword = isMatched;
+      confirmPasswordError.textContent = "";
+    })
+    .catch((msg) => {
+      confirmPasswordError.textContent = msg;
+    })
+    .finally(() => {});
+});
+
+confirmPasswordInput.addEventListener("focusout", function (e) {
+  validateConfirmPassword()
+    .then((isMatched) => {
+      matchedPassword = isMatched;
+      confirmPasswordError.textContent = "";
+    })
+    .catch((msg) => {
+      confirmPasswordError.textContent = msg;
+    })
+    .finally(() => {});
+});
+
+/*********************************************************
+ *FETCH SUMMARY FIGURE FROM SERVER************************ 
+ * *******************************************************/
+const summarFigureOfUsers = document.querySelector(".summary-figure--user");
+const summarFigureOfMembers = document.querySelector(".summary-figure--member");
+const summarFigureOfOnlineUsers = document.querySelector(".summary-figure--online");
+const summaryFigureOfOrdersPerUser = document.querySelector(".summary-figure--online");
+window.addEventListener("load", function(e) {
+  
+});
+
 
 
 

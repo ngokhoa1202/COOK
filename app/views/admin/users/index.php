@@ -67,28 +67,28 @@
           <div class="summary-card">
             <div class="summary-info">
               <p class="summary-title margin-bottom-very-small">Total users</p>
-              <p class="summary-figure">150000</p>
+              <p class="summary-figure summary-figure--user">150000</p>
             </div>
             <ion-icon name="people-outline" class="summary-icon"></ion-icon>
           </div>
           <div class="summary-card">
             <div class="summary-info">
               <p class="summary-title margin-bottom-very-small">Total members</p>
-              <p class="summary-figure">150000</p>
+              <p class="summary-figure summary-figure--member">150000</p>
             </div>
             <ion-icon name="accessibility-outline" class="summary-icon"></ion-icon>
           </div>
           <div class="summary-card">
             <div class="summary-info">
               <p class="summary-title margin-bottom-very-small">Total online</p>
-              <p class="summary-figure">150000</p>
+              <p class="summary-figure summary-figure--online">150000</p>
             </div>
             <ion-icon name="globe-outline" class="summary-icon"></ion-icon>
           </div>
           <div class="summary-card">
             <div class="summary-info">
               <p class="summary-title margin-bottom-very-small">Orders per user</p>
-              <p class="summary-figure">150000</p>
+              <p class="summary-figure" id="summary-figure--orders-per-user">150000</p>
             </div>
             <ion-icon name="receipt-outline" class="summary-icon"></ion-icon>
           </div>
