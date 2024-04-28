@@ -12,7 +12,7 @@
 <body>
   <header class="header">
     <nav class="header-brand">
-      <a href="#" class="btn header-btn">Follow us</a>
+      <a href="/login" class="btn header-btn">Follow us</a>
       <a href="#" class="brand-box">
         <img src="/assets/img/brand.svg" class="brand-img" alt="Our brand logo">
       </a>

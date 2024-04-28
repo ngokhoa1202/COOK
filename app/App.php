@@ -34,7 +34,7 @@ class App {
     try {
       echo $this->router->resolve($this->request["uri"], $this->request["method"]);
     } catch (RouteNotFoundException $ex) {
-      http_response_code(404);
+      header("HTTP/1.1 404 Not Found");
       echo View::make("error/404");
     }
   }
