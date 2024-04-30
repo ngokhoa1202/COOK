@@ -5,7 +5,7 @@ const newUserModal = document.querySelector(".new-user-modal");
 const overlay = document.querySelector(".overlay");
 
 const openNewUserModalBtn = document.querySelector(".btn--new-user");
-const closeNewUserModalBtn = document.querySelector(".btn--close-modal");
+const closeNewUserModalBtn = document.querySelector(".btn--close-create-modal");
 
 function openNewUserModal() {
   newUserModal.classList.remove("hidden");
@@ -50,53 +50,53 @@ const ROLE_VALUES = ["admin", "member"];
 const WRONG_ROLE = "Wrong role value";
 const NETWORK_ERROR_MSG = "Your network connection is not stable";
 
-const emailInput = document.querySelector("#email-input");
+const createEmailInput = document.querySelector("#create-email-input");
 /**
  *
  * @returns {Promise}
  */
 function validateEmail() {
   return new Promise((resolve, reject) => {
-    if (!emailInput.value) {
+    if (!createEmailInput.value) {
       reject(REQUIRED_EMAIL_MSG);
-    } else if (!emailInput.value.match(EMAIL_PATTERN)) {
+    } else if (!createEmailInput.value.match(EMAIL_PATTERN)) {
       reject(WRONG_EMAIL_PATTERN);
     } else {
-      resolve(emailInput.value);
+      resolve(createEmailInput.value);
     }
   });
 }
 
 
-const passwordInput = document.querySelector("#password-input");
+const createPasswordInput = document.querySelector("#create-password-input");
 /**
  *
  * @returns {Promise}
  */
 function validatePassword() {
   return new Promise((resolve, reject) => {
-    if (!passwordInput.value) {
+    if (!createPasswordInput.value) {
       reject(REQUIRED_PASSWORD_MSG);
-    } else if (passwordInput.value.length < MIN_PASSWORD_LENGTH) {
+    } else if (createPasswordInput.value.length < MIN_PASSWORD_LENGTH) {
       reject(TOO_SHORT_PASSWORD);
-    } else if (!passwordInput.value.match(PASSWORD_PATTERN)) {
+    } else if (!createPasswordInput.value.match(PASSWORD_PATTERN)) {
       reject(WRONG_PASSWORD_PATTERN);
     } else {
-      resolve(passwordInput.value);
+      resolve(createPasswordInput.value);
     }
   });
 }
 
-const confirmPasswordInput = document.querySelector("#confirm-password-input");
+const createConfirmPasswordInput = document.querySelector("#create-confirm-password-input");
 /**
  *
  * @returns {Promise}
  */
 function validateConfirmPassword() {
   return new Promise((resolve, reject) => {
-    if (!confirmPasswordInput.value) {
+    if (!createConfirmPasswordInput.value) {
       reject(REQUIRED_PASSWORD_MSG);
-    } else if (confirmPasswordInput.value !== passwordInput.value) {
+    } else if (createConfirmPasswordInput.value !== createPasswordInput.value) {
       reject(WRONG_CONFIRM_PASSWORD);
     } else {
       resolve(true);
@@ -104,19 +104,19 @@ function validateConfirmPassword() {
   });
 }
 
-const roleSelect = document.querySelector("#role-select");
+const createRoleSelect = document.querySelector("#create-role-select");
 /**
  *
  * @returns {Promise}
  */
 function validateRole() {
   return new Promise((resolve, reject) => {
-    if (! roleSelect.value) {
+    if (! createRoleSelect.value) {
       reject(REQUIRED_ROLE_MSG);
-    } else if (! ROLE_VALUES.includes(roleSelect.value)) {
+    } else if (! ROLE_VALUES.includes(createRoleSelect.value)) {
       reject(WRONG_ROLE);
     } else {
-      resolve(roleSelect.value);
+      resolve(createRoleSelect.value);
     }
   });
 }
@@ -219,7 +219,7 @@ newUserModalForm.addEventListener("submit", function (e) {
  *HANDLE INPUT GAINING FOUCS AND LOSING FOCUS EVENT******* 
  * *******************************************************/
 
-emailInput.addEventListener("focus", function (e) {
+createEmailInput.addEventListener("focus", function (e) {
   validateEmail()
     .then((email) => {
       validatedEmail = email;
@@ -231,7 +231,7 @@ emailInput.addEventListener("focus", function (e) {
     .finally(() => {});
 });
 
-emailInput.addEventListener("input", function(e) {
+createEmailInput.addEventListener("input", function(e) {
   validateEmail()
     .then((email) => {
       validatedEmail = email;
@@ -243,7 +243,7 @@ emailInput.addEventListener("input", function(e) {
     .finally(() => {});
 });
 
-emailInput.addEventListener("focusout", function(e) {
+createEmailInput.addEventListener("focusout", function(e) {
   validateEmail()
     .then((email) => {
       validatedEmail = email;
@@ -255,7 +255,7 @@ emailInput.addEventListener("focusout", function(e) {
     .finally(() => {});
 });
 
-passwordInput.addEventListener("focus", function(e) {
+createPasswordInput.addEventListener("focus", function(e) {
   validatePassword()
     .then((password) => {
       validatedPassword = password;
@@ -267,7 +267,7 @@ passwordInput.addEventListener("focus", function(e) {
     .finally(() => {});
 });
 
-passwordInput.addEventListener("input", function(e) {
+createPasswordInput.addEventListener("input", function(e) {
   validatePassword()
     .then((password) => {
       validatedPassword = password;
@@ -279,7 +279,7 @@ passwordInput.addEventListener("input", function(e) {
     .finally(() => {});
 });
 
-passwordInput.addEventListener("focusout", function(e) {
+createPasswordInput.addEventListener("focusout", function(e) {
   validatePassword()
     .then((password) => {
       validatedPassword = password;
@@ -291,7 +291,7 @@ passwordInput.addEventListener("focusout", function(e) {
     .finally(() => {});
 });
 
-confirmPasswordInput.addEventListener("focus", function(e) {
+createConfirmPasswordInput.addEventListener("focus", function(e) {
   validateConfirmPassword()
     .then((isMatched) => {
       matchedPassword = isMatched;
@@ -303,7 +303,7 @@ confirmPasswordInput.addEventListener("focus", function(e) {
     .finally(() => {});
 });
 
-confirmPasswordInput.addEventListener("input", function(e) {
+createConfirmPasswordInput.addEventListener("input", function(e) {
   validateConfirmPassword()
     .then((isMatched) => {
       matchedPassword = isMatched;
@@ -315,7 +315,7 @@ confirmPasswordInput.addEventListener("input", function(e) {
     .finally(() => {});
 });
 
-confirmPasswordInput.addEventListener("focusout", function (e) {
+createConfirmPasswordInput.addEventListener("focusout", function (e) {
   validateConfirmPassword()
     .then((isMatched) => {
       matchedPassword = isMatched;
@@ -411,6 +411,8 @@ function removeOldUserTableData() {
   }
 }
 
+const tableBody = document.querySelector(".tbody");
+let users = null;
 async function getUserForPage(pageIndex) {
   await fetch(
     GET_USER_URL + "?" + new URLSearchParams({
@@ -425,8 +427,9 @@ async function getUserForPage(pageIndex) {
         throw new Error(NETWORK_ERROR_MSG);
       }
       return response.json();
-    }).then((users) => {
-      removeOldUserTableData();   
+    }).then((data) => {
+      users = data;
+      removeOldUserTableData();  
       users.forEach((user) => {
         const tableRow = document.createElement("tr");
 
@@ -451,14 +454,14 @@ async function getUserForPage(pageIndex) {
         tableRow.appendChild(tableDataForStatus);
 
         const tableDataForAction = document.createElement("td");
-        const actionForm = document.createElement("form");
+        const actionForm = document.createElement("div");
         actionForm.classList.add("action-form");
         const editButton = document.createElement("button");
         editButton.type = "submit";
         editButton.className = "btn--edit table-btn";
         const editIcon = document.createElement("ion-icon");
         editIcon.name = "pencil-outline";
-        editIcon.className = "table-icon";
+        editIcon.className = "table-icon edit-icon";
         editButton.appendChild(editIcon);
         actionForm.appendChild(editButton);
         const deleteButton = document.createElement("button");
@@ -466,13 +469,12 @@ async function getUserForPage(pageIndex) {
         deleteButton.className = "btn--delete table-btn";
         const deleteIcon = document.createElement("ion-icon");
         deleteIcon.name = "trash-outline";
-        deleteIcon.className = "table-icon";
+        deleteIcon.className = "table-icon trash-icon";
+        deleteIcon.id = "delete-icon";
         deleteButton.appendChild(deleteIcon);
         actionForm.appendChild(deleteButton);
         tableDataForAction.appendChild(actionForm);
         tableRow.appendChild(tableDataForAction);
-
-        const tableBody = document.querySelector(".tbody");
         tableBody.appendChild(tableRow);
       })
     }).catch((error) => {
@@ -482,6 +484,9 @@ async function getUserForPage(pageIndex) {
 const USER_LIST_INTERVAL = 10000;
 getUserForPage(userPageIndex);
 
+/*********************************************************
+ *EDIT/DELETE USER INFO************************ 
+ * *******************************************************/
 
 /*********************************************************
  *PAGINATION************************ 
@@ -562,7 +567,9 @@ window.addEventListener("load", (e) => {
       ev.preventDefault();
       let pageIndex = Number.parseInt(item.textContent);
       getUserForPage(pageIndex);
-    });
+    })
+  });
+
   const allPaginationSpecialLinks = document.querySelectorAll(".pagination-link--special");
   allPaginationSpecialLinks.forEach((item) => {
     let pageStartIndex = Number.parseInt(
@@ -580,12 +587,57 @@ window.addEventListener("load", (e) => {
     item.addEventListener("click", function (ev) {
       ev.preventDefault();
       renderPageIndexForPagination(pageStartIndex);
-    })
-  });
+    });
   });
 });
 
+/**
+ * 
+ * @param {Array<MutationRecord>} mutationRecords 
+ * @param {MutationObserver} observer 
+ */
+function handleUserTableBodyMutation(mutationRecords, observer) {
+  const editUserModal = document.querySelector(".edit-user-modal");
+  const allEditButtons = document.querySelectorAll(".btn--edit");
+  const editEmailInput = document.querySelector("#edit-email-input");
+  const editAvatarInput = document.querySelector("#edit-avatar-input");
+  const editRoleSelect = document.querySelector("#edit-role-select");
 
 
+  const editStatusSelect = document.querySelector("#edit-status-select");
+  allEditButtons.forEach((btn, index) => {
+    btn.addEventListener("click", function (ev) {
+      ev.preventDefault();
+      editUserModal.classList.remove("hidden");
+      overlay.classList.remove("hidden");
+      console.log(index, users[index]);
+      editEmailInput.value = users[index].email;
+      // editAvatarInput.v = users[index].avatar;
+      editRoleSelect.value = users[index].role;
+      editStatusSelect.value = users[index].status;
+    })
+  });
+
+  const closeEditUserModalButton = document.querySelector(".btn--close-edit-modal");
+  closeEditUserModalButton.addEventListener("click", function (ev) {
+    editUserModal.classList.add("hidden");
+    overlay.classList.add("hidden");
+  });
+  
+  document.addEventListener("keydown", (ev) => {
+    if (ev.key === "Escape" && ! editUserModal.classList.contains("hidden")) {
+      editUserModal.classList.remove("hidden");
+      overlay.classList.remove("hidden");
+    }
+  });
+}
+
+const tableBodyObserver = new MutationObserver(handleUserTableBodyMutation);
+tableBodyObserver.observe(tableBody, {
+  attributes: false,
+  childList: true,
+  subtree: false
+});
+// tableBodyObserver.disconnect();
 
 

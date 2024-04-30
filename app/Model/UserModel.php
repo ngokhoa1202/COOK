@@ -347,6 +347,27 @@ class UserModel extends Model {
     $numberOfUsers = static::countNumberOfUsers();
     return ($numberOfUsers % $length === 0) ? ($numberOfUsers / $length) : ($numberOfUsers / $length + 1);
   }
+
+  public static function getUserByUserId(int $userId): array | null {
+    $user = null;
+    try {
+      App::getDatabaseConnection()->beginTransaction();
+      $query = "SELECT * FROM users WHERE users.user_id = :userId";
+      $stmt = App::getDatabaseConnection()->prepare($query);
+      $stmt->bindValue(":userId", $userId);
+      if (! $stmt->execute()) {
+        throw new BadQueryException();
+      }
+      $user = $stmt->fetch(PDO::FETCH_ASSOC);
+      App::getDatabaseConnection()->commit();
+    } catch (PDOException | BadQueryException $ex) {
+      if (App::getDatabaseConnection()->inTransaction()) {
+        App::getDatabaseConnection()->rollBack();
+      }
+    }
+
+    return $user;
+  }
 }
 
 
