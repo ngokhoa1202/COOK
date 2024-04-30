@@ -138,15 +138,15 @@
         </table>
 
         <div class="pagination">
-          <a href="#" class="pagination-link pagination-link--special"><<</a>
-          <a href="#" class="pagination-link pagination-link--special"><</a>
-          <!-- <a href="#" class="pagination-link pagination-link--item">1</a>
+          <a href="#" class="pagination-link pagination-link--special" id="start-link"><<</a>
+          <a href="#" class="pagination-link pagination-link--special" id="previous-link"><</a>
+          <a href="#" class="pagination-link pagination-link--item">1</a>
           <a href="#" class="pagination-link pagination-link--item">2</a>
           <a href="#" class="pagination-link pagination-link--item">3</a>
           <a href="#" class="pagination-link pagination-link--item">4</a>
-          <a href="#" class="pagination-link pagination-link--item">5</a> -->
+          <a href="#" class="pagination-link pagination-link--item">5</a>
           <a href="#" class="pagination-link pagination-link--special" id="next-link">></a>
-          <a href="#" class="pagination-link pagination-link--special">>></a>
+          <a href="#" class="pagination-link pagination-link--special" id="end-link">>></a>
         </div>
       </section>
     </main>

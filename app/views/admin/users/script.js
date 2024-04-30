@@ -487,31 +487,38 @@ getUserForPage(userPageIndex);
  *PAGINATION************************ 
  * *******************************************************/
 const pagination = document.querySelector(".pagination");
-const PAGINATION_LENGTH = 20;
+const USER_LIST_LENGTH = 20;
 
-function checkPaginationOverflowed() {
-  const allPaginationItems = document.querySelectorAll(".pagination-link--item");
-  return allPaginationItems.length >= numberOfUserPages;
-}
 
-function renderPageIndexForPagination(startIndex = 1) {
-  if (checkPaginationOverflowed()) {
+const MAX_PAGINATION_LENGTH = 5;
+/**
+ * 
+ * @param {Number} offset 
+ * @returns {void}
+ */
+function renderPageIndexForPagination(offset = 1) {
+  if (numberOfUserPages === 0) {
     return;
   }
-  const documentFragment = new DocumentFragment();
-  for (let i = 0; i < numberOfUserPages; ++i) {
-    let paginationItem = document.createElement("a");
-    paginationItem.className = "pagination-link pagination-link--item";
-    paginationItem.href = "#";
-    paginationItem.textContent = startIndex + i;
-    documentFragment.appendChild(paginationItem);
+  if (offset < 1) {
+    offset = 1;
   }
-  const nextLink = document.querySelector("#next-link");
-  pagination.insertBefore(documentFragment, nextLink);
-}
-
-function getStartIndexOfCurrentPagination() {
-  return Number.parseInt(document.querySelector(".pagination-link--item").textContent);
+  const allPaginationItems = document.querySelectorAll(".pagination-link--item");
+  if (allPaginationItems.length > numberOfUserPages && numberOfUserPages > 0) {
+    for (let i = numberOfUserPages + 1; i <= allPaginationItems.length; ++i) {
+      allPaginationItems[i].classList.add("hidden");
+    }
+    return;
+  }
+  
+  let paginationLength = Math.min(MAX_PAGINATION_LENGTH, numberOfUserPages - offset + 1);
+  for (let i = 0; i < paginationLength; ++i) {
+    allPaginationItems[i].classList.remove("hidden");
+    allPaginationItems[i].textContent = offset + i;
+  }
+  for (let i = numberOfUserPages + 1; i < offset + MAX_PAGINATION_LENGTH; ++i) {
+    allPaginationItems[i - offset].classList.add("hidden");
+  }
 }
 
 const NUMBER_OF_USER_PAGES_URL = "/admin/users/pages/total";
@@ -522,7 +529,7 @@ async function getNumberOfUserPages() {
     NUMBER_OF_USER_PAGES_URL +
       "?" +
       new URLSearchParams({
-        length: PAGINATION_LENGTH,
+        length: USER_LIST_LENGTH,
       }),
     {
       method: "GET",
@@ -542,7 +549,7 @@ async function getNumberOfUserPages() {
     })
 }
 
-window.addEventListener("DOMContentLoaded", function (e){
+window.addEventListener("DOMContentLoaded", function (e) {
   getNumberOfUserPages().then(() => {
     renderPageIndexForPagination();
   });
@@ -556,6 +563,25 @@ window.addEventListener("load", (e) => {
       let pageIndex = Number.parseInt(item.textContent);
       getUserForPage(pageIndex);
     });
+  const allPaginationSpecialLinks = document.querySelectorAll(".pagination-link--special");
+  allPaginationSpecialLinks.forEach((item) => {
+    let pageStartIndex = Number.parseInt(
+      document.querySelector(".pagination-link--item").textContent
+    );
+    if (item.id === "next-link") {
+      pageStartIndex += MAX_PAGINATION_LENGTH;
+    } else if (item.id === "previous-link") {
+      pageStartIndex -= MAX_PAGINATION_LENGTH;
+    } else if (item.id === "start-link") {
+      pageStartIndex = 1;
+    } else {
+      pageStartIndex = (numberOfUserPages - 1) * MAX_PAGINATION_LENGTH;
+    }
+    item.addEventListener("click", function (ev) {
+      ev.preventDefault();
+      renderPageIndexForPagination(pageStartIndex);
+    })
+  });
   });
 });
 
