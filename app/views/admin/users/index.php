@@ -138,15 +138,23 @@
         </table>
 
         <div class="pagination">
-          <a href="#" class="pagination-link pagination-link--special" id="start-link"><<</a>
-          <a href="#" class="pagination-link pagination-link--special" id="previous-link"><</a>
+          <a href="#" class="pagination-link pagination-link--special" id="start-link">
+            << 
+          </a>
+          <a href="#" class="pagination-link pagination-link--special" id="previous-link">
+            < 
+          </a>
           <a href="#" class="pagination-link pagination-link--item">1</a>
           <a href="#" class="pagination-link pagination-link--item">2</a>
           <a href="#" class="pagination-link pagination-link--item">3</a>
           <a href="#" class="pagination-link pagination-link--item">4</a>
           <a href="#" class="pagination-link pagination-link--item">5</a>
-          <a href="#" class="pagination-link pagination-link--special" id="next-link">></a>
-          <a href="#" class="pagination-link pagination-link--special" id="end-link">>></a>
+          <a href="#" class="pagination-link pagination-link--special" id="next-link">
+            >
+          </a>
+          <a href="#" class="pagination-link pagination-link--special" id="end-link">
+            >>
+          </a>
         </div>
       </section>
     </main>
@@ -187,33 +195,30 @@
     </div>
   </footer>
 
-  <div class="new-user-modal hidden">
-    <button class="btn--close-modal">&times;</button>
-    <h2 class="heading-secondary margin-bottom-small">Create a new user</h2>
-    <form class="modal-form" novalidate>
+  <div class="modal new-user-modal hidden">
+    <button class="btn--close-modal btn--close-create-modal">&times;</button>
+    <h2 class="heading-secondary margin-bottom-small">Create user</h2>
+    <form class="modal-form create-form" novalidate>
       <label class="label" for="email-input">Email</label>
       <div class="input-info">
-        <input type="email" placeholder="Email" class="input" name="email" id="email-input">
-        <p class="error email-error"></p>
+        <input type="email" placeholder="Email" class="input" name="email" id="create-email-input">
       </div>
       <label class="label" for="password-input">Password</label>
       <div class="input-info">
-        <input type="password" placeholder="********" class="input" name="password" id="password-input">
-        <p class="error password-error"></p>
+        <input type="password" placeholder="********" class="input" name="password" id="create-password-input" readonly>
       </div>
       <label class="label" for="confirm-password-input">Confirm password</label>
       <div class="input-info">
-        <input type="password" placeholder="********" class="input" name="confirm-password" id="confirm-password-input">
-        <p class="error confirm-password-error"></p>
+        <input type="password" placeholder="********" class="input" name="confirm-password" id="create-confirm-password-input">
       </div>
       <label class="label" for="avatar-input">Avatar</label>
       <div class="input-info">
-        <input type="file" name="avatar" class="input avatar-input" name="avatar" id="avatar-input">
+        <input type="file" name="avatar" class="input avatar-input" name="avatar" id="create-avatar-input">
       </div>
 
       <label class="label" class="role-select">Role</label>
       <div class="input-info">
-        <select class="select select--role" id="role-select">
+        <select class="select select--role" id="create-role-select">
           <option class="option" value="">Choose a role&hellip;</option>
           <option class="option" value="member">member</option>
           <option class="option" value="admin">admin</option>
@@ -221,6 +226,53 @@
         <p class="error role-error"></p>
       </div>
       <button type="submit" class="btn btn--submit margin-top-small">Create new user</button>
+    </form>
+  </div>
+
+  <div class="modal edit-user-modal hidden">
+    <button class="btn--close-modal btn--close-edit-modal">&times;</button>
+    <h2 class="heading-secondary margin-bottom-small">Edit user</h2>
+    <form class="modal-form edit-form" novalidate>
+      <label class="label" for="email-input">Email</label>
+      <div class="input-info">
+        <input type="email" placeholder="Email" class="input" name="email" id="edit-email-input">
+        <p class="error email-error"></p>
+      </div>
+      <label class="label" for="password-input">Password</label>
+      <div class="input-info">
+        <input type="password" placeholder="********" class="input" name="password" id="edit-password-input">
+        <p class="error password-error"></p>
+      </div>
+      <label class="label" for="confirm-password-input">Confirm password</label>
+      <div class="input-info">
+        <input type="password" placeholder="********" class="input" name="confirm-password" id="edit-confirm-password-input">
+        <p class="error confirm-password-error"></p>
+      </div>
+      <label class="label" for="avatar-input">Avatar</label>
+      <div class="input-info">
+        <input type="file" name="avatar" class="input avatar-input" name="avatar" id="edit-avatar-input">
+      </div>
+
+      <label class="label" class="role-select">Role</label>
+      <div class="input-info">
+        <select class="select select--role" id="edit-role-select">
+          <option class="option" value="">Choose a role&hellip;</option>
+          <option class="option" value="member">member</option>
+          <option class="option" value="admin">admin</option>
+        </select>
+        <p class="error role-error"></p>
+      </div>
+
+      <label class="label" class="role-select">Status</label>
+      <div class="input-info">
+        <select class="select select--status" id="edit-status-select">
+          <option class="option" value="">Choose a status&hellip;</option>
+          <option class="option" value="active">active</option>
+          <option class="option" value="inactive">inactive</option>
+        </select>
+        <p class="error status-error"></p>
+      </div>
+      <button type="submit" class="btn btn--submit margin-top-small">Update user</button>
     </form>
   </div>
 

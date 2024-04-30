@@ -434,7 +434,7 @@ button:active {
 ***************************************
 */
 
-.new-user-modal {
+.modal {
   position: fixed;
   color: #122a2b;
   top: 50%;
@@ -448,12 +448,12 @@ button:active {
   padding: 2.4rem 3.6rem;
 }
 
-.new-user-modal .input::placeholder {
+.modal.input::placeholder {
   color: #ccc;
   letter-spacing: normal;
 }
 
-.new-user-modal *:focus {
+.nmodal *:focus {
   outline: none;
   box-shadow: 0 0 1.2rem rgba(35, 43, 46, 0.25);
 }

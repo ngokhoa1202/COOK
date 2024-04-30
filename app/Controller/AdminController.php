@@ -157,6 +157,19 @@ class AdminController {
     }
     return UserModel::countNumberOfUserPages($length);  
   }
+
+  public function getUserByUserId(): string {
+    $userId = filter_input(INPUT_GET, "user_id", FILTER_VALIDATE_INT);
+    try {
+      if ($userId === false) {
+        throw new BadQueryException();
+      }
+    } catch (BadQueryException $ex) {
+      header("HTTP/1.1 Bad Request");
+      echo View::make("error/400");
+    }
+    return json_encode(UserModel::getUserByUserId($userId));
+  }
 }
 
 ?>
