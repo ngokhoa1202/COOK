@@ -114,7 +114,7 @@
       </section>
 
       <section class="section-dashboard">
-        <table class="products-table">
+        <table class="products-table margin-bottom-medium">
           <thead>
             <tr>
               <th class="table-header-id">Id</th>
@@ -125,199 +125,33 @@
               <th class="table-header-action">Action</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
+          <tbody class="tbody">
+            <!-- <tr>
               <td>1</td>
               <td>example@abc.com</td>
-              <td>An img</td>
-              <td>member</td>
-              <td>online</td>
-              <td>
-                <form class="action-form">
-                  <button type="submit" class="btn--edit table-btn">
-                    <ion-icon name="pencil-outline" class="table-icon"></ion-icon>
-                  </button>
-                  <button type="submit" class="btn--delete table-btn">
-                    <ion-icon name="trash-outline" class="table-icon"></ion-icon>
-                  </button>
-                </form>
-              </td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>example@abc.com</td>
-              <td>An img</td>
-              <td>member</td>
-              <td>online</td>
-              <td>
-                <form class="action-form">
-                  <button type="submit" class="btn--edit table-btn">
-                    <ion-icon name="pencil-outline" class="table-icon"></ion-icon>
-                  </button>
-                  <button type="submit" class="btn--delete table-btn">
-                    <ion-icon name="trash-outline" class="table-icon"></ion-icon>
-                  </button>
-                </form>
-              </td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>example@abc.com</td>
-              <td>An img</td>
-              <td>member</td>
-              <td>online</td>
-              <td>
-                <form class="action-form">
-                  <button type="submit" class="btn--edit table-btn">
-                    <ion-icon name="pencil-outline" class="table-icon"></ion-icon>
-                  </button>
-                  <button type="submit" class="btn--delete table-btn">
-                    <ion-icon name="trash-outline" class="table-icon"></ion-icon>
-                  </button>
-                </form>
-              </td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>example@abc.com</td>
-              <td>An img</td>
-              <td>member</td>
-              <td>online</td>
-              <td>
-                <form class="action-form">
-                  <button type="submit" class="btn--edit table-btn">
-                    <ion-icon name="pencil-outline" class="table-icon"></ion-icon>
-                  </button>
-                  <button type="submit" class="btn--delete table-btn">
-                    <ion-icon name="trash-outline" class="table-icon"></ion-icon>
-                  </button>
-                </form>
-              </td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>example@abc.com</td>
-              <td>An img</td>
-              <td>member</td>
-              <td>online</td>
-              <td>
-                <form class="action-form">
-                  <button type="submit" class="btn-edit table-btn">
-                    <ion-icon name="pencil-outline" class="table-icon"></ion-icon>
-                  </button>
-                  <button type="submit" class="btn-delete table-btn">
-                    <ion-icon name="trash-outline" class="table-icon"></ion-icon>
-                  </button>
-                </form>
-              </td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>example@abc.com</td>
-              <td>An img</td>
-              <td>member</td>
-              <td>online</td>
-              <td>
-                <form class="action-form">
-                  <button type="submit" class="btn--edit table-btn">
-                    <ion-icon name="pencil-outline" class="table-icon"></ion-icon>
-                  </button>
-                  <button type="submit" class="btn--delete table-btn">
-                    <ion-icon name="trash-outline" class="table-icon"></ion-icon>
-                  </button>
-                </form>
-              </td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>example@abc.com</td>
-              <td>An img</td>
-              <td>member</td>
-              <td>online</td>
-              <td>
-                <form class="action-form">
-                  <button type="submit" class="btn--edit table-btn">
-                    <ion-icon name="pencil-outline" class="table-icon"></ion-icon>
-                  </button>
-                  <button type="submit" class="btn--delete table-btn">
-                    <ion-icon name="trash-outline" class="table-icon"></ion-icon>
-                  </button>
-                </form>
-              </td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>example@abc.com</td>
-              <td>An img</td>
-              <td>member</td>
-              <td>online</td>
-              <td>
-                <form class="action-form">
-                  <button type="submit" class="btn--edit table-btn">
-                    <ion-icon name="pencil-outline" class="table-icon"></ion-icon>
-                  </button>
-                  <button type="submit" class="btn--delete table-btn">
-                    <ion-icon name="trash-outline" class="table-icon"></ion-icon>
-                  </button>
-                </form>
-              </td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>example@abc.com</td>
-              <td>An img</td>
-              <td>member</td>
-              <td>online</td>
-              <td>
-                <form class="action-form">
-                  <button type="submit" class="btn-edit table-btn">
-                    <ion-icon name="pencil-outline" class="table-icon"></ion-icon>
-                  </button>
-                  <button type="submit" class="btn-delete table-btn">
-                    <ion-icon name="trash-outline" class="table-icon"></ion-icon>
-                  </button>
-                </form>
-              </td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>example@abc.com</td>
-              <td>An img</td>
-              <td>member</td>
-              <td>online</td>
-              <td>
-                <form class="action-form">
-                  <button type="submit" class="btn--edit table-btn">
-                    <ion-icon name="pencil-outline" class="table-icon"></ion-icon>
-                  </button>
-                  <button type="submit" class="btn--delete table-btn">
-                    <ion-icon name="trash-outline" class="table-icon"></ion-icon>
-                  </button>
-                </form>
-              </td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>example@abc.com</td>
-              <td>An img</td>
-              <td>member</td>
-              <td>online</td>
-              <td>
-                <form class="action-form">
-                  <button type="submit" class="btn--edit table-btn">
-                    <ion-icon name="pencil-outline" class="table-icon"></ion-icon>
-                  </button>
-                  <button type="submit" class="btn--delete table-btn">
-                    <ion-icon name="trash-outline" class="table-icon"></ion-icon>
-                  </button>
-                </form>
-              </td>
-            </tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr> -->
           </tbody>
         </table>
+
+        <div class="pagination">
+          <a href="#" class="pagination-link pagination-link--special"><<</a>
+          <a href="#" class="pagination-link pagination-link--special"><</a>
+          <!-- <a href="#" class="pagination-link pagination-link--item">1</a>
+          <a href="#" class="pagination-link pagination-link--item">2</a>
+          <a href="#" class="pagination-link pagination-link--item">3</a>
+          <a href="#" class="pagination-link pagination-link--item">4</a>
+          <a href="#" class="pagination-link pagination-link--item">5</a> -->
+          <a href="#" class="pagination-link pagination-link--special" id="next-link">></a>
+          <a href="#" class="pagination-link pagination-link--special">>></a>
+        </div>
       </section>
     </main>
   </div>
+
 
   <footer class="footer">
     <div class="footer-container">

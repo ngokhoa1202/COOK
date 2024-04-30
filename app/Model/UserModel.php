@@ -262,6 +262,91 @@ class UserModel extends Model {
     }
     return $roles;
   }
+
+  public static function getAllUsersInRange(int $offset, int $limit): array {
+    $users = [];
+    try {
+      App::getDatabaseConnection()->beginTransaction();
+      $query = "SELECT * FROM users LIMIT :limit OFFSET :offset;";
+      $stmt = App::getDatabaseConnection()->prepare($query);
+      $stmt->bindValue(":offset", $offset);
+      $stmt->bindValue(":limit", $limit);
+      if (! $stmt->execute()) {
+        throw new BadQueryException();
+      }
+      
+      $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+      App::getDatabaseConnection()->commit();
+    } catch (PDOException | BadQueryException) {
+      if (App::getDatabaseConnection()->inTransaction()) {
+        App::getDatabaseConnection()->rollBack();
+      }
+    }
+    return $users;
+  }
+
+  public static function countNumberOfUsers(): int {
+    $counter = 0;
+    try {
+      App::getDatabaseConnection()->beginTransaction();
+      $query = "SELECT COUNT(*) FROM users";
+      $stmt = App::getDatabaseConnection()->prepare($query);
+      if (! $stmt->execute()) {
+        throw new BadQueryException();
+      }
+      $counter = $stmt->fetchColumn(0);
+      App::getDatabaseConnection()->commit();
+    } catch (PDOException | BadQueryException $ex) {
+      if (App::getDatabaseConnection()->inTransaction()) {
+        App::getDatabaseConnection()->rollBack();
+      }
+    }
+    return $counter;
+  }
+
+  public static function countNumberOfMembers(): int {
+    $counter = 0;
+    try {
+      App::getDatabaseConnection()->beginTransaction();
+      $query = 'SELECT COUNT(user_id) FROM users WHERE users.role = "member"';
+      $stmt = App::getDatabaseConnection()->prepare($query);
+      if (!$stmt->execute()) {
+        throw new BadQueryException();
+      }
+      $counter = $stmt->fetchColumn(0);
+      App::getDatabaseConnection()->commit();
+    } catch (PDOException | BadQueryException $ex) {
+      if (App::getDatabaseConnection()->inTransaction()) {
+        App::getDatabaseConnection()->rollBack();
+      }
+    }
+    return $counter;
+  }
+
+  public static function countNumberOfActiveUsers(): int {
+    $counter = 0;
+    try {
+      App::getDatabaseConnection()->beginTransaction();
+      $query = 'SELECT COUNT(user_id) FROM users WHERE users.status = "active"';
+      $stmt = App::getDatabaseConnection()->prepare($query);
+      if (!$stmt->execute()) {
+        throw new BadQueryException();
+      }
+      $counter = $stmt->fetchColumn(0);
+      App::getDatabaseConnection()->commit();
+    } catch (PDOException | BadQueryException $ex) {
+      if (App::getDatabaseConnection()->inTransaction()) {
+        App::getDatabaseConnection()->rollBack();
+      }
+    }
+    return $counter;
+  }
+
+  public static function countNumberOfUserPages(int $length): int {
+    $numberOfUsers = static::countNumberOfUsers();
+    return ($numberOfUsers % $length === 0) ? ($numberOfUsers / $length) : ($numberOfUsers / $length + 1);
+  }
 }
 
 

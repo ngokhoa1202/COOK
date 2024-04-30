@@ -117,6 +117,46 @@ class AdminController {
     $userModel->create();
     return json_encode(static::CREATE_USER_SUCCESS_MSG);
   }
+
+  public function getUserForOnePage(): string {
+    $pageIndex = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+    $length = filter_input(INPUT_GET, "length", FILTER_VALIDATE_INT);
+    try {
+      if ($pageIndex === false || $length === false) {
+        throw new BadQueryException();
+      }
+    } catch (BadRequestException $ex) {
+      header("HTTP/1.1 400 Bad Request");
+      echo View::make("error/400");
+    }
+    $offset = ($pageIndex - 1) * $length;
+    return json_encode(UserModel::getAllUsersInRange($offset, $length));
+  }
+
+  public function getNumberOfUsers(): int {
+    return UserModel::countNumberOfUsers();
+  }
+
+  public function getNumberOfMembers(): int {
+    return UserModel::countNumberOfMembers();
+  }
+
+  public function getNumberOfActiveUsers(): int {
+    return UserModel::countNumberOfActiveUsers();
+  }
+
+  public function getNumberOfUserPages(): int {
+    $length = filter_input(INPUT_GET, "length", FILTER_VALIDATE_INT);
+    try {
+      if ($length === false) {
+        throw new BadQueryException();
+      }
+    } catch (BadQueryException $ex) {
+      header("HTTP/1.1 Bad Request");
+      echo View::make("error/400");
+    }
+    return UserModel::countNumberOfUserPages($length);  
+  }
 }
 
 ?>

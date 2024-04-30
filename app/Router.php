@@ -28,6 +28,8 @@ class Router {
     return $this->register("delete", $route, $action);
   }
 
+  
+
   public function resolve(string $requestUri, string $requestMethod): string {
     $route = explode("?", $requestUri)[0];
     if (!array_key_exists($route, $this->routes[$requestMethod])) {

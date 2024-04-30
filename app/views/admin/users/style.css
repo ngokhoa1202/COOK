@@ -530,6 +530,48 @@ button:active {
 }
 
 /**************************************
+******PAGINATION***********************
+***************************************
+*/
+
+.pagination {
+  display: flex;
+  flex-direction: row;
+  gap: 2.4rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1rem;
+  
+}
+
+.pagination-link:link,
+.pagination-link:visited {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 4.8rem;
+  height: 4.8rem;
+  font-size: 1.8rem;
+  padding: 1.2rem;
+  text-decoration: none;
+  color: #183233;
+  transition: all 0.5s ease;
+  border-radius: 50%;
+  border: 1px solid #b2c7d0;
+}
+
+.pagination-link:hover,
+.pagination-link:active {
+  background-color: #3f728a;
+  color: #efefef;
+}
+
+.pagination-link--special:link,
+.pagination-link--special:visited {
+  font-size: 2.4rem;
+}
+
+/**************************************
 ******FOOTER***************************
 ***************************************
 */

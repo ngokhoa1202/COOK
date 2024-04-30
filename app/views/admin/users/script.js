@@ -30,7 +30,7 @@ document.addEventListener("keydown", (e) => {
  * VALIDATE AND SEND USER DATA**************************** 
  * *******************************************************/
 
-const SERVER_URL = "/admin/users/new";
+const CREATE_USER_URL = "/admin/users/new";
 const MIN_PASSWORD_LENGTH = 8;
 const EMAIL_PATTERN =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -48,6 +48,7 @@ const WRONG_CONFIRM_PASSWORD = "Wrong connfirmed password";
 const REQUIRED_ROLE_MSG = "Role is required";
 const ROLE_VALUES = ["admin", "member"];
 const WRONG_ROLE = "Wrong role value";
+const NETWORK_ERROR_MSG = "Your network connection is not stable";
 
 const emailInput = document.querySelector("#email-input");
 /**
@@ -135,7 +136,7 @@ let validatedRole = "";
  * @param {FormData} formData
  */
 function submitData(formData) {
-  fetch(SERVER_URL, {
+  fetch(CREATE_USER_URL, {
     method: "POST",
     body: formData,
   })
@@ -329,13 +330,235 @@ confirmPasswordInput.addEventListener("focusout", function (e) {
 /*********************************************************
  *FETCH SUMMARY FIGURE FROM SERVER************************ 
  * *******************************************************/
+const SUMMARY_FIGURE_INTERVAL = 5000;
 const summarFigureOfUsers = document.querySelector(".summary-figure--user");
 const summarFigureOfMembers = document.querySelector(".summary-figure--member");
-const summarFigureOfOnlineUsers = document.querySelector(".summary-figure--online");
+const summarFigureOfActiveUsers = document.querySelector(".summary-figure--online");
 const summaryFigureOfOrdersPerUser = document.querySelector(".summary-figure--online");
-window.addEventListener("load", function(e) {
-  
+const GET_USER_FIGURE_URL = "/admin/users/total";
+const GET_MEMBER_FIGURE_URL = "/admin/users/members/total";
+const GET_ACTIVE_FIGURE_URL = "/admin/users/active/total";
+
+async function getUserSummaryFigure() {
+  await fetch(GET_USER_FIGURE_URL, {
+    method: "GET"
+  }).then((response) => {
+    if (! response.ok) {
+      throw new Error(NETWORK_ERROR_MSG);
+    }
+    return response.json();
+  }).then((data) => {
+    summarFigureOfUsers.textContent = data;
+  }).catch((error) => {
+    alert(error.message);
+  })
+}
+getUserSummaryFigure();
+setInterval(getUserSummaryFigure, SUMMARY_FIGURE_INTERVAL);
+
+async function getMemberSummaryFigure() {
+  await fetch(GET_MEMBER_FIGURE_URL, {
+    method: "GET",
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(NETWORK_ERROR_MSG);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      summarFigureOfMembers.textContent = data;
+    })
+    .catch((error) => {
+      alert(error.message);
+    });
+}
+getMemberSummaryFigure();
+setInterval(getMemberSummaryFigure, SUMMARY_FIGURE_INTERVAL);
+
+async function getActiveUserSummaryFigure() {
+  await fetch(GET_ACTIVE_FIGURE_URL, {
+    method: "GET",
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(NETWORK_ERROR_MSG);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      summarFigureOfActiveUsers.textContent = data;
+    })
+    .catch((error) => {
+      alert(error.message);
+    });
+}
+getActiveUserSummaryFigure();
+setInterval(getActiveUserSummaryFigure, SUMMARY_FIGURE_INTERVAL);
+
+
+/*********************************************************
+ *FETCH SUMMARY FIGURE FROM SERVER************************ 
+ * *******************************************************/
+const GET_USER_URL = "/admin/users/list";
+const USER_LENGTH = 20;
+let userPageIndex = 1;
+
+function removeOldUserTableData() {
+  let tableRow = null;
+  while (tableRow = document.querySelector(".tbody tr")) {
+    tableRow.remove();
+  }
+}
+
+async function getUserForPage(pageIndex) {
+  await fetch(
+    GET_USER_URL + "?" + new URLSearchParams({
+      page: pageIndex,
+      length: USER_LENGTH
+    }), 
+    {
+      method: "GET"
+    })
+    .then((response) => {
+      if (! response.ok) {
+        throw new Error(NETWORK_ERROR_MSG);
+      }
+      return response.json();
+    }).then((users) => {
+      removeOldUserTableData();   
+      users.forEach((user) => {
+        const tableRow = document.createElement("tr");
+
+        const tableDataForId = document.createElement("td");
+        tableDataForId.textContent = user.user_id;
+        tableRow.appendChild(tableDataForId);
+
+        const tableDataForEmail = document.createElement("td");
+        tableDataForEmail.textContent = user.email;
+        tableRow.appendChild(tableDataForEmail);
+
+        const tableDataForAvatar = document.createElement("td");
+        tableDataForAvatar.textContent = user.avatar;
+        tableRow.appendChild(tableDataForAvatar);
+
+        const tableDataForRole = document.createElement("td");
+        tableDataForRole.textContent = user.role;
+        tableRow.appendChild(tableDataForRole);
+
+        const tableDataForStatus = document.createElement("td");
+        tableDataForStatus.textContent = user.status;
+        tableRow.appendChild(tableDataForStatus);
+
+        const tableDataForAction = document.createElement("td");
+        const actionForm = document.createElement("form");
+        actionForm.classList.add("action-form");
+        const editButton = document.createElement("button");
+        editButton.type = "submit";
+        editButton.className = "btn--edit table-btn";
+        const editIcon = document.createElement("ion-icon");
+        editIcon.name = "pencil-outline";
+        editIcon.className = "table-icon";
+        editButton.appendChild(editIcon);
+        actionForm.appendChild(editButton);
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "submit";
+        deleteButton.className = "btn--delete table-btn";
+        const deleteIcon = document.createElement("ion-icon");
+        deleteIcon.name = "trash-outline";
+        deleteIcon.className = "table-icon";
+        deleteButton.appendChild(deleteIcon);
+        actionForm.appendChild(deleteButton);
+        tableDataForAction.appendChild(actionForm);
+        tableRow.appendChild(tableDataForAction);
+
+        const tableBody = document.querySelector(".tbody");
+        tableBody.appendChild(tableRow);
+      })
+    }).catch((error) => {
+      alert(error.message);
+    })
+}
+const USER_LIST_INTERVAL = 10000;
+getUserForPage(userPageIndex);
+
+
+/*********************************************************
+ *PAGINATION************************ 
+ * *******************************************************/
+const pagination = document.querySelector(".pagination");
+const PAGINATION_LENGTH = 20;
+
+function checkPaginationOverflowed() {
+  const allPaginationItems = document.querySelectorAll(".pagination-link--item");
+  return allPaginationItems.length >= numberOfUserPages;
+}
+
+function renderPageIndexForPagination(startIndex = 1) {
+  if (checkPaginationOverflowed()) {
+    return;
+  }
+  const documentFragment = new DocumentFragment();
+  for (let i = 0; i < numberOfUserPages; ++i) {
+    let paginationItem = document.createElement("a");
+    paginationItem.className = "pagination-link pagination-link--item";
+    paginationItem.href = "#";
+    paginationItem.textContent = startIndex + i;
+    documentFragment.appendChild(paginationItem);
+  }
+  const nextLink = document.querySelector("#next-link");
+  pagination.insertBefore(documentFragment, nextLink);
+}
+
+function getStartIndexOfCurrentPagination() {
+  return Number.parseInt(document.querySelector(".pagination-link--item").textContent);
+}
+
+const NUMBER_OF_USER_PAGES_URL = "/admin/users/pages/total";
+let numberOfUserPages = 0;
+
+async function getNumberOfUserPages() {
+  await fetch(
+    NUMBER_OF_USER_PAGES_URL +
+      "?" +
+      new URLSearchParams({
+        length: PAGINATION_LENGTH,
+      }),
+    {
+      method: "GET",
+    }
+  )
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(NETWORK_ERROR_MSG);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      numberOfUserPages = data;
+    })
+    .catch((error) => {
+      alert(error.message);
+    })
+}
+
+window.addEventListener("DOMContentLoaded", function (e){
+  getNumberOfUserPages().then(() => {
+    renderPageIndexForPagination();
+  });
 });
+
+window.addEventListener("load", (e) => {
+  const allPaginationItems = document.querySelectorAll(".pagination-link--item");
+  allPaginationItems.forEach((item) => {
+    item.addEventListener("click", function (ev) {
+      ev.preventDefault();
+      let pageIndex = Number.parseInt(item.textContent);
+      getUserForPage(pageIndex);
+    });
+  });
+});
+
 
 
 

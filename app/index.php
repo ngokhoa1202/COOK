@@ -23,9 +23,16 @@ $router
   ->post("/menu/category/type/new", [\App\Controller\MenuController::class, "createType"])
   ->get("/admin/login", [\App\Controller\AdminController::class, "getAdminLoginView"])
   ->get("/admin", [\App\Controller\AdminController::class, "index"])
+  ->post("/admin/login", [\App\Controller\AdminController::class, "login"])
   ->get("/admin/users", [\App\Controller\AdminController::class, "getAdminUsersView"])
+  ->get("/admin/users/list", [\App\Controller\AdminController::class, "getUserForOnePage"])
+  ->get("/admin/users/total", [\App\Controller\AdminController::class, "getNumberOfUsers"])
+  ->get("/admin/users/pages/total", [\App\Controller\AdminController::class, "getNumberOfUserPages"])
+  ->get("/admin/users/members/total", [\App\Controller\AdminController::class, "getNumberOfMembers"])
+  ->get("/admin/users/active/total", [\App\Controller\AdminController::class, "getNumberOfActiveUsers"])
   ->post("/admin/users/new", [\App\Controller\AdminController::class, "createUser"])
-  ->post("/admin/login", [\App\Controller\AdminController::class, "login"]);
+
+  ;
   
 $config = new Configuration($_ENV);
 
