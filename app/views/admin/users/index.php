@@ -4,11 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/views/admin/home/style.css">
-  <script defer src="/views/admin/home/script.js"></script>
+  <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
+  <link rel="stylesheet" href="/views/admin/users/style.css">
+  <script defer src="/views/admin/users/script.js"></script>
   <script async type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script async nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-  <title>COOK - Admin Home</title>
+  <title>COOK Admin - Users</title>
 </head>
 
 <body>
@@ -60,40 +61,97 @@
 
     <main class="main">
       <h2 class="heading-tertiary margin-bottom-medium">Hi, John</h2>
+
       <section class="summary margin-bottom-medium">
         <div class="summary-container">
           <div class="summary-card">
             <div class="summary-info">
-              <p class="summary-title margin-bottom-very-small">Total products</p>
-              <p class="summary-figure">150000</p>
-            </div>
-            <ion-icon name="fast-food-outline" class="summary-icon"></ion-icon>
-          </div>
-          <div class="summary-card">
-            <div class="summary-info">
-              <p class="summary-title margin-bottom-very-small">Total orders</p>
-              <p class="summary-figure">150000</p>
-            </div>
-            <ion-icon name="receipt-outline" class="summary-icon"></ion-icon>
-          </div>
-          <div class="summary-card">
-            <div class="summary-info">
               <p class="summary-title margin-bottom-very-small">Total users</p>
-              <p class="summary-figure">150000</p>
+              <p class="summary-figure summary-figure--user">150000</p>
             </div>
             <ion-icon name="people-outline" class="summary-icon"></ion-icon>
           </div>
           <div class="summary-card">
             <div class="summary-info">
-              <p class="summary-title margin-bottom-very-small">Total earnings</p>
-              <p class="summary-figure">150000</p>
+              <p class="summary-title margin-bottom-very-small">Total members</p>
+              <p class="summary-figure summary-figure--member">150000</p>
             </div>
-            <ion-icon name="cash-outline" class="summary-icon"></ion-icon>
+            <ion-icon name="accessibility-outline" class="summary-icon"></ion-icon>
           </div>
+          <div class="summary-card">
+            <div class="summary-info">
+              <p class="summary-title margin-bottom-very-small">Total online</p>
+              <p class="summary-figure summary-figure--online">150000</p>
+            </div>
+            <ion-icon name="globe-outline" class="summary-icon"></ion-icon>
+          </div>
+          <div class="summary-card">
+            <div class="summary-info">
+              <p class="summary-title margin-bottom-very-small">Orders per user</p>
+              <p class="summary-figure" id="summary-figure--orders-per-user">150000</p>
+            </div>
+            <ion-icon name="receipt-outline" class="summary-icon"></ion-icon>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-button margin-bottom-small">
+        <div class="button-container">
+          <button class="btn btn--new-user">
+            <ion-icon name="person-add-outline" class="add-icon icon-link"></ion-icon>
+            <p>New user</p>
+          </button>
+        </div>
+      </section>
+
+      <section class="section-search margin-bottom-small">
+        <form class="search-form">
+          <input type="search" placeholder="Enter an email" class="search-input">
+          <button type="submit" class="search-btn btn">
+            Search
+          </button>
+        </form>
+      </section>
+
+      <section class="section-dashboard">
+        <table class="products-table margin-bottom-medium">
+          <thead>
+            <tr>
+              <th class="table-header-id">Id</th>
+              <th class="table-header-email">Email</th>
+              <th class="table-header-avatar">Avatar</th>
+              <th class="table-header-role">Role</th>
+              <th class="table-header-status">Status</th>
+              <th class="table-header-action">Action</th>
+            </tr>
+          </thead>
+          <tbody class="tbody">
+            <!-- <tr>
+              <td>1</td>
+              <td>example@abc.com</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr> -->
+          </tbody>
+        </table>
+
+        <div class="pagination">
+          <a href="#" class="pagination-link pagination-link--special" id="start-link"><<</a>
+          <a href="#" class="pagination-link pagination-link--special" id="previous-link"><</a>
+          <a href="#" class="pagination-link pagination-link--item">1</a>
+          <a href="#" class="pagination-link pagination-link--item">2</a>
+          <a href="#" class="pagination-link pagination-link--item">3</a>
+          <a href="#" class="pagination-link pagination-link--item">4</a>
+          <a href="#" class="pagination-link pagination-link--item">5</a>
+          <a href="#" class="pagination-link pagination-link--special" id="next-link">></a>
+          <a href="#" class="pagination-link pagination-link--special" id="end-link">>></a>
         </div>
       </section>
     </main>
   </div>
+
 
   <footer class="footer">
     <div class="footer-container">
@@ -128,6 +186,45 @@
       <p class="copyright">Copyright &copy; 2025 by COOK Inc. All rights reserved.</p>
     </div>
   </footer>
+
+  <div class="new-user-modal hidden">
+    <button class="btn--close-modal">&times;</button>
+    <h2 class="heading-secondary margin-bottom-small">Create a new user</h2>
+    <form class="modal-form" novalidate>
+      <label class="label" for="email-input">Email</label>
+      <div class="input-info">
+        <input type="email" placeholder="Email" class="input" name="email" id="email-input">
+        <p class="error email-error"></p>
+      </div>
+      <label class="label" for="password-input">Password</label>
+      <div class="input-info">
+        <input type="password" placeholder="********" class="input" name="password" id="password-input">
+        <p class="error password-error"></p>
+      </div>
+      <label class="label" for="confirm-password-input">Confirm password</label>
+      <div class="input-info">
+        <input type="password" placeholder="********" class="input" name="confirm-password" id="confirm-password-input">
+        <p class="error confirm-password-error"></p>
+      </div>
+      <label class="label" for="avatar-input">Avatar</label>
+      <div class="input-info">
+        <input type="file" name="avatar" class="input avatar-input" name="avatar" id="avatar-input">
+      </div>
+
+      <label class="label" class="role-select">Role</label>
+      <div class="input-info">
+        <select class="select select--role" id="role-select">
+          <option class="option" value="">Choose a role&hellip;</option>
+          <option class="option" value="member">member</option>
+          <option class="option" value="admin">admin</option>
+        </select>
+        <p class="error role-error"></p>
+      </div>
+      <button type="submit" class="btn btn--submit margin-top-small">Create new user</button>
+    </form>
+  </div>
+
+  <div class="overlay hidden"></div>
 </body>
 
 </html>
