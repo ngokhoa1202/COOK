@@ -21,6 +21,9 @@ class Configuration {
       ],
       "avatar" => [
         "password" => $env["ICON_AVATAR"]
+      ],
+      "session" => [
+        "interval" => $env["SESS_INTERVAL"]
       ]
     ];
   }

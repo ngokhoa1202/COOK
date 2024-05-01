@@ -4,7 +4,7 @@ namespace App;
 
 class Encryption {
   private array $config;
-  private const DEFAULT_ALGORITHM="sha256";
+  private const DEFAULT_ALGORITHM = "sha256";
   public function __construct(array $config) {
     $this->config = [
       "password" => $config["password"]
