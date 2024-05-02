@@ -34,7 +34,7 @@ class ProductController {
 
   public function createProduct(): string {
     try {
-      // Validate request data (omitted for brevity)
+      // Validate request data
       if (!array_key_exists("type_id", $_POST) || !array_key_exists("product_name", $_POST) || !array_key_exists("description", $_POST)) {
         throw new BadRequestException();
       }
@@ -42,10 +42,10 @@ class ProductController {
       $typeId = filter_input(INPUT_POST, "type_id", FILTER_SANITIZE_NUMBER_INT);
       $productName = filter_input(INPUT_POST, "product_name", FILTER_SANITIZE_SPECIAL_CHARS);
       $description = filter_input(INPUT_POST, "description", FILTER_SANITIZE_SPECIAL_CHARS);
-  
+
       // Create a new ProductModel instance
       $productModel = ProductModel::make($typeId, $productName, $description);
-  
+
       // Call ProductModel's create method to insert product data
       $productId = $productModel->create();
       if ($productId === -1) {
@@ -73,7 +73,7 @@ class ProductController {
   
       // Convert product data to an array of objects
       $productDataArray = [];
-      foreach ($products as $product) { // Here, $product refers to each element in the $products array
+      foreach ($products as $product) {
         $productDataArray[] = $product;
       }
   
@@ -110,7 +110,7 @@ class ProductController {
     
   public function updateProduct(int $productId): string {
     try {
-      // Validate request data (omitted for brevity)
+      // Validate request data
       if (!array_key_exists("product_name", $_POST) || !array_key_exists("description", $_POST)) {
         throw new BadRequestException();
       }
