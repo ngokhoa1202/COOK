@@ -578,6 +578,7 @@ button:active {
 .pagination-link--special:link,
 .pagination-link--special:visited {
   font-size: 2.4rem;
+  color: #183233;
 }
 
 /**************************************

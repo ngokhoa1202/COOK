@@ -131,15 +131,23 @@
         </table>
 
         <div class="pagination">
-          <a href="#" class="pagination-link pagination-link--special" id="start-link"><<</a>
-          <a href="#" class="pagination-link pagination-link--special" id="previous-link"><</a>
+          <a href="#" class="pagination-link pagination-link--special" id="start-link">
+            <ion-icon name="play-skip-back-outline"></ion-icon>
+          </a>
+          <a href="#" class="pagination-link pagination-link--special" id="previous-link">
+            <ion-icon name="chevron-back-outline"></ion-icon>
+          </a>
           <a href="#" class="pagination-link pagination-link--item pagination-link--active">1</a>
           <a href="#" class="pagination-link pagination-link--item">2</a>
           <a href="#" class="pagination-link pagination-link--item">3</a>
           <a href="#" class="pagination-link pagination-link--item">4</a>
           <a href="#" class="pagination-link pagination-link--item">5</a>
-          <a href="#" class="pagination-link pagination-link--special" id="next-link">></a>
-          <a href="#" class="pagination-link pagination-link--special" id="end-link">>></a>
+          <a href="#" class="pagination-link pagination-link--special" id="next-link">
+            <ion-icon name="chevron-forward-outline"></ion-icon>
+          </a>
+          <a href="#" class="pagination-link pagination-link--special" id="end-link">
+            <ion-icon name="play-skip-forward-outline"></ion-icon>
+          </a>
         </div>
       </section>
     </main>
