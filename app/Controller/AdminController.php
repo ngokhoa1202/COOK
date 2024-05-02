@@ -1,6 +1,5 @@
 <?php
 
-declare(strict_types=1);
 namespace App\Controller;
 
 use App\App;
@@ -15,6 +14,8 @@ use App\View;
 class AdminController {
   public const ADMIN_LOGIN_SUCCESS_MSG = "Admin logged in successfully";
   public const CREATE_USER_SUCCESS_MSG = "User created successfully";
+  public const UPDATE_USER_SUCCESS_MSG = "User updated successfully";
+  public const UPDATE_USER_FAILURE_MSG = "Failed to update user";
   protected const SESSION_USER_ID = "user_id";
   protected const SESSION_LAST_GENERATED = "last_generated";
   protected const SESSION_USER_USERNAME = "user_username";
@@ -37,7 +38,7 @@ class AdminController {
     $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
     $password = $_POST["password"];
     $userModel = UserModel::make($email, $email, $password, $password, "", UserRole::getRole(UserRole::ADMIN), UserStatus::getStatus(UserStatus::OFFLINE));
-    $returnedResult = $userModel->verify();
+    $returnedResult = $userModel->authenticate();
     if (is_array($returnedResult)) {
       return json_encode($returnedResult);
     }
@@ -170,6 +171,37 @@ class AdminController {
     }
     return json_encode(UserModel::getUserByUserId($userId));
   }
-}
 
+  public function updateUserByUserId(): string {
+    try {
+      if (
+        ! array_key_exists("email", $_POST) || !array_key_exists("password", $_POST)
+        || !array_key_exists("role", $_POST) || !array_key_exists("confirm_password", $_POST)
+        || ! array_key_exists("status", $_POST) || !array_key_exists("username", $_POST)
+        || ! array_key_exists("user_id", $_POST) || ! array_key_exists("avatar", $_POST)
+      ) {
+        throw new BadRequestException();
+      }
+
+      $userId = $_POST["user_id"];
+      $username = $_POST["username"];
+      $email = $_POST["email"];
+      $password = $_POST["password"] ?? "";
+      $confirmPassword = $_POST["confirm_password"] ?? "";
+      $avatar = $_POST["avatar"];
+      $role = $_POST["role"];
+      $status = $_POST["status"];
+      $userModel = UserModel::make($username, $email, $password, $confirmPassword, $avatar, $role, $status, $userId, true);
+      if (is_array($userModel)) {
+        return json_encode($userModel);
+      } 
+      $userId = $userModel->update();
+      return ($userId > 0) ? json_encode(static::UPDATE_USER_SUCCESS_MSG) : json_encode(static::UPDATE_USER_FAILURE_MSG);
+    } catch (BadRequestException $ex) {
+      header("HTTP/1.1 400 Bad Request");
+      echo View::make("error/400");
+    }
+  } 
+}
+  
 ?>
