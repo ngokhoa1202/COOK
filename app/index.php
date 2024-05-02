@@ -26,6 +26,7 @@ $router
   ->post("/admin/login", [\App\Controller\AdminController::class, "login"])
   ->get("/admin/users", [\App\Controller\AdminController::class, "getAdminUsersView"])
   ->get("/admin/users/id", [\App\Controller\AdminController::class, "getUserByUserId"])
+  ->post("/admin/users/id", [\App\Controller\AdminController::class, "updateUserByUserId"])
   ->get("/admin/users/list", [\App\Controller\AdminController::class, "getUserForOnePage"])
   ->get("/admin/users/total", [\App\Controller\AdminController::class, "getNumberOfUsers"])
   ->get("/admin/users/pages/total", [\App\Controller\AdminController::class, "getNumberOfUserPages"])

@@ -157,6 +157,7 @@ loginForm.addEventListener("submit", function(e) {
   const loginPasswordValidatorPromise = validateLoginPassword()
     .then((password) => {
       validatedPassword = password;
+      loginPasswordError.textContent = "";
     })
     .catch((msg) => {
       loginPasswordError.textContent = msg;
@@ -165,7 +166,8 @@ loginForm.addEventListener("submit", function(e) {
 
   const confirmPasswordValidatorPromise = validateConfirmPassword()
     .then((isMatched) => {
-      matchedPassword = true;
+      matchedPassword = isMatched;
+      confirmPasswordError.textContent = "";
     })
     .catch((msg) => {
       confirmPasswordError.textContent = msg;
