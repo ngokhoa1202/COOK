@@ -5,11 +5,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
-  <link rel="stylesheet" href="/views/admin/users/style.css">
-  <script defer src="/views/admin/users/script.js"></script>
+  <link rel="stylesheet" href="/views/admin/menus/style.css">
+  <script defer src="/views/admin/menus/script.js"></script>
   <script async type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script async nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-  <title>COOK Admin - Users</title>
+  <title>COOK Admin - Menus</title>
 </head>
 
 <body>
@@ -66,47 +66,40 @@
         <div class="summary-container">
           <div class="summary-card">
             <div class="summary-info">
-              <p class="summary-title margin-bottom-very-small">Total users</p>
-              <p class="summary-figure summary-figure--user">150000</p>
+              <p class="summary-title margin-bottom-very-small">Total menus</p>
+              <p class="summary-figure summary-figure--menu">150000</p>
             </div>
-            <ion-icon name="people-outline" class="summary-icon"></ion-icon>
+            <ion-icon name="apps-outline" class="summary-icon"></ion-icon>
           </div>
           <div class="summary-card">
             <div class="summary-info">
-              <p class="summary-title margin-bottom-very-small">Total members</p>
-              <p class="summary-figure summary-figure--member">150000</p>
+              <p class="summary-title margin-bottom-very-small">Bestseller menu</p>
+              <p class="summary-figure summary-figure--bestseller-menu">150000</p>
             </div>
-            <ion-icon name="accessibility-outline" class="summary-icon"></ion-icon>
+            <ion-icon name="analytics-outline" class="summary-icon"></ion-icon>
           </div>
           <div class="summary-card">
             <div class="summary-info">
-              <p class="summary-title margin-bottom-very-small">Total online</p>
-              <p class="summary-figure summary-figure--online">150000</p>
+              <p class="summary-title margin-bottom-very-small">Highest rated menu</p>
+              <p class="summary-figure summary-figure--highest-rated-menu">150000</p>
             </div>
-            <ion-icon name="globe-outline" class="summary-icon"></ion-icon>
-          </div>
-          <div class="summary-card">
-            <div class="summary-info">
-              <p class="summary-title margin-bottom-very-small">Orders per user</p>
-              <p class="summary-figure" id="summary-figure--orders-per-user">150000</p>
-            </div>
-            <ion-icon name="receipt-outline" class="summary-icon"></ion-icon>
+            <ion-icon name="trending-up-outline" class="summary-icon"></ion-icon>
           </div>
         </div>
       </section>
 
       <section class="section-button margin-bottom-small">
         <div class="button-container">
-          <button class="btn btn--new-user">
-            <ion-icon name="person-add-outline" class="add-icon icon-link"></ion-icon>
-            <p>New user</p>
+          <button class="btn btn--new-menu">
+            <ion-icon name="add-outline" class="add-icon icon-link"></ion-icon>
+            <p class="btn--new-menu">New menu</p>
           </button>
         </div>
       </section>
 
       <section class="section-search margin-bottom-small">
         <form class="search-form">
-          <input type="search" placeholder="Enter an email" class="search-input">
+          <input type="search" placeholder="Enter a menu" class="search-input">
           <button type="submit" class="search-btn btn">
             Search
           </button>
@@ -118,11 +111,8 @@
           <thead>
             <tr>
               <th class="table-header-id">Id</th>
-              <th class="table-header-email">Email</th>
-              <th class="table-header-avatar">Avatar</th>
-              <th class="table-header-role">Role</th>
-              <th class="table-header-status">Status</th>
-              <th class="table-header-action">Action</th>
+              <th class="table-header-menu-name">Menu name</th>
+              <th class="table-header-description">Description</th>
             </tr>
           </thead>
           <tbody class="tbody">
@@ -188,41 +178,24 @@
     </div>
   </footer>
 
-  <div class="modal new-user-modal hidden">
+  <div class="modal new-menu-modal hidden">
     <button class="btn--close-modal btn--close-create-modal">&times;</button>
-    <h2 class="heading-secondary margin-bottom-small">Create user</h2>
+    <h2 class="heading-secondary margin-bottom-small">Create menu</h2>
     <form class="modal-form create-form" novalidate>
-      <label class="label" for="email-input">Email</label>
+      <label class="label" for="email-input">Menu name</label>
       <div class="input-info">
-        <input type="email" placeholder="Email" class="input" name="email" id="create-email-input">
-        <p class="error email-error" id="create-email-error"></p>
+        <input type="text" placeholder="Menu name" class="input" name="menu-name" id="create-menu-name-input">
+        <p class="error menu-name-error" id="create-menu-name-error"></p>
       </div>
-      <label class="label" for="password-input">Password</label>
+      <label class="label" for="">Description</label>
       <div class="input-info">
-        <input type="password" placeholder="********" class="input" name="password" id="create-password-input">
-        <p class="error password-error" id="create-password-error"></p>
-      </div>
-      <label class="label" for="confirm-password-input">Confirm password</label>
-      <div class="input-info">
-        <input type="password" placeholder="********" class="input" name="confirm-password" id="create-confirm-password-input">
-        <p class="error confirm-password-error" id="create-confirm-password-error"></p>
-      </div>
-      <label class="label" for="avatar-input">Avatar</label>
-      <div class="input-info">
-        <input type="file" name="avatar" class="input avatar-input" name="avatar" id="create-avatar-input">
-        <p class="error avatar-error" id="create-avatar-error"></p>
+        <textarea class="textarea create-description-textarea" placeholder="Describe about menu" id="create-description-textarea"
+         rows="15" cols="30" 
+        ></textarea>
+        <p class="error description-error" id="create-description-error"></p>
       </div>
 
-      <label class="label" class="role-select">Role</label>
-      <div class="input-info">
-        <select class="select select--role" id="create-role-select">
-          <option class="option" value="">Choose a role&hellip;</option>
-          <option class="option" value="member">member</option>
-          <option class="option" value="admin">admin</option>
-        </select>
-        <p class="error role-error" id="create-role-error"></p>
-      </div>
-      <button type="submit" class="btn btn--submit margin-top-small">Create new user</button>
+      <button type="submit" class="btn btn--submit margin-top-small">Create new menu</button>
     </form>
   </div>
 

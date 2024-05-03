@@ -33,6 +33,8 @@ $router
   ->get("/admin/users/members/total", [\App\Controller\AdminController::class, "getNumberOfMembers"])
   ->get("/admin/users/active/total", [\App\Controller\AdminController::class, "getNumberOfActiveUsers"])
   ->post("/admin/users/new", [\App\Controller\AdminController::class, "createUser"])
+  ->get("/admin/menus", [\App\Controller\AdminController::class, "getAdminMenusView"])
+  ->get("/admin/menus/total", [\App\Controller\AdminController::class, "getNumberOfMenus"])
   ;
   
 $config = new Configuration($_ENV);
