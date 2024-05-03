@@ -6,6 +6,7 @@ use App\App;
 use App\Exception\BadQueryException;
 use App\Exception\BadRequestException;
 use App\Exception\ForbiddenException;
+use App\Model\MenuModel;
 use App\Model\UserModel;
 use App\Model\UserRole;
 use App\Model\UserStatus;
@@ -201,7 +202,17 @@ class AdminController {
       header("HTTP/1.1 400 Bad Request");
       echo View::make("error/400");
     }
-  } 
+  }
+
+  public function getAdminMenusView(): string {
+    return View::make("admin/menus");
+  }
+
+  public function getNumberOfMenus(): string {
+    return json_encode(MenuModel::getNumberOfMenus());
+  }
+
+  
 }
   
 ?>

@@ -182,8 +182,7 @@ function submitUserData(formData, url) {
           const sucessNotification = new Notification(data, {
             body: "The user has been successfully created or updated",
             tag: "success",
-            icon: "/assets/img/success.svg",
-            lang: "en-US",
+            icon: "/assets/img/success.svg"
           });
           
           sucessNotification.addEventListener("error", function (e) {

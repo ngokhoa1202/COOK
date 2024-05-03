@@ -20,7 +20,9 @@ class MenuModel extends Model {
     $this->description = $description;
   }
 
-  public static function make(string $menuName, string $description): static {
+  public static function make(string $menuName, string $description): MenuModel {
+    $menuName = htmlspecialchars($menuName);
+    $description = htmlspecialchars($description);
     return new MenuModel($menuName, $description);
   }
 
@@ -110,6 +112,26 @@ class MenuModel extends Model {
     }
 
     return $menus;
+  }
+
+  public static function getNumberOfMenus(): int {
+    $totalMenus = 0;
+    try {
+      App::getDatabaseConnection()->beginTransaction();
+      $query = "SELECT COUNT(*) FROM menus";
+      $stmt = App::getDatabaseConnection()->prepare($query);
+      if (! $stmt->execute()) {
+        throw new BadQueryException();
+      }
+      $totalMenus = $stmt->fetchColumn();
+      App::getDatabaseConnection()->commit();
+    } catch (PDOException | BadQueryException $ex) {
+      if (App::getDatabaseConnection()->inTransaction()) {
+        App::getDatabaseConnection()->rollBack();
+      }
+    }
+
+    return $totalMenus;
   }
 
 
