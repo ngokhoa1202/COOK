@@ -1,11 +1,11 @@
 @font-face {
   font-family: "Hugo";
-  src: url("../../assets/fonts/HugosHandTwo.woff") format('woff');
+  src: url("/assets/fonts/HugosHandTwo.woff") format('woff');
 }
 
 @font-face {
   font-family: "Gill Sans";
-  src: url("../../assets/fonts/GillSansW01Medium.woff2") format("woff");
+  src: url("/assets/fonts/GillSansW01Medium.woff2") format("woff");
 }
 
 * {

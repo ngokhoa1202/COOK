@@ -1,0 +1,308 @@
+@font-face {
+  font-family: "Gill Sans";
+  src: url("/assets/fonts/GillSansW01Medium.woff2") format("woff");
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+ul {
+  list-style: none;
+}
+
+body {
+  color: #203945;
+  font-family: "Inter";
+}
+
+
+.margin-bottom-very-small {
+  margin-bottom: 1.2rem;;
+}
+
+.margin-bottom-smaller {
+  margin-bottom: 1.8rem;
+}
+
+.margin-bottom-small {
+  margin-bottom: 2.4rem;
+}
+
+.margin-bottom-rather-small {
+  margin-bottom: 3.6rem;
+}
+
+.margin-bottom-medium {
+  margin-bottom: 4.8rem;
+}
+
+.container {
+  text-align: center;
+}
+
+.grid {
+  display: grid;
+}
+
+.grid--2-cols {
+  grid-template-columns: 20fr 80fr;
+}
+
+.header {
+  grid-column: 1 / 2;
+  margin: 1.2rem;
+}
+
+.main {
+  grid-column: 2 / 3;
+}
+
+
+.header-brand  {
+  padding: 1.2rem 2.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-brand *:focus {
+  outline: none;
+  box-shadow: 0 0 0.8rem #183233;
+}
+
+/*************************************
+**************HEADING*****************
+**************************************
+*/
+
+.heading-primary {
+  font-size: 4.8rem;
+  font-weight: 500;
+}
+
+.heading-secondary {
+  font-size: 3.6rem;
+}
+
+.heading-tertiary {
+  font-size: 2.4rem;
+}
+
+.brand-box {
+  display: block;
+}
+
+.brand-img {
+  width: 15rem;
+}
+
+
+/*************************************
+**************NAVIGATION**************
+**************************************
+*/
+
+.nav-link,
+.nav-link:link,
+.nav-link:visited {
+  width: 70%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1.2rem;
+  
+  font-size: 2rem;
+  padding: 1.2rem;
+  font-weight: 500;
+  
+  text-decoration: none;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: all 0.5s;
+}
+
+.nav-link:hover,
+.nav-link:active {
+  background-color: #3f728a;
+  color: #efefef;
+}
+
+
+.icon-link:focus {
+  box-shadow: none;
+  outline: 0.2rem dashed #235456;
+}
+
+.icon-link {
+  width: 2.4rem;
+  height: 2.4rem;
+  margin-top: -0.5rem;
+}
+
+.icon-link:link,
+.icon-link:visited {
+  color: #204c4d;
+  transition: all 0.5s ease;
+}
+
+.icon-link:active,
+.icon-link:hover {
+  background-color: #3f728a;
+  color: #efefef;
+}
+
+.hero-icon-link {
+  display: block;
+  margin-top: -0.2rem;
+}
+
+
+.side-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+  background-color: #e9eeee;
+  font-family: "Gill Sans";
+  margin: 3.6rem;
+  border-radius: 1rem;
+}
+
+.side-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  
+}
+
+.side-nav *:focus {
+  outline: none;
+  box-shadow: 0 0 0.8rem #bdcccc;
+}
+
+.main {
+  margin: 3.6rem 1.2rem;
+}
+
+/**************************************
+******SUMMARY CARDS********************
+***************************************
+*/
+
+.summary-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  column-gap: 1.8rem;
+}
+
+.summary-card {
+  width: 100%;
+  
+  padding: 2.4rem 1.2rem;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  border-radius: 1rem;
+}
+
+.summary-card:nth-child(odd) {
+  background-color: #e6f3f8;
+}
+
+.summary-card:nth-child(even) {
+  background-color: #d3f8d3;
+}
+
+.summary-title {
+  font-size: 2.4rem;
+  font-weight: 500;
+  font-family: "Gill Sans";
+}
+
+.summary-figure {
+  font-size: 1.8rem;
+  font-weight: 400;
+}
+
+.summary-icon {
+  width: 4.2rem;
+  height: 4.2rem;
+}
+
+.summary-card:nth-child(odd) .summary-icon {
+  color: #576c73;
+}
+
+.summary-card:nth-child(even) .summary-icon {
+  color: #3a5f3a;
+}
+
+/**************************************
+******FOOTER***************************
+***************************************
+*/
+
+.footer {
+  background-color: #fffcf8;
+}
+
+
+.footer-container {
+  padding: 3.6rem 12.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+  flex-direction: column;
+  border-top: 1px solid rgba(24, 50, 51, 0.2);
+}
+
+.media-links {
+  display: flex;
+  flex-direction: row;
+  gap: 2.4rem;
+}
+
+.media-links *:focus {
+  outline: none;
+  box-shadow: 0 0 1.2rem rgba(18, 42, 43, 0.5);
+}
+
+.footer-link:link,
+.footer-link:visited {
+  display: block;
+  text-decoration: none;
+  transition: all 0.5s ease;
+  color: #3f728a;
+}
+
+.footer-link:hover,
+.footer-link:active {
+  color: #122a2b;
+  cursor: pointer;
+}
+
+.media-icon {
+  width: 2.4rem;
+  height: 2.4rem;
+}
+
+.footer-brand-img {
+  width: 20rem;
+}
+
+.copyright {
+  font-size: 1.2rem;
+}
+
+.footer-heading {
+  font-weight: 500;
+}

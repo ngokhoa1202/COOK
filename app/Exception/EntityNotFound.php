@@ -1,6 +1,6 @@
 <?php
 
-// Use for menu, category, type, product not existed
+// Use for menu, category, type, product, serve not existed
 
 declare(strict_types=1);
 
