@@ -17,6 +17,10 @@ class AdminController {
   public const CREATE_USER_SUCCESS_MSG = "User created successfully";
   public const UPDATE_USER_SUCCESS_MSG = "User updated successfully";
   public const UPDATE_USER_FAILURE_MSG = "Failed to update user";
+  public const CREATE_MENU_SUCCESS_MSG = "Menu created successfully";
+  public const CREATE_MENU_FAILURE_MSG = "Failed to create menu";
+  public const UPDATE_MENU_SUCCESS_MSG = "Menu updated successfully";
+  public const UPDATE_MENU_FAILURE_MSG = "Failed to update menu";
   protected const SESSION_USER_ID = "user_id";
   protected const SESSION_LAST_GENERATED = "last_generated";
   protected const SESSION_USER_USERNAME = "user_username";
@@ -209,10 +213,91 @@ class AdminController {
   }
 
   public function getNumberOfMenus(): string {
-    return json_encode(MenuModel::getNumberOfMenus());
+    return json_encode(MenuModel::countNumberOfMenus());
   }
 
-  
+  public function getMenuForOnePage(): string {
+    $pageIndex = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+    $length = filter_input(INPUT_GET, "length", FILTER_VALIDATE_INT);
+    try {
+      if ($pageIndex === false || $length === false) {
+        throw new BadQueryException();
+      }
+    } catch (BadRequestException $ex) {
+      header("HTTP/1.1 400 Bad Request");
+      echo View::make("error/400");
+    }
+    $offset = ($pageIndex - 1) * $length;
+    return json_encode(MenuModel::getAllMenusInRange($offset, $length));
+  }
+
+  public static function getNumberOfMenuPages(): int {
+    $length = filter_input(INPUT_GET, "length", FILTER_VALIDATE_INT);
+    try {
+      if ($length === false || is_null($length)) {
+        throw new BadQueryException();
+      }
+    } catch (BadQueryException $ex) {
+      header("HTTP/1.1 Bad Request");
+      echo View::make("error/400");
+    }
+    return MenuModel::countNumberOfMenuPages($length);
+  }
+
+  public function createMenu(): string {
+    try {
+      if (!array_key_exists("menu_name", $_POST) || !array_key_exists("description", $_POST)) {
+        throw new BadRequestException();
+      }
+    } catch (BadRequestException $ex) {
+      header("HTTP/1.1 400 Bad Request");
+      echo View::make("error/400");
+    }
+
+    $menuName = $_POST["menu_name"];
+    $description = $_POST["description"];
+    $menuModel = MenuModel::make($menuName, $description);
+    if ($menuModel->create() === 0) {
+      return json_encode(static::CREATE_MENU_FAILURE_MSG);
+    }
+    return json_encode(static::CREATE_MENU_SUCCESS_MSG);
+  }
+
+  public function updateMenuByMenuId(): string {
+    try {
+      if (
+        !array_key_exists("menu_id", $_POST) || !array_key_exists("menu_name", $_POST)
+        || !array_key_exists("description", $_POST)
+      ) {
+        throw new BadRequestException();
+      }
+
+      $menuId = filter_input(INPUT_POST, "menu_id", FILTER_VALIDATE_INT);
+      if ($menuId === false) {
+        throw new BadRequestException();
+      }
+
+      $menuName = $_POST["menu_name"];
+      $description = $_POST["description"] ?? "";
+      $menuModel = MenuModel::make($menuName, $description, $menuId);
+      if (is_array($menuModel)) {
+        header("HTTP/1.1 400 Bad Request");
+        return json_encode($menuModel);
+      } 
+      $menuId = $menuModel->update();
+      if ($menuId === 0) {
+        throw new BadRequestException();
+      }
+      return json_encode(static::UPDATE_MENU_SUCCESS_MSG);
+    } catch (BadRequestException $ex) {
+      header("HTTP/1.1 400 Bad Request");
+      return json_encode(static::UPDATE_MENU_FAILURE_MSG);
+    }
+  }
+
+  public function deleteMenuByMenuId() {
+    
+  }
 }
   
 ?>

@@ -699,7 +699,7 @@ function handleUserTableBodyMutation(mutationRecords, observer) {
   const editUserModal = document.querySelector(".edit-user-modal");
   const allEditButtons = document.querySelectorAll(".btn--edit");
   
-  const EDT_USER_URL = "/admin/users/id";
+  const EDIT_USER_URL = "/admin/users/update/id";
   allEditButtons.forEach((btn, index) => {
     btn.addEventListener("click", function (ev) {
       ev.preventDefault();
@@ -930,7 +930,7 @@ function handleUserTableBodyMutation(mutationRecords, observer) {
             editUserModal.classList.add("hidden");
             overlay.classList.add("hidden");
           }
-          submitUserData(formData, EDT_USER_URL);
+          submitUserData(formData, EDIT_USER_URL);
         })
         .catch(() => {})
         .finally(() => {});

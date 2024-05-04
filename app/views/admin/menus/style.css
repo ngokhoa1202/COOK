@@ -549,6 +549,45 @@ button:active {
 }
 
 /**************************************
+******NOTIFICATION MODAL***************
+***************************************
+*/
+
+.sucesss-notification-modal,
+.failure-notification-modal {
+  top: 25%;
+  box-shadow: 0 1.2rem 1.2rem rgba(24, 50, 51, 0.25);
+  background-color: #E2F3F7;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+}
+
+.success-icon {
+  width: 3.2rem;
+  height: 3.2rem;
+  color: #008000;
+}
+
+.success-notification-modal .notification {
+  font-size: 1.8rem;
+  color: #008000;
+}
+
+.failure-icon {
+  width: 3.2rem;
+  height: 3.2rem;
+  color: red;
+}
+
+.failure-notification-modal .notification {
+  font-size: 1.8rem;
+  color: red;
+}
+
+/**************************************
 ******PAGINATION***********************
 ***************************************
 */

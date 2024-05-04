@@ -11,8 +11,7 @@ use App\View;
 use PDOException;
 
 class MenuController {
-  public const CREATE_MENU_SUCCESS_MSG = "Menu created successfully";
-  public const CREATE_MENU_FAILURE_MSG = "Failed to create menu";
+  
   public const CREATE_CATEGORY_SUCCESS_MSG = "Category created successfully";
   public const CREATE_CATEGORY_FAILURE_MSG = "Failed to create category";
   public const CREATE_TYPE_SUCCESS_MSG = "Type created successfully";
@@ -20,25 +19,6 @@ class MenuController {
 
   public function index(): string {
     return View::make("/menus");
-  }
-
-  public function createMenu(): string {
-    try {
-      if (!array_key_exists("menu_name", $_POST) || !array_key_exists("description", $_POST)) {
-        throw new BadRequestException();
-      }
-    } catch (BadRequestException $ex) {
-      header("HTTP/1.1 400 Bad Request");
-      echo View::make("error/400");
-    }
-    
-    $menuName = $_POST["menu_name"];
-    $description = $_POST["description"];
-    $menuModel = MenuModel::make($menuName, $description);
-    if ($menuModel->create() === -1) {
-      return json_encode(static::CREATE_MENU_FAILURE_MSG);
-    }
-    return json_encode(static::CREATE_MENU_SUCCESS_MSG);
   }
 
   public function readAllMenus(): string {
@@ -87,6 +67,8 @@ class MenuController {
       echo View::make("error/400");
     }
   }
+
+  
 }
 
 

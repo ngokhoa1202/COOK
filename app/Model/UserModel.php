@@ -413,7 +413,7 @@ class UserModel extends Model {
 
   public static function countNumberOfUserPages(int $length): int {
     $numberOfUsers = static::countNumberOfUsers();
-    return ($numberOfUsers % $length === 0) ? ($numberOfUsers / $length) : ($numberOfUsers / $length + 1);
+    return ($numberOfUsers % $length === 0) ? intdiv($numberOfUsers, $length) : (intdiv($numberOfUsers, $length) + 1);
   }
 
   public static function getUserByUserId(int $userId): array | null {
@@ -506,6 +506,7 @@ class UserModel extends Model {
     $user = UserModel::getUserByUserId($userId);
     return new UserModel($user["username"], $user['email'], $user['password'], $user['avatar'], $user['role'], $user['status'], $user["user_id"]);
   }
+  
 }
 
 

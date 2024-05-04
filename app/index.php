@@ -33,7 +33,7 @@ $router
   ->post("/admin/login", [\App\Controller\AdminController::class, "login"])
   ->get("/admin/users", [\App\Controller\AdminController::class, "getAdminUsersView"])
   ->get("/admin/users/id", [\App\Controller\AdminController::class, "getUserByUserId"])
-  ->post("/admin/users/id", [\App\Controller\AdminController::class, "updateUserByUserId"])
+  ->post("/admin/users/update/id", [\App\Controller\AdminController::class, "updateUserByUserId"])
   ->get("/admin/users/list", [\App\Controller\AdminController::class, "getUserForOnePage"])
   ->get("/admin/users/total", [\App\Controller\AdminController::class, "getNumberOfUsers"])
   ->get("/admin/users/pages/total", [\App\Controller\AdminController::class, "getNumberOfUserPages"])
@@ -42,6 +42,10 @@ $router
   ->post("/admin/users/new", [\App\Controller\AdminController::class, "createUser"])
   ->get("/admin/menus", [\App\Controller\AdminController::class, "getAdminMenusView"])
   ->get("/admin/menus/total", [\App\Controller\AdminController::class, "getNumberOfMenus"])
+  ->post("/admin/menus/new", [\App\Controller\AdminController::class, "createMenu"])
+  ->get("/admin/menus/list", [\App\Controller\AdminController::class, "getMenuForOnePage"])
+  ->post("/admin/menus/update/id", [\App\Controller\AdminController::class, "updateMenuByMenuId"])
+  ->get("/admin/menus/pages/total", [\App\Controller\AdminController::class, "getNumberOfMenuPages"])
   ;
   
 $config = new Configuration($_ENV);

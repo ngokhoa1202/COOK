@@ -145,30 +145,40 @@ VALUES ('Food', 'A variety of delicious dishes'),
        ('Snacks', 'Perfect bites for any time of day');
 
 -- Insert categories
-INSERT INTO categories (menu_id, description)
-VALUES (1, 'Main Courses'),
-       (1, 'Desserts'),
-       (2, 'Coffee'),
-       (2, 'Tea'),
-       (3, 'Cakes'),
-       (3, 'Ice Cream'),
-       (4, 'Salty Snacks'),
-       (4, 'Sweet Snacks');
+INSERT INTO `categories` (`category_id`, `menu_id`, `category_name`, `description`) 
+VALUES (NULL, '3', 'Portion size', 'Categorized main meals by portion size'),
+      (NULL, '3', 'By nutrition', 'Categorized main meals by nutrition and protein content.')
+      (NULL, '3', 'Vegatarian', 'Main meals prepared for vegatarian')
+      (NULL, '3', 'By cuisine', 'Categorized main meal by regional and cultural taste.');
+      (NULL, '5', 'Prepared party', 'Provide your party with best recipes and flavour.')
+      (NULL, '5', 'Party dish', 'Prepare some of savoury dishes to your party.')
+      (NULL, '5', 'Vegatarian', 'Delicious vegatarian dishes for your party.')
+      (NULL, '4', 'Portion size', 'Categorized puddings by portion size.')
+      (NULL, '4', 'Hot puddings', 'Tasty hot puddings'),
+      (NULL, '4', 'Cold puddings', 'Tasty cold puddings')
+      (NULL, '6', 'Portion size', 'Categorized meal boxes by portion size.')
+      (NULL, '6', 'Family', 'Healthy meal boxes for your own family')
+;
 
--- Insert types
+
+-- Insert types (assuming some categories are already inserted)
 INSERT INTO types (category_id, description)
-VALUES (1, 'Burgers'),
-       (1, 'Pastas'),
-       (3, 'Chocolate Cakes'),
-       (3, 'Fruit Tarts'),
-       (5, 'Espresso-based'),
-       (5, 'Filter Coffee'),
-       (7, 'Potato Chips'),
-       (7, 'Pretzels'),
-       (1, 'Soups'),
-       (1, 'Salads');
+VALUES (NULL, '10', 'One person', 'Main meals have portion size for one person.'),
+      (NULL, '10', 'Two people', 'Main meals have portion size for two people.'),
+      (NULL, '10', 'Four people', 'Main meals have portion size for four people.'),
+      (NULL, '11', 'Chicken meals', 'Main meals made from chicken.'),
+      (NULL, '11', 'Pork meals', 'Main meals made from pork.'),
+      (NULL, '11', 'Beef meals', 'Main meals made from beef.'),
+      (NULL, '12', 'Vegan meals', 'Main meals for people who avoid all animal foods and eat only plant-based food.')
+      (NULL, '12', 'Lacto-vegatarian meals', 'Main meals for people who do not eat meat, seafood and eggs, but include dairy foods and plant foods.'),
+      (NULL, '14', 'BBQ', 'Provide your party with our savoury, moreish BBQ dishes'),
+      (NULL, '14', 'Formal celebration', 'Prepare your formal celebration such as weddings, business meeting or anniversary.'),
+      (NULL, '15', 'Grilled chicken', 'Party dishes made from grilled chicken'),
+      (NULL, '15', 'Roasted duck', 'Party dishes made from roasted duck.'),
+      (NULL, '15', 'Soup', 'Soup dishes for party.')
+;
 
--- Insert products
+-- Insert products (assuming some types are already inserted)
 INSERT INTO products (type_id, product_name, description)
 VALUES (1, 'Cheeseburger', 'A classic cheeseburger with juicy patty, melted cheese, and fresh toppings'),
        (2, 'Spaghetti Bolognese', 'A hearty pasta dish with ground meat sauce'),
