@@ -34,6 +34,7 @@ $router
   ->get("/admin/users", [\App\Controller\AdminController::class, "getAdminUsersView"])
   ->get("/admin/users/id", [\App\Controller\AdminController::class, "getUserByUserId"])
   ->post("/admin/users/update/id", [\App\Controller\AdminController::class, "updateUserByUserId"])
+  ->post("/admin/users/delete/id", [\App\Controller\AdminController::class, "deleteUserByUserId"])
   ->get("/admin/users/list", [\App\Controller\AdminController::class, "getUserForOnePage"])
   ->get("/admin/users/total", [\App\Controller\AdminController::class, "getNumberOfUsers"])
   ->get("/admin/users/pages/total", [\App\Controller\AdminController::class, "getNumberOfUserPages"])
@@ -45,6 +46,7 @@ $router
   ->post("/admin/menus/new", [\App\Controller\AdminController::class, "createMenu"])
   ->get("/admin/menus/list", [\App\Controller\AdminController::class, "getMenuForOnePage"])
   ->post("/admin/menus/update/id", [\App\Controller\AdminController::class, "updateMenuByMenuId"])
+  ->post("/admin/menus/delete/id", [\App\Controller\AdminController::class, "deleteMenuByMenuId"])
   ->get("/admin/menus/pages/total", [\App\Controller\AdminController::class, "getNumberOfMenuPages"])
   ;
   

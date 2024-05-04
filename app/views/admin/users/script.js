@@ -4,26 +4,52 @@
 const newUserModal = document.querySelector(".new-user-modal");
 const overlay = document.querySelector(".overlay");
 
-const openNewUserModalBtn = document.querySelector(".btn--new-user");
-const closeNewUserModalBtn = document.querySelector(".btn--close-create-modal");
+const openCreateUserModalButton = document.querySelector(".btn--new-user");
+const closeCreateUserModalButton = document.querySelector(".btn--close-create-modal");
 
-function openNewUserModal() {
+const successNotificationModal = document.querySelector(".success-notification-modal");
+const successNotificationMessage = document.querySelector(".success-notification-modal .notification");
+const failureNotificationModal = document.querySelector(".failure-notification-modal");
+const failureNotificationMessage = document.querySelector(".failure-notification-modal .notification");
 
+function openCreateUserModal() {
   newUserModal.classList.remove("hidden");
   overlay.classList.remove("hidden");
 }
 
-function closeNewUserModal() {
+function closeCreateUserModal() {
   newUserModal.classList.add("hidden");
   overlay.classList.add("hidden");
 }
 
-openNewUserModalBtn.addEventListener("click", (e) => openNewUserModal());
-closeNewUserModalBtn.addEventListener("click", (e) => closeNewUserModal());
-overlay.addEventListener("click", (e) => closeNewUserModal());
+function openSuccessNotificationModal() {
+  successNotificationModal.classList.remove("hidden");
+  overlay.classList.remove("hidden");
+}
+
+function closeSuccessNotificationModal() {
+  successNotificationModal.classList.add("hidden");
+  overlay.classList.add("hidden");
+}
+
+function openFailureNotificationModal() {
+  failureNotificationModal.classList.remove("hidden");
+  overlay.classList.remove("hidden");
+}
+
+function closeFailureNotificationModal() {
+  failureNotificationModal.classList.add("hidden");
+  overlay.classList.add("hidden");
+}
+
+openCreateUserModalButton.addEventListener("click", (e) => openCreateUserModal());
+closeCreateUserModalButton.addEventListener("click", (e) => closeCreateUserModal());
+overlay.addEventListener("click", (e) => 
+  closeCreateUserModal()
+);
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && ! newUserModal.classList.contains("hidden")) {
-    closeNewUserModal();
+    closeCreateUserModal();
   }
 });
 
@@ -155,6 +181,7 @@ const createEmailError = document.querySelector("#create-email-error");
 const createPasswordError = document.querySelector("#create-password-error");
 const createConfirmPasswordError = document.querySelector("#create-confirm-password-error");
 const createRoleError = document.querySelector("#create-role-error");
+const NOTIFICATION_TIMEOUT = 3000;
 
 let validatedEmail = "";
 let validatedPassword = "";
@@ -170,33 +197,18 @@ function submitUserData(formData, url) {
     body: formData,
   })
     .then((response) => {
-      if (!response.ok) {
-        throw new Error("Your network connection is not stable");
-      }
       return response.json();
     })
     .then((data) => {
+      successNotificationMessage.textContent = data;
+      openSuccessNotificationModal();
+      setTimeout(closeSuccessNotificationModal, NOTIFICATION_TIMEOUT);
       getUserForPage(userPageIndex);
-      Notification.requestPermission().then((notificationPermission) => {
-        if (notificationPermission === "granted") {
-          const sucessNotification = new Notification(data, {
-            body: "The user has been successfully created or updated",
-            tag: "success",
-            icon: "/assets/img/success.svg"
-          });
-          
-          sucessNotification.addEventListener("error", function (e) {
-            alert(NETWORK_ERROR_MSG);
-          });
-          sucessNotification.addEventListener("click", function (e) {
-            this.close();
-            window.parent.focus();
-          });
-        }
-      });
     })
     .catch((error) => {
-      console.log(error.message);
+      failureNotificationMessage.textContent = error;
+      openFailureNotificationModal();
+      setTimeout(closeFailureNotificationModal, NOTIFICATION_TIMEOUT);
     });
 }
 
@@ -580,8 +592,8 @@ function renderPageIndexForPagination(offset = 1) {
     offset = 1;
   }
   const allPaginationItems = document.querySelectorAll(".pagination-link--item");
-  if (allPaginationItems.length > numberOfUserPages && numberOfUserPages > 0) {
-    for (let i = numberOfUserPages + 1; i <= allPaginationItems.length; ++i) {
+  if (MAX_PAGINATION_LENGTH > numberOfUserPages && numberOfUserPages > 0) {
+    for (let i = numberOfUserPages; i <= MAX_PAGINATION_LENGTH; ++i) {
       allPaginationItems[i].classList.add("hidden");
     }
     return;
@@ -633,6 +645,9 @@ window.addEventListener("DOMContentLoaded", function (e) {
     renderPageIndexForPagination();
   });
 });
+
+const EDIT_USER_URL = "/admin/users/update/id";
+const DELETE_USER_URL = "/admin/users/delete/id";
 
 window.addEventListener("load", (e) => {
   const allPaginationItems = document.querySelectorAll(".pagination-link--item");
@@ -699,7 +714,6 @@ function handleUserTableBodyMutation(mutationRecords, observer) {
   const editUserModal = document.querySelector(".edit-user-modal");
   const allEditButtons = document.querySelectorAll(".btn--edit");
   
-  const EDIT_USER_URL = "/admin/users/update/id";
   allEditButtons.forEach((btn, index) => {
     btn.addEventListener("click", function (ev) {
       ev.preventDefault();
@@ -952,16 +966,27 @@ function handleUserTableBodyMutation(mutationRecords, observer) {
   });
 
   /******DELETE USER************************************************** */
+
   const deleteUserModal = document.querySelector(".delete-user-modal");
   const closeDeleteUserModalButton = document.querySelector(".btn--close-delete-modal");
-  closeDeleteUserModalButton.addEventListener("click", function (ev) {
+  const deleteUserIdInput = document.querySelector("#delete-id-input");
+  const deleteUsernameInput = document.querySelector("#delete-username-input");
+  const deleteEmailInput = document.querySelector("#delete-email-input");
+  function openDeleteUserModal() {
+    deleteUserModal.classList.remove("hidden");
+    overlay.classList.remove("hidden");
+  }
+
+  function closeDeleteUserModal() {
     deleteUserModal.classList.add("hidden");
     overlay.classList.add("hidden");
+  }
+  closeDeleteUserModalButton.addEventListener("click", function (ev) {
+    closeDeleteUserModal();
   });
   document.addEventListener("keydown", (ev) => {
     if (ev.key === "Escape" && ! deleteUserModal.classList.contains("hidden")) {
-      deleteUserModal.classList.add("hidden");
-      overlay.classList.add("hidden");
+      closeDeleteUserModal();
     }
   });
 
@@ -969,9 +994,25 @@ function handleUserTableBodyMutation(mutationRecords, observer) {
   allDeleteButtons.forEach((btn, index) => {
     btn.addEventListener("click", function (ev) {
       ev.preventDefault();
-      deleteUserModal.classList.remove("hidden");
-      overlay.classList.remove("hidden");
+      openDeleteUserModal();
+      deleteUserIdInput.value = users[index].user_id;
+      deleteUsernameInput.value = users[index].username;
+      deleteEmailInput.value = users[index].email;
     });
+  });
+
+  let validatedUserId = "";
+  const deleteUserForm = document.querySelector(".delete-form");
+  deleteUserForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    
+    function handleUserData() {
+      validatedUserId = deleteUserIdInput.value;
+      const formData = new FormData();
+      formData.append("user_id", validatedUserId);
+      submitUserData(formData, DELETE_USER_URL);
+    }
+    handleUserData();
   });
 }
 

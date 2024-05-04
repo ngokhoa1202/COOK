@@ -287,14 +287,31 @@
     <button class="btn--close-modal btn--close-delete-modal">&times;</button>
     <h2 class="heading-secondary margin-bottom-small">Delete user</h2>
     <form class="modal-form delete-form" novalidate>
-      <label class="label" for="email-input">Username</label>
-      <p class="delete-info"></p>
-
-      <label class="label" for="email-input">Email</label>
-      <p class="delete-info"></p>
+      <label class="label" for="delete-id-input">Id</label>
+      <div class="input-info">
+        <input type="text" placeholder="Id" class="input" name="id" id="delete-id-input" readonly>
+      </div>
+      <label class="label" for="delete-username-input">Username</label>
+      <div class="input-info">
+        <input type="text" placeholder="Username" class="input" name="menu-name" id="delete-username-input" readonly>
+      </div>
+      <label class="label" for="delete-email-input">Email</label>
+      <div class="input-info">
+        <input type="email" placeholder="Email" class="input" name="email" id="delete-email-input" readonly>
+      </div>
 
       <button type="submit" class="btn btn--submit margin-top-small">Delete user</button>
     </form>
+  </div>
+
+  <div class="modal success-notification-modal hidden">
+    <img src="/assets/img/success.svg" alt="success icon" class="success-icon">
+    <p class="notification"></p>
+  </div>
+
+  <div class="modal failure-notification-modal hidden">
+    <img src="/assets/img/failure.svg" alt="failure icon" class="failure-icon">
+    <p class="notification"></p>
   </div>
 
   <div class="overlay hidden"></div>

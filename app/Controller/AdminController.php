@@ -11,16 +11,21 @@ use App\Model\UserModel;
 use App\Model\UserRole;
 use App\Model\UserStatus;
 use App\View;
+use PDOException;
 
 class AdminController {
   public const ADMIN_LOGIN_SUCCESS_MSG = "Admin logged in successfully";
   public const CREATE_USER_SUCCESS_MSG = "User created successfully";
   public const UPDATE_USER_SUCCESS_MSG = "User updated successfully";
   public const UPDATE_USER_FAILURE_MSG = "Failed to update user";
+  public const DELETE_USER_SUCCESS_MSG = "User deleted successfully";
+  public const DELETE_USER_FAILURE_MSG = "Failed to delete user";
   public const CREATE_MENU_SUCCESS_MSG = "Menu created successfully";
   public const CREATE_MENU_FAILURE_MSG = "Failed to create menu";
   public const UPDATE_MENU_SUCCESS_MSG = "Menu updated successfully";
   public const UPDATE_MENU_FAILURE_MSG = "Failed to update menu";
+  public const DELETE_MENU_SUCCESS_MSG = "Delete menu successfully";
+  public const DELETE_MENU_FAILURE_MSG = "Failed to delete menu";
   protected const SESSION_USER_ID = "user_id";
   protected const SESSION_LAST_GENERATED = "last_generated";
   protected const SESSION_USER_USERNAME = "user_username";
@@ -295,8 +300,49 @@ class AdminController {
     }
   }
 
-  public function deleteMenuByMenuId() {
-    
+  public function deleteMenuByMenuId(): string {
+    try {
+      if (!array_key_exists("menu_id", $_POST)) {
+        throw new BadRequestException();
+      }
+    } catch (BadRequestException $ex) {
+      header("HTTP/1.1 400 Bad Request");
+      return json_encode(static::DELETE_MENU_FAILURE_MSG);
+    }
+    $menuId = filter_input(INPUT_POST, "menu_id", FILTER_VALIDATE_INT);
+    try {
+      if ($menuId === false) {
+        throw new BadQueryException();
+      }
+      MenuModel::deleteByMenuId($menuId);
+      if ($menuId === 0) {
+        throw new BadRequestException();
+      }
+      return json_encode(static::DELETE_MENU_SUCCESS_MSG);
+    } catch (BadRequestException $ex) {
+      header("HTTP/1.1 400 Bad Request");
+      return json_encode(static::DELETE_MENU_FAILURE_MSG);
+    }
+  }
+
+  public static function deleteUserByUserId(): string {
+    try {
+      if (! array_key_exists("user_id", $_POST)) {
+        throw new BadRequestException();
+      }
+      $userId = filter_input(INPUT_POST, "user_id", FILTER_VALIDATE_INT);
+      if ($userId === false) {
+        throw new BadRequestException();
+      }
+      UserModel::deleteByUserId($userId);
+      if ($userId === 0) {
+        throw new BadRequestException();
+      }
+      return json_encode(static::DELETE_USER_SUCCESS_MSG);
+    } catch (BadRequestException $ex) {
+      header("HTTP/1.1 400 Bad Request");
+      return json_encode(static::DELETE_USER_FAILURE_MSG);
+    }
   }
 }
   

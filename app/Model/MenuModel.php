@@ -166,6 +166,10 @@ class MenuModel extends Model {
     return MenuModel::updateByMenuId($this->menuId, $this->menuName, $this->description);
   }
 
+  public function delete(): int {
+    return MenuModel::deleteByMenuId($this->menuId);
+  }
+
   public static function updateByMenuId(int &$menuId, string &$menuName, string &$description): int {
     try {
       App::getDatabaseConnection()->beginTransaction();
@@ -193,15 +197,25 @@ class MenuModel extends Model {
     return $menuId;
   }
 
-  public static function deleteByMenuId(int $menuId) {
+  public static function deleteByMenuId(int &$menuId): int {
     try {
-
+      App::getDatabaseConnection()->beginTransaction();
+      $query = 'DELETE FROM menus WHERE menus.menu_id = :menuId';
+      $stmt = App::getDatabaseConnection()->prepare($query);
+      $stmt->bindValue(":menuId", $menuId);
+      if (! $stmt->execute()) {
+        throw new BadQueryException();
+      }
+      App::getDatabaseConnection()->commit();
     } catch (BadQueryException | PDOException $ex) {
       if (App::getDatabaseConnection()->inTransaction()) {
         App::getDatabaseConnection()->rollBack();
       }
+      $menuId = 0;
     }
+    return $menuId;
   }
+  
 }
 
 

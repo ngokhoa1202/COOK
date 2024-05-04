@@ -114,7 +114,7 @@ const createMenuModalForm = document.querySelector(".create-form");
  * @param {string} url 
  * @param {FormData} formData
  */
-function submitMenuData(formData, url) {
+function submitUserData(formData, url) {
   fetch(url, {
     method: "POST",
     body: formData,
@@ -161,7 +161,7 @@ createMenuModalForm.addEventListener("submit", function (e) {
           const formData = new FormData();
           formData.append("menu_name", validatedMenuName);
           formData.append("description", validatedDescription);
-          submitMenuData(formData, CREATE_MENU_URL);
+          submitUserData(formData, CREATE_MENU_URL);
         }
       })
       .finally(() => {});
@@ -467,7 +467,8 @@ window.addEventListener("load", (e) => {
  * @param {MutationObserver} observer 
  */
 const EDIT_MENU_URL = "/admin/menus/update/id";
-function handleUserTableBodyMutation(mutationRecords, observer) {
+const DELETE_MENU_URL = "/admin/menus/delete/id";
+function handleMenuTableBodyMutation(mutationRecords, observer) {
   /*******EDIT USER************************************************** */
   const editMenuModal = document.querySelector(".edit-menu-modal");
   const editIdInput = document.querySelector("#edit-id-input");
@@ -560,7 +561,7 @@ function handleUserTableBodyMutation(mutationRecords, observer) {
             formData.append("menu_id", validatedId);
             formData.append("menu_name", validatedMenuName);
             formData.append("description", validatedDescription);
-            submitMenuData(formData, EDIT_MENU_URL);
+            submitUserData(formData, EDIT_MENU_URL);
           }
         });
     }
@@ -590,7 +591,8 @@ function handleUserTableBodyMutation(mutationRecords, observer) {
   /******DELETE USER************************************************** */
   const deleteMenuModal = document.querySelector(".delete-menu-modal");
   const closeDeleteUserModalButton = document.querySelector(".btn--close-delete-modal");
-
+  const deleteMenuIdInput = document.querySelector("#delete-id-input");
+  const deleteMenuNameInput = document.querySelector("#delete-menu-name-input"); 
   function closeDeleteMenuModal() {
     deleteMenuModal.classList.add("hidden");
     overlay.classList.add("hidden");
@@ -613,11 +615,27 @@ function handleUserTableBodyMutation(mutationRecords, observer) {
     btn.addEventListener("click", function (ev) {
       ev.preventDefault();
       openDeleteMenuModal();
+      deleteMenuIdInput.value = menus[index].menu_id;
+      deleteMenuNameInput.value = menus[index].menu_name;
     });
   });
-}
+  let validatedMenuId = "";
 
-const tableBodyObserver = new MutationObserver(handleUserTableBodyMutation);
+  const deleteMenuForm = document.querySelector(".delete-form");
+  deleteMenuForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    console.log("submitted");
+    function handleMenuData() {
+      validatedMenuId = deleteMenuIdInput.value;
+      const formData = new FormData();
+      formData.append("menu_id", validatedMenuId);
+      submitUserData(formData, DELETE_MENU_URL);
+    }
+    handleMenuData();
+  });
+} 
+
+const tableBodyObserver = new MutationObserver(handleMenuTableBodyMutation);
 tableBodyObserver.observe(tableBody, {
   attributes: false,
   childList: true,
