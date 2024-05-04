@@ -116,7 +116,7 @@
             </tr>
           </thead>
           <tbody class="tbody">
-
+            <!-- Table data for menus -->
           </tbody>
         </table>
 
@@ -182,16 +182,14 @@
     <button class="btn--close-modal btn--close-create-modal">&times;</button>
     <h2 class="heading-secondary margin-bottom-small">Create menu</h2>
     <form class="modal-form create-form" novalidate>
-      <label class="label" for="email-input">Menu name</label>
+      <label class="label" for="create-menu-name-input">Menu name</label>
       <div class="input-info">
         <input type="text" placeholder="Menu name" class="input" name="menu-name" id="create-menu-name-input">
         <p class="error menu-name-error" id="create-menu-name-error"></p>
       </div>
       <label class="label" for="">Description</label>
       <div class="input-info">
-        <textarea class="textarea create-description-textarea" placeholder="Describe about menu" id="create-description-textarea"
-         rows="15" cols="30" 
-        ></textarea>
+        <textarea class="textarea create-description-textarea" placeholder="Describe about menu" id="create-description-textarea" rows="15" cols="30"></textarea>
         <p class="error description-error" id="create-description-error"></p>
       </div>
 
@@ -199,75 +197,54 @@
     </form>
   </div>
 
-  <div class="modal edit-user-modal hidden">
+  <div class="modal edit-menu-modal hidden">
     <button class="btn--close-modal btn--close-edit-modal">&times;</button>
-    <h2 class="heading-secondary margin-bottom-small">Edit user</h2>
+    <h2 class="heading-secondary margin-bottom-small">Edit menu</h2>
     <form class="modal-form edit-form" novalidate>
       <label class="label" for="id-input">Id</label>
       <div class="input-info">
         <input type="text" placeholder="Id" class="input" name="id" id="edit-id-input" readonly>
         <p class="error id-error" id="edit-id-error"></p>
       </div>
-      <!-- <label class="label" for="username-input">Username</label>
+      <label class="label" for="edit-menu-name-input">Menu name</label>
       <div class="input-info">
-        <input type="text" placeholder="Id" class="input" name="username" id="edit-username-input">
-        <p class="error username-error" id="edit-username-error"></p>
-      </div> -->
-      <label class="label" for="email-input">Email</label>
-      <div class="input-info">
-        <input type="email" placeholder="Email" class="input" name="email" id="edit-email-input">
-        <p class="error email-error" id="edit-email-error"></p>
+        <input type="text" placeholder="Menu name" class="input" name="menu-name" id="edit-menu-name-input">
+        <p class="error menu-name-error" id="edit-menu-name-error"></p>
       </div>
-      <label class="label" for="password-input">Password</label>
+      <label class="label" for="edit-description-textarea">Description</label>
       <div class="input-info">
-        <input type="password" placeholder="********" class="input" name="password" id="edit-password-input">
-        <p class="error password-error" id="edit-password-error"></p>
-      </div>
-      <label class="label" for="confirm-password-input">Confirm password</label>
-      <div class="input-info">
-        <input type="password" placeholder="********" class="input" name="confirm-password" id="edit-confirm-password-input">
-        <p class="error confirm-password-error" id="edit-confirm-password-error"></p>
-      </div>
-      <label class="label" for="avatar-input">Avatar</label>
-      <div class="input-info">
-        <input type="file" name="avatar" class="input avatar-input" name="avatar" id="edit-avatar-input">
+        <textarea class="textarea edit-description-textarea" placeholder="Describe about menu" id="edit-description-textarea" rows="15" cols="30"></textarea>
+        <p class="error description-error" id="edit-description-error"></p>
       </div>
 
-      <label class="label" class="role-select">Role</label>
+      <button type="submit" class="btn btn--submit margin-top-small">Update menu</button>
+  </div>
+
+  <div class="modal delete-menu-modal hidden">
+    <button class="btn--close-modal btn--close-delete-modal">&times;</button>
+    <h2 class="heading-secondary margin-bottom-small">Delete menu</h2>
+    <form class="modal-form delete-form" novalidate>
+      <label class="label" for="id-input">Id</label>
       <div class="input-info">
-        <select class="select select--role" id="edit-role-select">
-          <option class="option" value="">Choose a role&hellip;</option>
-          <option class="option" value="member">member</option>
-          <option class="option" value="admin">admin</option>
-        </select>
-        <p class="error role-error" id="edit-role-error"></p>
+        <input type="text" placeholder="Id" class="input" name="id" id="delete-id-input" readonly>
+      </div>
+      <label class="label" for="delete-menu-name-input">Menu name</label>
+      <div class="input-info">
+        <input type="text" placeholder="Menu name" class="input" name="menu-name" id="delete-menu-name-input" readonly>
       </div>
 
-      <label class="label" class="role-select">Status</label>
-      <div class="input-info">
-        <select class="select select--status" id="edit-status-select">
-          <option class="option" value="">Choose a status&hellip;</option>
-          <option class="option" value="active">active</option>
-          <option class="option" value="inactive">inactive</option>
-        </select>
-        <p class="error status-error" id="edit-status-error"></p>
-      </div>
-      <button type="submit" class="btn btn--submit margin-top-small">Update user</button>
+      <button type="submit" class="btn btn--submit margin-top-small">Delete menu</button>
     </form>
   </div>
 
-  <div class="modal delete-user-modal hidden">
-    <button class="btn--close-modal btn--close-delete-modal">&times;</button>
-    <h2 class="heading-secondary margin-bottom-small">Delete user</h2>
-    <form class="modal-form delete-form" novalidate>
-      <label class="label" for="email-input">Username</label>
-      <p class="delete-info"></p>
+  <div class="modal success-notification-modal hidden">
+    <img src="/assets/img/success.svg" alt="success icon" class="success-icon">
+    <p class="notification"></p>
+  </div>
 
-      <label class="label" for="email-input">Email</label>
-      <p class="delete-info"></p>
-
-      <button type="submit" class="btn btn--submit margin-top-small">Delete user</button>
-    </form>
+  <div class="modal failure-notification-modal hidden">
+    <img src="/assets/img/failure.svg" alt="failure icon" class="failure-icon">
+    <p class="notification"></p>
   </div>
 
   <div class="overlay hidden"></div>

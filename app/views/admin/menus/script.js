@@ -1,12 +1,16 @@
 "use strict";
 
-/**OPEN AND CLOSE MODAL WINDOW WHEN CREATING A NEW USER */
+/**OPEN AND CLOSE MODAL WINDOW WHEN CREATING A NEW MENU */
 const createMenuModal = document.querySelector(".new-menu-modal");
 const overlay = document.querySelector(".overlay");
 
 const openCreateMenuModalButton = document.querySelector(".btn--new-menu");
-const closeCreateMenuModalButton = document.querySelector(".btn--close-create-modal") ;
+const closeCreateMenuModalButton = document.querySelector(".btn--close-create-modal");
 
+const successNotificationModal = document.querySelector(".success-notification-modal");
+const successNotificationMessage = document.querySelector(".success-notification-modal .notification");
+const failureNotificationModal = document.querySelector(".failure-notification-modal");
+const failureNotificationMessage = document.querySelector(".failure-notification-modal .notification");
 
 function openCreateMenuModal() {
   createMenuModal.classList.remove("hidden");
@@ -18,12 +22,43 @@ function closeCreateMenuModal() {
   overlay.classList.add("hidden");
 }
 
+function openSuccessNotificationModal() {
+  successNotificationModal.classList.remove("hidden");
+  overlay.classList.remove("hidden");
+}
+
+function closeSuccessNotificationModal() {
+  successNotificationModal.classList.add("hidden");
+  overlay.classList.add("hidden");
+}
+
+function openFailureNotificationModal() {
+  failureNotificationModal.classList.remove("hidden");
+  overlay.classList.remove("hidden");
+}
+
+function closeFailureNotificationModal() {
+  failureNotificationModal.classList.add("hidden");
+  overlay.classList.add("hidden");
+}
+
 openCreateMenuModalButton.addEventListener("click", (e) => openCreateMenuModal());
 closeCreateMenuModalButton.addEventListener("click", (e) => closeCreateMenuModal());
-overlay.addEventListener("click", (e) => closeCreateMenuModalButton());
+overlay.addEventListener("click", (e) => {
+  closeCreateMenuModal();
+  closeSuccessNotificationModal();
+});
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && ! createMenuModal.classList.contains("hidden")) {
     closeCreateMenuModal();
+  }
+
+  if (e.key === "Escape" && ! successNotificationModal.classList.contains("hidden")) {
+    closeSuccessNotificationModal();
+  }
+
+  if (e.key === "Escape" && ! failureNotificationModal.classList.contains("hidden")) {
+    closeFailureNotificationModal();
   }
 });
 
@@ -41,6 +76,7 @@ const NETWORK_ERROR_MSG = "Your network connection is not stable";
 
 const createMenuNameInput = document.querySelector("#create-menu-name-input");
 const createDescriptionTextArea = document.querySelector("#create-description-textarea");
+const NOTIFICATION_TIMEOUT = 3000;
 
 /**
  * @param {HTMLInputElement} menuNameInput 
@@ -78,45 +114,59 @@ const createMenuModalForm = document.querySelector(".create-form");
  * @param {string} url 
  * @param {FormData} formData
  */
-function submitUserData(formData, url) {
+function submitMenuData(formData, url) {
   fetch(url, {
     method: "POST",
     body: formData,
   })
     .then((response) => {
-      if (!response.ok) {
-        throw new Error(NETWORK_ERROR_MSG);
-      }
       return response.json();
     })
     .then((data) => {
-      getUserForPage(userPageIndex);
-      Notification.requestPermission().then((notificationPermission) => {
-        if (notificationPermission === "granted") {
-          const sucessNotification = new Notification(data, {
-            body: "The user has been successfully created or updated",
-            tag: "success",
-            icon: "/assets/img/success.svg"
-          });
-          
-          sucessNotification.addEventListener("error", function (e) {
-            alert(NETWORK_ERROR_MSG);
-          });
-          sucessNotification.addEventListener("click", function (e) {
-            this.close();
-            window.parent.focus();
-          });
-        }
-      });
+      successNotificationMessage.textContent = data;
+      openSuccessNotificationModal();
+      setTimeout(closeSuccessNotificationModal, NOTIFICATION_TIMEOUT);
+      getMenuForPage(menuPageIndex);
     })
     .catch((error) => {
-      console.log(error.message);
+      failureNotificationMessage.textContent = error;
+      openFailureNotificationModal();
+      setTimeout(closeFailureNotificationModal, NOTIFICATION_TIMEOUT);
     });
 }
 
 createMenuModalForm.addEventListener("submit", function (e) {
   e.preventDefault();
+  const menuNameValidatorPromise = validateMenuName(createMenuNameInput)
+    .then((menuName) => {
+      validatedMenuName = menuName;
+      createMenuNameError.textContent = "";
+    })
+    .catch((msg) => {
+      createMenuNameError.textContent = msg;
+    });
+  const descriptionValidatorPromise = validateDescription(createDescriptionTextArea)
+    .then((description) => {
+      validatedDescription = description;
+      createDescriptionError.textContent = "";
+    })
+    .catch((msg) => {
+      createDescriptionError.textContent = msg;
+    });
   
+  function handleMenuData() {
+    Promise.all([menuNameValidatorPromise, descriptionValidatorPromise])
+      .then(() => {
+        if (validatedMenuName) {
+          const formData = new FormData();
+          formData.append("menu_name", validatedMenuName);
+          formData.append("description", validatedDescription);
+          submitMenuData(formData, CREATE_MENU_URL);
+        }
+      })
+      .finally(() => {});
+  }
+  handleMenuData();
 });
 
 /*********************************************************
@@ -167,7 +217,7 @@ createDescriptionTextArea.addEventListener("focus", function (e) {
     })
     .catch((msg) => {
       createDescriptionError.textContent = msg;
-    })
+    });
 });
 createDescriptionTextArea.addEventListener("input", function (e) {
   validateDescription(this)
@@ -198,8 +248,7 @@ const summaryFigureOfMenus = document.querySelector(".summary-figure--menu");
 const summaryFigureOfBestSellerMenu = document.querySelector(".summary-figure--bestseller-menu");
 const summaryFigureOfHighestRatedMenu = document.querySelector(".summary-figure--highest-rated-menu");
 const GET_MENU_FIGURE_URL = "/admin/menus/total";
-const GET_MEMBER_FIGURE_URL = "/admin/users/members/total";
-const GET_ACTIVE_FIGURE_URL = "/admin/users/active/total";
+
 
 async function getSummaryFigureOfMenu() {
   await fetch(GET_MENU_FIGURE_URL, {
@@ -215,56 +264,13 @@ async function getSummaryFigureOfMenu() {
     console.log(error.message);
   })
 }
-getSummaryFigureOfMenu();
-setInterval(getSummaryFigureOfMenu, SUMMARY_FIGURE_INTERVAL);
-
-async function getMemberSummaryFigure() {
-  await fetch(GET_MEMBER_FIGURE_URL, {
-    method: "GET",
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(NETWORK_ERROR_MSG);
-      }
-      return response.json();
-    })
-    .then((data) => {
-      summaryFigureOfBestSellerMenu.textContent = data;
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
-}
-getMemberSummaryFigure();
-setInterval(getMemberSummaryFigure, SUMMARY_FIGURE_INTERVAL);
-
-async function getActiveUserSummaryFigure() {
-  await fetch(GET_ACTIVE_FIGURE_URL, {
-    method: "GET",
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(NETWORK_ERROR_MSG);
-      }
-      return response.json();
-    })
-    .then((data) => {
-      summarFigureOfActiveUsers.textContent = data;
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
-}
-getActiveUserSummaryFigure();
-setInterval(getActiveUserSummaryFigure, SUMMARY_FIGURE_INTERVAL);
-
 
 /*********************************************************
  *FETCH SUMMARY FIGURE FROM SERVER************************ 
  * *******************************************************/
-const GET_USER_URL = "/admin/users/list";
-const USER_LENGTH = 20;
-let userPageIndex = 1;
+const GET_MENU_URL = "/admin/menus/list";
+const MENU_LIST_LENGTH = 10;
+let menuPageIndex = 1;
 
 function removeOldUserTableData() {
   let tableRow = null;
@@ -274,12 +280,18 @@ function removeOldUserTableData() {
 }
 
 const tableBody = document.querySelector(".tbody");
-let users = null;
-async function getUserForPage(pageIndex) {
+let menus = [];
+
+/**
+ * 
+ * @param {int} pageIndex
+ * @returns {Promise<void>}
+ */
+async function getMenuForPage(pageIndex) {
   await fetch(
-    GET_USER_URL + "?" + new URLSearchParams({
+    GET_MENU_URL + "?" + new URLSearchParams({
       page: pageIndex,
-      length: USER_LENGTH
+      length: MENU_LIST_LENGTH
     }), 
     {
       method: "GET"
@@ -290,30 +302,18 @@ async function getUserForPage(pageIndex) {
       }
       return response.json();
     }).then((data) => {
-      users = data;
+      menus = data;
       removeOldUserTableData();  
-      users.forEach((user) => {
+      menus.forEach((menu) => {
         const tableRow = document.createElement("tr");
 
         const tableDataForId = document.createElement("td");
-        tableDataForId.textContent = user.user_id;
+        tableDataForId.textContent = menu.menu_id;
         tableRow.appendChild(tableDataForId);
 
-        const tableDataForEmail = document.createElement("td");
-        tableDataForEmail.textContent = user.email;
-        tableRow.appendChild(tableDataForEmail);
-
-        const tableDataForAvatar = document.createElement("td");
-        tableDataForAvatar.textContent = user.avatar;
-        tableRow.appendChild(tableDataForAvatar);
-
-        const tableDataForRole = document.createElement("td");
-        tableDataForRole.textContent = user.role;
-        tableRow.appendChild(tableDataForRole);
-
-        const tableDataForStatus = document.createElement("td");
-        tableDataForStatus.textContent = user.status;
-        tableRow.appendChild(tableDataForStatus);
+        const tableDataForMenuName = document.createElement("td");
+        tableDataForMenuName.textContent = menu.menu_name;
+        tableRow.appendChild(tableDataForMenuName);
 
         const tableDataForAction = document.createElement("td");
         const actionForm = document.createElement("div");
@@ -343,15 +343,13 @@ async function getUserForPage(pageIndex) {
       console.log(error.message);
     })
 }
-const USER_LIST_INTERVAL = 10000;
-getUserForPage(userPageIndex);
-setInterval(() => getUserForPage(userPageIndex), USER_LIST_INTERVAL);
+const MENU_LIST_INTERVAL = 10000;
+getMenuForPage(menuPageIndex);
+setInterval(() => getMenuForPage(menuPageIndex), MENU_LIST_INTERVAL);
 /*********************************************************
  *PAGINATION************************ 
  * *******************************************************/
 const pagination = document.querySelector(".pagination");
-const USER_LIST_LENGTH = 20;
-
 
 const MAX_PAGINATION_LENGTH = 5;
 /**
@@ -360,21 +358,21 @@ const MAX_PAGINATION_LENGTH = 5;
  * @returns {void}
  */
 function renderPageIndexForPagination(offset = 1) {
-  if (numberOfUserPages === 0) {
+  if (numberOfMenuPages === 0) {
     return;
   }
   if (offset < 1) {
     offset = 1;
   }
   const allPaginationItems = document.querySelectorAll(".pagination-link--item");
-  if (allPaginationItems.length > numberOfUserPages && numberOfUserPages > 0) {
-    for (let i = numberOfUserPages + 1; i <= allPaginationItems.length; ++i) {
+  if (MAX_PAGINATION_LENGTH > numberOfMenuPages && numberOfMenuPages > 0) {
+    for (let i = numberOfMenuPages; i < MAX_PAGINATION_LENGTH; ++i) {
       allPaginationItems[i].classList.add("hidden");
     }
     return;
   }
   
-  let paginationLength = Math.min(MAX_PAGINATION_LENGTH, numberOfUserPages - offset + 1);
+  let paginationLength = Math.min(MAX_PAGINATION_LENGTH, numberOfMenuPages - offset + 1);
   for (let i = 0; i < paginationLength; ++i) {
     allPaginationItems[i].classList.remove("hidden");
     allPaginationItems[i].textContent = offset + i;
@@ -385,15 +383,15 @@ function renderPageIndexForPagination(offset = 1) {
   }
 }
 
-const NUMBER_OF_USER_PAGES_URL = "/admin/users/pages/total";
-let numberOfUserPages = 0;
+const NUMBER_OF_MENU_PAGES_URL = "/admin/menus/pages/total";
+let numberOfMenuPages = 0;
 
-async function getNumberOfUserPages() {
-  await fetch(
-    NUMBER_OF_USER_PAGES_URL +
+async function getNumberOfMenuPages() {
+  await fetch(  
+    NUMBER_OF_MENU_PAGES_URL +
       "?" +
       new URLSearchParams({
-        length: USER_LIST_LENGTH,
+        length: MENU_LIST_LENGTH,
       }),
     {
       method: "GET",
@@ -406,7 +404,7 @@ async function getNumberOfUserPages() {
       return response.json();
     })
     .then((data) => {
-      numberOfUserPages = data;
+      numberOfMenuPages = data;
     })
     .catch((error) => {
       console.log(error.message);
@@ -416,7 +414,7 @@ async function getNumberOfUserPages() {
 
 window.addEventListener("DOMContentLoaded", function (e) {
 
-  getNumberOfUserPages().then(() => {
+  getNumberOfMenuPages().then(() => {
     renderPageIndexForPagination();
   });
 });
@@ -434,8 +432,8 @@ window.addEventListener("load", (e) => {
       ev.preventDefault();
       removeAllActivePaginationItems();
       this.classList.add("pagination-link--active");
-      userPageIndex = Number.parseInt(item.textContent);
-      getUserForPage(userPageIndex);
+      menuPageIndex = Number.parseInt(item.textContent);
+      getMenuForPage(menuPageIndex);
     })
   });
 
@@ -451,7 +449,7 @@ window.addEventListener("load", (e) => {
     } else if (item.id === "start-link") {
       offset = 1;
     } else {
-      offset = Math.floor(numberOfUserPages / MAX_PAGINATION_LENGTH) * MAX_PAGINATION_LENGTH + 1;
+      offset = Math.floor(numberOfMenuPages / MAX_PAGINATION_LENGTH) * MAX_PAGINATION_LENGTH + 1;
     }
     item.addEventListener("click", function (ev) {
       ev.preventDefault();
@@ -461,294 +459,152 @@ window.addEventListener("load", (e) => {
 });
 
 /*********************************************************
- *EDIT/DELETE USER INFO************************ 
+ *EDIT/DELETE MENU INFO************************ 
  * *******************************************************/
 /**
  * 
  * @param {Array<MutationRecord>} mutationRecords 
  * @param {MutationObserver} observer 
  */
+const EDIT_MENU_URL = "/admin/menus/update/id";
 function handleUserTableBodyMutation(mutationRecords, observer) {
   /*******EDIT USER************************************************** */
+  const editMenuModal = document.querySelector(".edit-menu-modal");
   const editIdInput = document.querySelector("#edit-id-input");
-  const editEmailInput = document.querySelector("#edit-email-input");
-  const editPasswordInput = document.querySelector("#edit-password-input");
-  const editConfirmPasswordInput = document.querySelector("#edit-confirm-password-input");
-  const editAvatarInput = document.querySelector("#edit-avatar-input");
-  const editRoleSelect = document.querySelector("#edit-role-select");
-  const editStatusSelect = document.querySelector("#edit-status-select");
-
-  const editEmailError = document.querySelector("#edit-email-error");
-  const editPasswordError = document.querySelector("#edit-password-error");
-  const editConfirmPasswordError = document.querySelector("#edit-confirm-password-error");
-  const editRoleError = document.querySelector("#edit-role-error");
-  const editStatusError = document.querySelector("#edit-status-error");
-  const editUserModal = document.querySelector(".edit-user-modal");
+  const editMenuNameInput = document.querySelector("#edit-menu-name-input");
+  const editDescriptionTextarea = document.querySelector("#edit-description-textarea");
   const allEditButtons = document.querySelectorAll(".btn--edit");
-  
-  const EDT_USER_URL = "/admin/users/id";
   allEditButtons.forEach((btn, index) => {
     btn.addEventListener("click", function (ev) {
       ev.preventDefault();
-      editUserModal.classList.remove("hidden");
+      editMenuModal.classList.remove("hidden");
       overlay.classList.remove("hidden");
-      editIdInput.value = users[index].user_id;
-      editEmailInput.value = users[index].email;
-      // editAvatarInput.v = users[index].avatar;
-      editRoleSelect.value = users[index].role;
-      editStatusSelect.value = users[index].status;
+      editIdInput.value = menus[index].menu_id;
+      editMenuNameInput.value = menus[index].menu_name;
+      editDescriptionTextarea.innerHTML = menus[index].description;
     })
   });
-
-  let validatedEmail = "";
-  let validatedPassword = "";
-  let matchedPassword = false;
-  let validatedAvatar = "";
-  let validatedRole = "";
-  let validatedStatus = "";
-
-  editEmailInput.addEventListener("focus", function (ev) {
-    validateEmail(this)
-      .then((email) => {
-        validatedEmail = email;
-        editEmailError.textContent = "";
+  
+  let validatedMenuName = "";
+  let validatedDescription = "";
+  const editMenuNameError =  document.querySelector("#edit-menu-name-error");
+  editMenuNameInput.addEventListener("focus", function (e) {
+    validateMenuName(this)
+      .then((menuName) => {
+        validatedMenuName = menuName;
+        editMenuNameError.textContent = "";
       })
       .catch((msg) => {
-        editEmailError.textContent = msg;
-      })
-      .finally(() => {});
+        editMenuNameError.textContent = msg;
+      });
   });
-  editEmailInput.addEventListener("input", function (ev) {
-    validateEmail(this)
-      .then((email) => {
-        validatedEmail = email;
-        editEmailError.textContent = "";
+  editMenuNameInput.addEventListener("input", function (e) {
+    validateMenuName(this)
+      .then((menuName) => {
+        validatedMenuName = menuName;
+        editMenuNameError.textContent = "";
       })
       .catch((msg) => {
-        editEmailError.textContent = msg;
-      })
-      .finally(() => {});
+        editMenuNameError.textContent = msg;
+      });
   });
-  editEmailInput.addEventListener("focusout", function (ev) {
-    validateEmail(this)
-      .then((email) => {
-        validatedEmail = email;
-        editEmailError.textContent = "";
+  editMenuNameInput.addEventListener("focusout", function (e) {
+    validateMenuName(this)
+      .then((menuName) => {
+        validatedMenuName = menuName;
+        editMenuNameError.textContent = "";
       })
       .catch((msg) => {
-        editEmailError.textContent = msg;
-      })
-      .finally(() => {});
-  });
-
-  editPasswordInput.addEventListener("focus", function (ev) {
-    validatePassword(this, true)
-      .then((password) => {
-        validatedPassword = password;
-        editPasswordError.textContent = "";
-      })
-      .catch((msg) => {
-        editPasswordError.textContent = msg;
-      })
-      .finally(() => {});
-  });
-
-  editPasswordInput.addEventListener("input", function (ev) {
-    validatePassword(this, true)
-      .then((password) => {
-        validatedPassword = password;
-        editPasswordError.textContent = "";
-      })
-      .catch((msg) => {
-        editPasswordError.textContent = msg;
-      })
-      .finally(() => {});
-  });
-
-  editPasswordInput.addEventListener("focusout", function (ev) {
-    validatePassword(this, true)
-      .then((password) => {
-        validatedPassword = password;
-        editPasswordError.textContent = "";
-      })
-      .catch((msg) => {
-        editPasswordError.textContent = msg;
-      })
-      .finally(() => {});
-  });
-
-  editConfirmPasswordInput.addEventListener("focus", function (ev) {
-    validateConfirmPassword(this, editPasswordInput, true)
-      .then((isMatched) => {
-        matchedPassword = isMatched;
-        editConfirmPasswordError.textContent = "";
-      })
-      .catch((msg) => {
-        editConfirmPasswordError.textContent = msg;
-      })
-      .finally(() => {});
-  });
-
-  editConfirmPasswordInput.addEventListener("input", function (ev) {
-    validateConfirmPassword(this, editPasswordInput, true)
-      .then((isMatched) => {
-        matchedPassword = isMatched;
-        editConfirmPasswordError.textContent = "";
-      })
-      .catch((msg) => {
-        editConfirmPasswordError.textContent = msg;
-      })
-      .finally(() => {});
-  });
-
-  editConfirmPasswordInput.addEventListener("focusout", function (ev) {
-    validateConfirmPassword(this, editPasswordInput, true)
-      .then((isMatched) => {
-        matchedPassword = isMatched;
-        editConfirmPasswordError.textContent = "";
-      })
-      .catch((msg) => {
-        editConfirmPasswordError.textContent = msg;
-      })
-      .finally(() => {});
-  });
-
-  editRoleSelect.addEventListener("focus", function (ev) {
-    validateRole(this)
-      .then((role) => {
-        validatedRole = role;
-        editRoleError.textContent = "";
-      })
-      .catch((msg) => {
-        editEmailError.textContent = msg;
-      })
-      .finally(() => {});
-  });
-
-  editRoleSelect.addEventListener("input", function (ev) {
-    validateRole(this)
-      .then((role) => {
-        validatedRole = role;
-        editRoleError.textContent = "";
-      })
-      .catch((msg) => {
-        editEmailError.textContent = msg;
-      })
-      .finally(() => {});
-  });
-
-  editRoleSelect.addEventListener("focusout", function (ev) {
-    validateRole(this)
-      .then((role) => {
-        validatedRole = role;
-        editRoleError.textContent = "";
-      })
-      .catch((msg) => {
-        editEmailError.textContent = msg;
-      })
-      .finally(() => {});
-  });
-
-  const editUserForm = document.querySelector(".edit-form");
-  editUserForm.addEventListener("submit", function (ev) {
-    ev.preventDefault();
-    const emailValidatorPromise = validateEmail(editEmailInput)
-      .then((email) => {
-        validatedEmail = email;
-        editEmailError.textContent = "";
-      })
-      .catch((msg) => {
-        editEmailError.textContent = msg;
-      })
-      .finally(() => {});
-    const passwordValidatorPromise = validatePassword(editPasswordInput, true)
-      .then((password) => {
-        validatedPassword = password;
-        editPasswordError.textContent = "";
-      })
-      .catch((msg) => {
-        editPasswordError.textContent = msg;
-      })
-      .finally(() => {});
-    const confirmPasswordValidatorPromise = validateConfirmPassword(editConfirmPasswordInput, editPasswordInput, true)
-      .then((isMatched) => {
-        matchedPassword = isMatched;
-        editConfirmPasswordError.textContent = "";
-      })
-      .catch((msg) => {
-        editConfirmPasswordError.textContent = msg;
-      })
-      .finally(() => {});
-    const roleValidatorPromise = validateRole(editRoleSelect)
-      .then((role) => {
-        validatedRole = role;
-        editRoleError.textContent = "";
-      })
-      .catch((msg) => {
-        editRoleError.textContent = msg;
-      })
-      .finally(() => {});
-    const statusValidatorPromise = validateStatus(editStatusSelect)
-      .then((_status) => {
-        validatedStatus = _status;
-        editStatusError.textContent = "";
-      })
-      .catch((msg) => {
-        editStatusError.textContent = msg;
-      })
-      .finally(() => {});
-    
-    function handleUserData() {
-      Promise.all([emailValidatorPromise, passwordValidatorPromise, confirmPasswordValidatorPromise, 
-      roleValidatorPromise, statusValidatorPromise])
-        .then(() => {
-          let validatedId = editIdInput.value;
-          
-          const formData = new FormData();
-          formData.append("username", validatedEmail);
-          formData.append("user_id", validatedId);
-          formData.append("email", validatedEmail);
-          formData.append("password", validatedPassword);
-          formData.append("confirm_password", validatedPassword);
-          formData.append("role", validatedRole);
-          formData.append("status", validatedStatus);
-          formData.append("avatar", validatedAvatar);
-          if (! editUserModal.classList.contains("hidden")) {
-            editUserModal.classList.add("hidden");
-            overlay.classList.add("hidden");
-          }
-          submitUserData(formData, EDT_USER_URL);
-        })
-        .catch(() => {})
-        .finally(() => {});
-    }
-    handleUserData();
+        editMenuNameError.textContent = msg;
+      });
   });
   
-  const closeEditUserModalButton = document.querySelector(".btn--close-edit-modal");
-  closeEditUserModalButton.addEventListener("click", function (ev) {
-    editUserModal.classList.add("hidden");
+  const editDescriptionError = document.querySelector("#edit-description-error");
+  editDescriptionTextarea.addEventListener("focus", function (e) {
+    validateDescription(this)
+      .then((description) => {
+        validatedDescription = description;
+        editDescriptionError.textContent = "";
+      })
+      .catch((msg) => {
+        editDescriptionError.textContent = msg;
+      });
+  });
+
+  const editMenuForm = document.querySelector(".edit-form");
+  editMenuForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const menuNameValidatorPromise = validateMenuName(editMenuNameInput)
+      .then((menuName) => {
+        validatedMenuName = menuName;
+        editMenuNameError.textContent = "";
+      })
+      .catch((msg) => {
+        editMenuNameError.textContent = msg;
+      });
+    const descriptionValidatorPromise = validateDescription(editDescriptionTextarea)
+      .then((description) => {
+        validatedDescription = description;
+        editDescriptionError.textContent = "";
+      })
+      .catch((msg) => {
+        editDescriptionError.textContent = msg;
+      });
+    
+    function handleMenuData() {
+      let validatedId = editIdInput.value;
+      Promise.all([menuNameValidatorPromise, descriptionValidatorPromise])
+        .then(() => {
+          if (validatedId && validatedMenuName) {
+            const formData = new FormData();
+            formData.append("menu_id", validatedId);
+            formData.append("menu_name", validatedMenuName);
+            formData.append("description", validatedDescription);
+            submitMenuData(formData, EDIT_MENU_URL);
+          }
+        });
+    }
+    handleMenuData();
+  });
+
+  function closeEditMenuModal() {
+    editMenuModal.classList.add("hidden");
     overlay.classList.add("hidden");
+  }
+  
+  const closeMenuModalButton = document.querySelector(".btn--close-edit-modal");
+  closeMenuModalButton.addEventListener("click", function (ev) {
+    closeEditMenuModal();
+  });
+
+  overlay.addEventListener("click", (ev) => {
+    closeEditMenuModal();
   });
   
   document.addEventListener("keydown", (ev) => {
-    if (ev.key === "Escape" && ! editUserModal.classList.contains("hidden")) {
-      editUserModal.classList.add("hidden");
-      overlay.classList.add("hidden");
+    if (ev.key === "Escape" && ! editMenuModal.classList.contains("hidden")) {
+      closeEditMenuModal();
     }
   });
 
   /******DELETE USER************************************************** */
-  const deleteUserModal = document.querySelector(".delete-user-modal");
+  const deleteMenuModal = document.querySelector(".delete-menu-modal");
   const closeDeleteUserModalButton = document.querySelector(".btn--close-delete-modal");
-  closeDeleteUserModalButton.addEventListener("click", function (ev) {
-    deleteUserModal.classList.add("hidden");
+
+  function closeDeleteMenuModal() {
+    deleteMenuModal.classList.add("hidden");
     overlay.classList.add("hidden");
-  });
+  }
+
+  function openDeleteMenuModal() {
+    deleteMenuModal.classList.remove("hidden");
+    overlay.classList.remove("hidden");
+  }
+
+  closeDeleteUserModalButton.addEventListener("click", (e) => closeDeleteMenuModal());
   document.addEventListener("keydown", (ev) => {
-    if (ev.key === "Escape" && ! deleteUserModal.classList.contains("hidden")) {
-      deleteUserModal.classList.add("hidden");
-      overlay.classList.add("hidden");
+    if (ev.key === "Escape" && ! deleteMenuModal.classList.contains("hidden")) {
+      closeDeleteMenuModal();
     }
   });
 
@@ -756,8 +612,7 @@ function handleUserTableBodyMutation(mutationRecords, observer) {
   allDeleteButtons.forEach((btn, index) => {
     btn.addEventListener("click", function (ev) {
       ev.preventDefault();
-      deleteUserModal.classList.remove("hidden");
-      overlay.classList.remove("hidden");
+      openDeleteMenuModal();
     });
   });
 }
