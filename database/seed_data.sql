@@ -38,8 +38,6 @@ VALUES
 
 INSERT INTO users (username, email, password)
 VALUES 
-  ('user2', 'user2@example.com', 'password123'),
-  ('user3', 'user3@example.com', 'password123'),
   ('user4', 'user4@example.com', 'password123'),
   ('user5', 'user5@example.com', 'password123'),
   ('user6', 'user6@example.com', 'password123'),
@@ -211,7 +209,7 @@ INSERT INTO nutritions (serve_id, typical_values, per_100g, per_portion)
 VALUES (1, 'Calories: 500kcal, Protein: 30g, Fat: 20g, Carbs: 50g', 'Calories: 250kcal, Protein: 15g, Fat: 10g, Carbs: 25g', 'Calories: 500kcal, Protein: 30g, Fat: 20g, Carbs: 50g'),
        (2, 'Calories: 600kcal, Protein: 40g, Fat: 30g, Carbs: 60g', 'Calories: 300kcal, Protein: 20g, Fat: 15g, Carbs: 30g', 'Calories: 600kcal, Protein: 40g, Fat: 30g, Carbs: 60g'),
        (3, 'Calories: 450kcal, Protein: 10g, Fat: 25g, Carbs: 50g', 'Calories: 112.5kcal, Protein: 2.5g, Fat: 6.25g, Carbs: 12.5g', 'Calories: 450kcal, Protein: 10g, Fat: 25g, Carbs: 50g'),
-       (4, 'Calories: 350kcal, Protein: 5g, Fat: 15g, Carbs: 45g', 'Calories: 87.5kcal, Protein: 1.25g, Fat: 3.75g, Carbs: 11.25g', 'Calories: 400kcal, Protein: 20g, Fat: 35g, Carbs: 40g'),
+       (4, 'Calories: 350kcal, Protein: 5g, Fat: 15g, Carbs: 45g', 'Calories: 87.5kcal, Protein: 1.25g, Fat: 3.75g, Carbs: 11.25g', 'Calories: 400kcal, Protein: 20g, Fat: 35g, Carbs: 40g');
 
 INSERT INTO ingredients (serve_id, ingredient_name, percentage)
 VALUES (1, 'Beef patty', 60),
@@ -253,7 +251,7 @@ VALUES (1, 1, "This cheeseburger is amazing! The patty is so juicy and the chees
        (1, 3, "This chocolate cake is heaven! It's so rich and decadent.", '2024-04-27 08:07:00', '2024-04-27 08:07:00', 15),
        (2, 3, "This chocolate cake is a must-try! It's the perfect dessert for any occasion.", '2024-04-27 08:07:00', '2024-04-27 08:07:00', 7),
        (3, 4, "This apple pie is so good! The crust is flaky and the filling is sweet and tart.", '2024-04-27 08:07:00', '2024-04-27 08:07:00', 9),
-       (1, 4, "I love this apple pie! It's a classic American dessert done right.", '2024-04-27 08:07:00', '2024-04-27 08:07:00', 5),
+       (1, 4, "I love this apple pie! It's a classic American dessert done right.", '2024-04-27 08:07:00', '2024-04-27 08:07:00', 5);
 
 INSERT INTO orders (user_id, pre_total_cost, promotion_cost, delivery_cost, final_cost, delivery_date, leave_order_when_absent, payment_method)
 VALUES (1, 250000, 50000, 20000, 220000, '2024-04-25', 'Yes', 'Cash on delivery'),

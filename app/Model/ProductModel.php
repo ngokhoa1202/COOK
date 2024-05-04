@@ -28,7 +28,7 @@ class ProductModel extends Model {
     $this->description = $description;
   }
 
-  public static function make(int $typeId, string $productName, string $description): ProductModel {
+  public static function make(int $typeId, string $productName, string $description): static {
     return new ProductModel($typeId, $productName, $description);
   }
 
@@ -92,7 +92,7 @@ class ProductModel extends Model {
     }
   }
 
-  public function delete(int $productId): bool {
+  public static function delete(int $productId): bool {
       try {
           $query = "DELETE FROM products WHERE product_id = :productId";
           $stmt = App::getDatabaseConnection()->prepare($query);
@@ -103,7 +103,7 @@ class ProductModel extends Model {
       }
   }
 
-  public function updateProduct(int $productId, string $productName, string $description): bool {
+  public static function updateProduct(int $productId, string $productName, string $description): bool {
     try {
         $query = "UPDATE products SET product_name = :productName, description = :description WHERE product_id = :productId";
         $stmt = App::getDatabaseConnection()->prepare($query);
