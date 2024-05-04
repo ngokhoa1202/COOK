@@ -32,12 +32,15 @@ $router
   ->post("/admin/login", [\App\Controller\AdminController::class, "login"])
   ->get("/admin/users", [\App\Controller\AdminController::class, "getAdminUsersView"])
   ->get("/admin/users/id", [\App\Controller\AdminController::class, "getUserByUserId"])
+  ->post("/admin/users/id", [\App\Controller\AdminController::class, "updateUserByUserId"])
   ->get("/admin/users/list", [\App\Controller\AdminController::class, "getUserForOnePage"])
   ->get("/admin/users/total", [\App\Controller\AdminController::class, "getNumberOfUsers"])
   ->get("/admin/users/pages/total", [\App\Controller\AdminController::class, "getNumberOfUserPages"])
   ->get("/admin/users/members/total", [\App\Controller\AdminController::class, "getNumberOfMembers"])
   ->get("/admin/users/active/total", [\App\Controller\AdminController::class, "getNumberOfActiveUsers"])
   ->post("/admin/users/new", [\App\Controller\AdminController::class, "createUser"])
+  ->get("/admin/menus", [\App\Controller\AdminController::class, "getAdminMenusView"])
+  ->get("/admin/menus/total", [\App\Controller\AdminController::class, "getNumberOfMenus"])
   ;
   
 $config = new Configuration($_ENV);

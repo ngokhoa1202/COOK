@@ -35,7 +35,7 @@ class TypeModel extends Model {
       if (! $stmt->execute()) {
         throw new BadQueryException();
       }
-      $this->typeId = $this->database->lastInsertId();
+      $this->typeId = (int) $this->database->lastInsertId();
 
       $this->database->commit();
     } catch (PDOException | BadQueryException $ex) {

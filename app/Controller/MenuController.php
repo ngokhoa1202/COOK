@@ -19,7 +19,7 @@ class MenuController {
   public const CREATE_TYPE_FAILURE_MSG = "Failed to create type";
 
   public function index(): string {
-    return View::make("/menu");
+    return View::make("/menus");
   }
 
   public function createMenu(): string {

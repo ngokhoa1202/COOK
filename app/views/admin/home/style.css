@@ -3,6 +3,11 @@
   src: url("/assets/fonts/GillSansW01Medium.woff2") format("woff");
 }
 
+@font-face {
+  font-family: "Inter";
+  src: url("/assets/fonts/Inter-VariableFont_slnt,wght.ttf") format("ttf");
+}
+
 * {
   margin: 0;
   padding: 0;

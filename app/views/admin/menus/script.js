@@ -1,29 +1,29 @@
 "use strict";
 
 /**OPEN AND CLOSE MODAL WINDOW WHEN CREATING A NEW USER */
-const newUserModal = document.querySelector(".new-user-modal");
+const createMenuModal = document.querySelector(".new-menu-modal");
 const overlay = document.querySelector(".overlay");
 
-const openNewUserModalBtn = document.querySelector(".btn--new-user");
-const closeNewUserModalBtn = document.querySelector(".btn--close-create-modal");
+const openCreateMenuModalButton = document.querySelector(".btn--new-menu");
+const closeCreateMenuModalButton = document.querySelector(".btn--close-create-modal") ;
 
-function openNewUserModal() {
 
-  newUserModal.classList.remove("hidden");
+function openCreateMenuModal() {
+  createMenuModal.classList.remove("hidden");
   overlay.classList.remove("hidden");
 }
 
-function closeNewUserModal() {
-  newUserModal.classList.add("hidden");
+function closeCreateMenuModal() {
+  createMenuModal.classList.add("hidden");
   overlay.classList.add("hidden");
 }
 
-openNewUserModalBtn.addEventListener("click", (e) => openNewUserModal());
-closeNewUserModalBtn.addEventListener("click", (e) => closeNewUserModal());
-overlay.addEventListener("click", (e) => closeNewUserModal());
+openCreateMenuModalButton.addEventListener("click", (e) => openCreateMenuModal());
+closeCreateMenuModalButton.addEventListener("click", (e) => closeCreateMenuModal());
+overlay.addEventListener("click", (e) => closeCreateMenuModalButton());
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && ! newUserModal.classList.contains("hidden")) {
-    closeNewUserModal();
+  if (e.key === "Escape" && ! createMenuModal.classList.contains("hidden")) {
+    closeCreateMenuModal();
   }
 });
 
@@ -31,135 +31,49 @@ document.addEventListener("keydown", (e) => {
  * VALIDATE AND SEND USER DATA**************************** 
  * *******************************************************/
 
-const CREATE_USER_URL = "/admin/users/new";
-const MIN_PASSWORD_LENGTH = 8;
-const EMAIL_PATTERN =
-  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-/* password has at least 8 characters which contain at least one numeric digit and a special character */
-const PASSWORD_PATTERN = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
-
-const REQUIRED_EMAIL_MSG = "Email is required";
-const WRONG_EMAIL_PATTERN = "Wrong email pattern";
-const REQUIRED_PASSWORD_MSG = "Password is required";
-const REQUIRED_CONFIRM_PASSWORD_MSG = "Confirm password is required";
-const WRONG_PASSWORD_PATTERN_MSG = "Wrong password pattern";
-const TOO_SHORT_PASSWORD_MSG = "At least 8 characters for password";
-const WRONG_CONFIRM_PASSWORD_MSG = "Wrong connfirmed password";
-const REQUIRED_ROLE_MSG = "Role is required";
-const REQUIRED_STATUS_MSG = "Status is required";
-const ROLE_VALUES = ["admin", "member"];
-const STATUS_VALUES = ["active", "inactive"];
-const WRONG_ROLE_MSG = "Wrong role value";
-const WRONG_STATUS_MSG = "Wrong status value";
+const CREATE_MENU_URL = "/admin/menus/new";
+const MENU_NAME_PATTERN = /^[a-zA-Z][a-zA-Z0-9_\s]+$/;
+const WRONG_MENU_NAME_PATTERN_MSG = "Wrong menu name pattern";
+const REQUIRED_MENU_NAME_MSG = "Menu name is required";
+const MAX_LENGTH_DESCRIPTION = 1000;
+const TOO_LONG_DESCRIPTION_MSG = "Description is too long";
 const NETWORK_ERROR_MSG = "Your network connection is not stable";
 
-const createEmailInput = document.querySelector("#create-email-input");
-
+const createMenuNameInput = document.querySelector("#create-menu-name-input");
+const createDescriptionTextArea = document.querySelector("#create-description-textarea");
 
 /**
- * @param {HTMLInputElement} emailInput 
- * @returns {Promise}
+ * @param {HTMLInputElement} menuNameInput 
+ * @returns {Promise<string>} 
  */
-function validateEmail(emailInput) {
+function validateMenuName(menuNameInput) {
   return new Promise((resolve, reject) => {
-    if (!emailInput.value) {
-      reject(REQUIRED_EMAIL_MSG);
-    } else if (!emailInput.value.match(EMAIL_PATTERN)) {
-      reject(WRONG_EMAIL_PATTERN);
+    if (!menuNameInput.value) {
+      reject(REQUIRED_MENU_NAME_MSG);
+    } else if (!menuNameInput.value.match(MENU_NAME_PATTERN)) {
+      reject(WRONG_MENU_NAME_PATTERN_MSG);
     } else {
-      resolve(emailInput.value);
-    }
-  });
-}
-
-
-const createPasswordInput = document.querySelector("#create-password-input");
-/**
- * @param {HTMLInputElement} passwordInput
- * @param {boolean} [empty=false]
- * @returns {Promise}
- */
-function validatePassword(passwordInput, empty = false) {
-  return new Promise((resolve, reject) => {
-    if (empty && !passwordInput.value) {
-      resolve("");
-    } else if (!passwordInput.value) {
-      reject(REQUIRED_PASSWORD_MSG);
-    } else if (passwordInput.value.length < MIN_PASSWORD_LENGTH) {
-      reject(TOO_SHORT_PASSWORD_MSG);
-    } else if (!passwordInput.value.match(PASSWORD_PATTERN)) {
-      reject(WRONG_PASSWORD_PATTERN_MSG);
-    } else {
-      resolve(passwordInput.value);
-    }
-  });
-}
-
-const createConfirmPasswordInput = document.querySelector("#create-confirm-password-input");
-/**
- * @param {HTMLInputElement} confirmPasswordInput
- * @param {HTMLInputElement} passwordInput
- * @param {boolean} [empty=false]
- * @returns {Promise}
- */
-function validateConfirmPassword(confirmPasswordInput, passwordInput, empty = false) {
-  return new Promise((resolve, reject) => {
-    if (empty && !confirmPasswordInput.value && !passwordInput.value) {
-      resolve("");
-    } else if (!confirmPasswordInput.value && passwordInput.value) {
-      reject(REQUIRED_PASSWORD_MSG);
-    } else if (confirmPasswordInput.value !== passwordInput.value) {
-      reject(WRONG_CONFIRM_PASSWORD_MSG);
-    } else {
-      resolve(true);
-    }
-  });
-}
-
-const createRoleSelect = document.querySelector("#create-role-select");
-/**
- * @param {HTMLSelectElement} roleSelect 
- * @returns {Promise}
- */
-function validateRole(roleSelect) {
-  return new Promise((resolve, reject) => {
-    if (! roleSelect.value) {
-      reject(REQUIRED_ROLE_MSG);
-    } else if (! ROLE_VALUES.includes(roleSelect.value)) {
-      reject(WRONG_ROLE_MSG);
-    } else {
-      resolve(roleSelect.value);
+      resolve(menuNameInput.value);
     }
   });
 }
 
 /**
  * 
- * @param {HTMLSelectElement} statusSelect 
+ * @param {HTMLTextAreaElement} descriptionTextarea 
  */
-function validateStatus(statusSelect) {
+function validateDescription(descriptionTextarea) {
   return new Promise((resolve, reject) => {
-    if (! statusSelect.value) {
-      reject(REQUIRED_STATUS_MSG);
-    } else if (! STATUS_VALUES.includes(statusSelect.value)) {
-      reject(WRONG_STATUS_MSG);
+    if (descriptionTextarea.value.length > MAX_LENGTH_DESCRIPTION) {
+      reject(TOO_LONG_DESCRIPTION_MSG);
     } else {
-      resolve(statusSelect.value);
+      resolve(descriptionTextarea.value);
     }
   });
 }
 
-const newUserModalForm = document.querySelector(".modal-form");
-const createEmailError = document.querySelector("#create-email-error");
-const createPasswordError = document.querySelector("#create-password-error");
-const createConfirmPasswordError = document.querySelector("#create-confirm-password-error");
-const createRoleError = document.querySelector("#create-role-error");
+const createMenuModalForm = document.querySelector(".create-form");
 
-let validatedEmail = "";
-let validatedPassword = "";
-let matchedPassword = false;
-let validatedRole = "";
 /**
  * @param {string} url 
  * @param {FormData} formData
@@ -171,7 +85,7 @@ function submitUserData(formData, url) {
   })
     .then((response) => {
       if (!response.ok) {
-        throw new Error("Your network connection is not stable");
+        throw new Error(NETWORK_ERROR_MSG);
       }
       return response.json();
     })
@@ -200,222 +114,95 @@ function submitUserData(formData, url) {
     });
 }
 
-newUserModalForm.addEventListener("submit", function (e) {
+createMenuModalForm.addEventListener("submit", function (e) {
   e.preventDefault();
-  const emailValidatorPromise = validateEmail(createEmailInput)
-    .then((email) => {
-      validatedEmail = email;
-      createEmailError.textContent = "";
-    })
-    .catch((msg) => {
-      createEmailError.textContent = msg;
-    })
-    .finally(() => {});
-
-  const passwordValidatorPromise = validatePassword(createPasswordInput)
-    .then((password) => {
-      validatedPassword = password;
-      createPasswordError.textContent = "";
-    })
-    .catch((msg) => {
-      createPasswordError.textContent = msg;
-    })
-    .finally(() => {});
-
-  const confirmPasswordValidatorPromise = validateConfirmPassword(createConfirmPasswordInput, createPasswordInput)
-    .then((isMatched) => {
-      matchedPassword = isMatched;
-      createConfirmPasswordError.textContent = "";
-    })
-    .catch((msg) => {
-      createConfirmPasswordError.textContent = msg;
-    })
-    .finally(() => {});
   
-  const roleValidatorPromise = validateRole(createRoleSelect).
-    then((role) => {
-      validatedRole = role;
-    })
-    .catch((msg) => {
-      createRoleError.textContent = msg;
-    })
-    .finally(() => {});
-  
-  function handleNewUserData() {
-    Promise.allSettled([
-      emailValidatorPromise,
-      passwordValidatorPromise,
-      confirmPasswordValidatorPromise,
-      roleValidatorPromise
-    ]).then(() => {
-      if (validatedEmail && validatedPassword && matchedPassword && validatedRole) {
-        const formData = new FormData();
-        formData.append("signup", true);
-        formData.append("email", validatedEmail);
-        formData.append("password", validatedPassword);
-        formData.append("confirm_password", validatedPassword);
-        formData.append("role", validatedRole);
-        if (! newUserModal.classList.contains("hidden")) {
-          newUserModal.classList.add("hidden");
-          overlay.classList.add("hidden");
-        }
-        submitUserData(formData, CREATE_USER_URL);
-      }
-    });
-  }
-  handleNewUserData();
 });
 
 /*********************************************************
  *HANDLE INPUT GAINING FOUCS AND LOSING FOCUS EVENT******* 
  * *******************************************************/
+let validatedMenuName = "";
+let validatedDescription = "";
 
-createEmailInput.addEventListener("focus", function (e) {
-  validateEmail(this)
-    .then((email) => {
-      validatedEmail = email;
-      createEmailError.textContent = "";
+const createMenuNameError = document.querySelector("#create-menu-name-error");
+const createDescriptionError = document.querySelector("#create-description-error");
+
+createMenuNameInput.addEventListener("focus", function (e) {
+  validateMenuName(this)
+    .then((menuName) => {
+      validatedMenuName = menuName;
+      createMenuNameError.textContent = "";
     })
     .catch((msg) => {
-      createEmailError.textContent = msg;
+      createMenuNameError.textContent = msg;
     })
-    .finally(() => {});
+});
+createMenuNameInput.addEventListener("input", function (e) {
+  validateMenuName(this)
+    .then((menuName) => {
+      validatedMenuName = menuName;
+      createMenuNameError.textContent = "";
+    })
+    .catch((msg) => {
+      createMenuNameError.textContent = msg;
+    });
+});
+createMenuNameInput.addEventListener("focusout", function (e) {
+  validateMenuName(this)
+    .then((menuName) => {
+      validatedMenuName = menuName;
+      createMenuNameError.textContent = "";
+    })
+    .catch((msg) => {
+      createMenuNameError.textContent = msg;
+    });
 });
 
-createEmailInput.addEventListener("input", function(e) {
-  validateEmail(this)
-    .then((email) => {
-      validatedEmail = email;
-      createEmailError.textContent = "";
+createDescriptionTextArea.addEventListener("focus", function (e) {
+  validateDescription(this)
+    .then((description) => {
+      validatedDescription = description;
+      createDescriptionError.textContent = "";
     })
     .catch((msg) => {
-      createEmailError.textContent = msg;
+      createDescriptionError.textContent = msg;
     })
-    .finally(() => {});
 });
-
-createEmailInput.addEventListener("focusout", function(e) {
-  validateEmail(this)
-    .then((email) => {
-      validatedEmail = email;
-      createEmailError.textContent = "";
+createDescriptionTextArea.addEventListener("input", function (e) {
+  validateDescription(this)
+    .then((description) => {
+      validatedDescription = description;
+      createDescriptionError.textContent = "";
     })
     .catch((msg) => {
-      createEmailError.textContent = msg;
-    })
-    .finally(() => {});
+      createDescriptionError.textContent = msg;
+    });
 });
-
-createPasswordInput.addEventListener("focus", function(e) {
-  validatePassword(this)
-    .then((password) => {
-      validatedPassword = password;
-      createPasswordError.textContent = "";
+createDescriptionTextArea.addEventListener("focusout", function (e) {
+  validateDescription(this)
+    .then((description) => {
+      validatedDescription = description;
+      createDescriptionError.textContent = "";
     })
     .catch((msg) => {
-      createPasswordError.textContent = msg;
-    })
-    .finally(() => {});
+      createDescriptionError.textContent = msg;
+    });
 });
-
-createPasswordInput.addEventListener("input", function(e) {
-  validatePassword(this)
-    .then((password) => {
-      validatedPassword = password;
-      createPasswordError.textContent = "";
-    })
-    .catch((msg) => {
-      createPasswordError.textContent = msg;
-    })
-    .finally(() => {});
-});
-
-createPasswordInput.addEventListener("focusout", function(e) {
-  validatePassword(this)
-    .then((password) => {
-      validatedPassword = password;
-      createPasswordError.textContent = "";
-    })
-    .catch((msg) => {
-      createPasswordError.textContent = msg;
-    })
-    .finally(() => {});
-});
-
-createConfirmPasswordInput.addEventListener("focus", function(e) {
-  validateConfirmPassword(this, createPasswordInput)
-    .then((isMatched) => {
-      matchedPassword = isMatched;
-      createConfirmPasswordError.textContent = "";
-    })
-    .catch((msg) => {
-      createConfirmPasswordError.textContent = msg;
-    })
-    .finally(() => {});
-});
-
-createConfirmPasswordInput.addEventListener("input", function(e) {
-  validateConfirmPassword(this, createPasswordInput)
-    .then((isMatched) => {
-      matchedPassword = isMatched;
-      createConfirmPasswordError.textContent = "";
-    })
-    .catch((msg) => {
-      createConfirmPasswordError.textContent = msg;
-    })
-    .finally(() => {});
-});
-
-createConfirmPasswordInput.addEventListener("focusout", function (e) {
-  validateConfirmPassword(this, createPasswordInput)
-    .then((isMatched) => {
-      matchedPassword = isMatched;
-      createConfirmPasswordError.textContent = "";
-    })
-    .catch((msg) => {
-      createConfirmPasswordError.textContent = msg;
-    })
-    .finally(() => {});
-});
-
-createRoleSelect.addEventListener("change", function (e) {
-  validateRole(this)
-    .then((role) => {
-      validatedRole = role;
-      createRoleError.textContent = "";
-    })
-    .catch((msg) => {
-      createRoleError.textContent = msg;
-    })
-    .finally(() => {});
-});
-
-createRoleSelect.addEventListener("focusout", function (e) {
-  validateRole(this)
-    .then((role) => {
-      validatedRole = role;
-      createRoleError.textContent = "";
-    })
-    .catch((msg) => {
-      createRoleError.textContent = msg;
-    })
-    .finally(() => {});
-})
 
 /*********************************************************
  *FETCH SUMMARY FIGURE FROM SERVER************************ 
  * *******************************************************/
 const SUMMARY_FIGURE_INTERVAL = 5000;
-const summarFigureOfUsers = document.querySelector(".summary-figure--user");
-const summarFigureOfMembers = document.querySelector(".summary-figure--member");
-const summarFigureOfActiveUsers = document.querySelector(".summary-figure--online");
-const summaryFigureOfOrdersPerUser = document.querySelector(".summary-figure--online");
-const GET_USER_FIGURE_URL = "/admin/users/total";
+const summaryFigureOfMenus = document.querySelector(".summary-figure--menu");
+const summaryFigureOfBestSellerMenu = document.querySelector(".summary-figure--bestseller-menu");
+const summaryFigureOfHighestRatedMenu = document.querySelector(".summary-figure--highest-rated-menu");
+const GET_MENU_FIGURE_URL = "/admin/menus/total";
 const GET_MEMBER_FIGURE_URL = "/admin/users/members/total";
 const GET_ACTIVE_FIGURE_URL = "/admin/users/active/total";
 
-async function getUserSummaryFigure() {
-  await fetch(GET_USER_FIGURE_URL, {
+async function getSummaryFigureOfMenu() {
+  await fetch(GET_MENU_FIGURE_URL, {
     method: "GET"
   }).then((response) => {
     if (! response.ok) {
@@ -423,13 +210,13 @@ async function getUserSummaryFigure() {
     }
     return response.json();
   }).then((data) => {
-    summarFigureOfUsers.textContent = data;
+    summaryFigureOfMenus.textContent = data;
   }).catch((error) => {
     console.log(error.message);
   })
 }
-getUserSummaryFigure();
-setInterval(getUserSummaryFigure, SUMMARY_FIGURE_INTERVAL);
+getSummaryFigureOfMenu();
+setInterval(getSummaryFigureOfMenu, SUMMARY_FIGURE_INTERVAL);
 
 async function getMemberSummaryFigure() {
   await fetch(GET_MEMBER_FIGURE_URL, {
@@ -442,7 +229,7 @@ async function getMemberSummaryFigure() {
       return response.json();
     })
     .then((data) => {
-      summarFigureOfMembers.textContent = data;
+      summaryFigureOfBestSellerMenu.textContent = data;
     })
     .catch((error) => {
       console.log(error.message);
