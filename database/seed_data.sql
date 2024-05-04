@@ -145,28 +145,38 @@ VALUES ('Main meals', 'Hundreds of main dish recipes. Choose from top-rated comf
        ("Meal boxes", "Give someone you love time out of the kitchen and the gift of good food with one of our COOK meal boxes. The ideal one-click solution to stock up the freezer, one of our meal boxes delivered is the perfect present for new parents or those going through a difficult time. We have put together these combinations of delicious dishes in our food boxes to make the decision-making process that little bit easier....and to make your life even easier, we’ve created a meals subscription service so you can make the most out of the convenience of our meal box delivery.");
 
 -- Insert categories
-INSERT INTO `categories` (`category_id`, `menu_id`, `category_name`, `description`)
-VALUES (NULL, '1', 'Portion size', 'Portion size'),
-       (NULL, '1', 'By protein', 'Categorized by protein'),
-       (NULL, '5', 'Party and celebration', 'Dishes prepared for party or celebration.'),
-       (NULL, '5', 'Party dishes.', 'Prepare some special dished for your party.')
-       (NULL, '6', 'Portion size', 'Portion size')
-       (NULL, '4', 'Portion size', 'Portion size')
-       (NULL, '4', 'Cold puddings', 'Cold puddings')
-       (NULL, '4', 'Hot puddings', 'Hot puddings')
-       (NULL, '4', 'Portion size', 'Portion size');
+INSERT INTO `categories` (`category_id`, `menu_id`, `category_name`, `description`) 
+VALUES (NULL, '3', 'Portion size', 'Categorized main meals by portion size'),
+      (NULL, '3', 'By nutrition', 'Categorized main meals by nutrition and protein content.')
+      (NULL, '3', 'Vegatarian', 'Main meals prepared for vegatarian')
+      (NULL, '3', 'By cuisine', 'Categorized main meal by regional and cultural taste.');
+      (NULL, '5', 'Prepared party', 'Provide your party with best recipes and flavour.')
+      (NULL, '5', 'Party dish', 'Prepare some of savoury dishes to your party.')
+      (NULL, '5', 'Vegatarian', 'Delicious vegatarian dishes for your party.')
+      (NULL, '4', 'Portion size', 'Categorized puddings by portion size.')
+      (NULL, '4', 'Hot puddings', 'Tasty hot puddings'),
+      (NULL, '4', 'Cold puddings', 'Tasty cold puddings')
+      (NULL, '6', 'Portion size', 'Categorized meal boxes by portion size.')
+      (NULL, '6', 'Family', 'Healthy meal boxes for your own family')
+;
 
 
 -- Insert types (assuming some categories are already inserted)
 INSERT INTO types (category_id, description)
-VALUES (1, 'Burgers'),
-       (1, 'Pastas'),
-       (2, 'Cakes'),
-       (2, 'Ice Cream'),
-       (3, 'Espresso-based'),
-       (3, 'Filter Coffee'),
-       (4, 'Black Tea'),
-       (4, 'Green Tea');
+VALUES (NULL, '10', 'One person', 'Main meals have portion size for one person.'),
+      (NULL, '10', 'Two people', 'Main meals have portion size for two people.'),
+      (NULL, '10', 'Four people', 'Main meals have portion size for four people.'),
+      (NULL, '11', 'Chicken meals', 'Main meals made from chicken.'),
+      (NULL, '11', 'Pork meals', 'Main meals made from pork.'),
+      (NULL, '11', 'Beef meals', 'Main meals made from beef.'),
+      (NULL, '12', 'Vegan meals', 'Main meals for people who avoid all animal foods and eat only plant-based food.')
+      (NULL, '12', 'Lacto-vegatarian meals', 'Main meals for people who do not eat meat, seafood and eggs, but include dairy foods and plant foods.'),
+      (NULL, '14', 'BBQ', 'Provide your party with our savoury, moreish BBQ dishes'),
+      (NULL, '14', 'Formal celebration', 'Prepare your formal celebration such as weddings, business meeting or anniversary.'),
+      (NULL, '15', 'Grilled chicken', 'Party dishes made from grilled chicken'),
+      (NULL, '15', 'Roasted duck', 'Party dishes made from roasted duck.'),
+      (NULL, '15', 'Soup', 'Soup dishes for party.')
+;
 
 -- Insert products (assuming some types are already inserted)
 INSERT INTO products (type_id, product_name, description)
