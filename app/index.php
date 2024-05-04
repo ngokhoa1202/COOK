@@ -23,10 +23,11 @@ $router
   ->post("/menu/category/type/new", [\App\Controller\MenuController::class, "createType"])
   ->get("/admin/login", [\App\Controller\AdminController::class, "getAdminLoginView"])
 
-  ->get("/product/:id", [\App\Controller\ProductController::class, "getProductById"])
+  ->get("/product/typeid", [\App\Controller\ProductController::class, "getAllProduct"])
+  ->get("/product/id", [\App\Controller\ProductController::class, "getProductById"])
   ->post("/product/new", [\App\Controller\ProductController::class, "createProduct"])
-  ->put("/product/:id/:name/:description", [\App\Controller\ProductController::class, "updateProduct"])
-  ->delete("/product/:id", [\App\Controller\ProductController::class, "deleteProduct"])
+  ->put("/product/id", [\App\Controller\ProductController::class, "updateProductById"])
+  ->delete("/product/id", [\App\Controller\ProductController::class, "deleteProductById"])
   
   ->get("/admin", [\App\Controller\AdminController::class, "index"])
   ->post("/admin/login", [\App\Controller\AdminController::class, "login"])

@@ -14,8 +14,14 @@ class ProductController {
   public const CREATE_PRODUCT_SUCCESS_MSG = "Product created successfully";
   public const CREATE_PRODUCT_FAILURE_MSG = "Failed to create product";
 
-  public function getProductById(int $productId): string {
+  public function getProductById(): string {
     try {
+      if (!array_key_exists("product_id", $_POST)) {
+        throw new BadQueryException();
+      }
+
+      $productId = filter_input(INPUT_POST, "product_id", FILTER_SANITIZE_NUMBER_INT);
+
       $product = ProductModel::getById($productId);
       if (!$product) {
         throw new EntityNotFoundException('Product');
@@ -62,8 +68,14 @@ class ProductController {
     }
   }
   
-  public function getAllProducts(int $typeId = null): string {
+  public function getAllProducts(): string {
     try {
+      if (!array_key_exists("type_id", $_POST)) {
+        throw new BadQueryException();
+      }
+
+      $typeId = filter_input(INPUT_POST, "type_id", FILTER_SANITIZE_NUMBER_INT);
+
       $products = [];
       if ($typeId !== null) {
         $products = ProductModel::getAllByTypeId($typeId);
@@ -85,14 +97,19 @@ class ProductController {
     }
   }
   
-  public function deleteProduct(int $productId): string {
+  public function deleteProductById(int $productId): string {
     try {
-      $productModel = ProductModel::getById($productId);
-      if (!$productModel) {
+      if (!array_key_exists("product_id", $_POST)) {
+        throw new BadRequestException();
+      }
+      $productId = filter_input(INPUT_POST, "product_id", FILTER_SANITIZE_NUMBER_INT);
+
+      // $productModel = ProductModel::getById($productId);
+      $isDeleted = ProductModel::delete($productId);
+
+      if (!$$isDeleted) {
         throw new EntityNotFoundException('Product');
       }
-  
-      $isDeleted = $productModel->delete($productId);
   
       if ($isDeleted) {
         return json_encode('Product deleted successfully');
@@ -108,13 +125,14 @@ class ProductController {
   }
   
     
-  public function updateProduct(int $productId): string {
+  public function updateProductById(): string {
     try {
       // Validate request data
-      if (!array_key_exists("product_name", $_POST) || !array_key_exists("description", $_POST)) {
+      if (!array_key_exists("product_id", $_POST)|| !array_key_exists("product_name", $_POST) || !array_key_exists("description", $_POST)) {
         throw new BadRequestException();
       }
   
+      $productId = filter_input(INPUT_POST, "product_id", FILTER_VALIDATE_INT);
       $productName = filter_input(INPUT_POST, "product_name", FILTER_SANITIZE_SPECIAL_CHARS);
       $description = filter_input(INPUT_POST, "description", FILTER_SANITIZE_SPECIAL_CHARS);
   
