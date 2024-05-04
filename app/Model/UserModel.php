@@ -502,11 +502,30 @@ class UserModel extends Model {
     $this->userId = $userId;
   }
 
-  public static function makeUserByUserId(int $userId): UserModel {
+  public static function makeByUserId(int $userId): UserModel {
     $user = UserModel::getUserByUserId($userId);
     return new UserModel($user["username"], $user['email'], $user['password'], $user['avatar'], $user['role'], $user['status'], $user["user_id"]);
   }
   
+  public static function deleteByUserId(int &$userId): int {
+    try {
+      App::getDatabaseConnection()->beginTransaction();
+      $query = "DELETE FROM users WHERE users.user_id = :userId";
+      $stmt = App::getDatabaseConnection()->prepare($query);
+      $stmt->bindValue(":userId", $userId);
+      if (! $stmt->execute()) {
+        throw new BadQueryException();
+      }
+      App::getDatabaseConnection()->commit();
+    } catch (PDOException | BadQueryException $ex) {
+      if (App::getDatabaseConnection()->inTransaction()) {
+        App::getDatabaseConnection()->rollBack();
+      }
+      $userId = 0;
+    }
+
+    return $userId;
+  }
 }
 
 

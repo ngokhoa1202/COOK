@@ -218,6 +218,7 @@
       </div>
 
       <button type="submit" class="btn btn--submit margin-top-small">Update menu</button>
+    </form>
   </div>
 
   <div class="modal delete-menu-modal hidden">
@@ -232,7 +233,6 @@
       <div class="input-info">
         <input type="text" placeholder="Menu name" class="input" name="menu-name" id="delete-menu-name-input" readonly>
       </div>
-
       <button type="submit" class="btn btn--submit margin-top-small">Delete menu</button>
     </form>
   </div>
