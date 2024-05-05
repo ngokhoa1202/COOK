@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model;
 
 use App\App;
+use App\Database;
 use App\Exception\BadQueryException;
 use App\Exception\BadRequestException;
 use App\Exception\EntityNotFoundException;
@@ -16,6 +17,7 @@ class ProductModel extends Model {
   protected int $typeId;
   protected string $productName;
   protected string $description;
+  protected Database $database;
 
   public function index(): View {
     return View::make("/product");
@@ -35,14 +37,14 @@ class ProductModel extends Model {
   public function create(): int {
     try {
       $this->database->beginTransaction();
-      $query = "INSERT INTO products (type_id, product_name, description) VALUES (:typeid, :productname, :description)";
+      $query = "INSERT INTO products (type_id, product_name, `description`) VALUES (:typeid, :productname, :description)";
       $stmt = $this->database->prepare($query);
       $stmt->bindValue(':typeid', $this->typeId);
       $stmt->bindValue(':productname', $this->productName);
       $stmt->bindValue(':description', $this->description);
-      if (!$stmt->execute()) {
-        throw new BadQueryException();
-      }
+      $stmt->execute();
+      $this->productId = (int) $this->database->lastInsertId();
+      $this->database->commit();
     }
     catch (PDOException | BadQueryException $ex) {
       if ($this->database->inTransaction()) {
@@ -50,12 +52,10 @@ class ProductModel extends Model {
       }
       return -1;
     }
-
-    $this->productId = (int) $this->database->lastInsertId();
     return $this->productId;
   }
 
-  public static function getById(int $productId): ProductModel | null {
+  public static function getById(int $productId): array | null {
     try {
         $query = "SELECT * FROM products WHERE product_id = :productId";
         $stmt = App::getDatabaseConnection()->prepare($query);
@@ -67,7 +67,8 @@ class ProductModel extends Model {
         if (!$productData) {
             throw new EntityNotFoundException('Product');
         }
-        return new ProductModel($productData['type_id'], $productData['product_name'], $productData['description']);
+        // return new ProductModel($productData['type_id'], $productData['product_name'], $productData['description']);
+        return $productData;
     } catch (PDOException | EntityNotFoundException $ex) {
         return null;
     }
@@ -82,13 +83,13 @@ class ProductModel extends Model {
             throw new BadQueryException();
         }
         $productsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $products = [];
-        foreach ($productsData as $productData) {
-            $products[] = new ProductModel($productData['type_id'], $productData['product_name'], $productData['description']);
-        }
-        return $products;
+        // $products = [];
+        // foreach ($productsData as $productData) {
+        //     $products[] = new ProductModel($productData['type_id'], $productData['product_name'], $productData['description']);
+        // }
+        return $productsData;
     } catch (PDOException | BadQueryException $ex) {
-        return [];
+        throw new BadQueryException();
     }
   }
 
