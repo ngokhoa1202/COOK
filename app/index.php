@@ -16,6 +16,7 @@ $router
   ->get("/", [\App\Controller\HomeController::class, "index"])
   ->get("/login", [\App\Controller\LoginController::class, "index"])
   ->post("/login", [\App\Controller\LoginController::class, "login"])
+  ->post("/signup", [\App\Controller\LoginController::class, "signup"])
   ->get("/menu", [\App\Controller\MenuController::class, "index"])
   ->get("/menu/all", [\App\Controller\MenuController::class, "readAllMenus"])
   ->post("/menu/new", [\App\Controller\MenuController::class, "createMenu"])
@@ -29,20 +30,21 @@ $router
   ->post("/product/update", [\App\Controller\ProductController::class, "updateProductById"]) //Solved
   ->post("/product/delete", [\App\Controller\ProductController::class, "deleteProductById"]) //Solved
   //serve
-  ->get("/serve/productid", [\App\Controller\ServeController::class, "getAllServesByProductId"])
-  ->post("/serve/new", [\App\Controller\ServeController::class, "createServe"])
-  ->post("/serve/update", [\App\Controller\ServeController::class, "updateServe"])
-  ->post("/serve/delete", [\App\Controller\ServeController::class, "deleteServe"])
+  ->get("/serve/productid", [\App\Controller\ServeController::class, "getAllServesByProductId"]) //Solved
+  ->get("/serve/id", [\App\Controller\ServeController::class, "getServeById"]) //Solved
+  ->post("/serve/new", [\App\Controller\ServeController::class, "createServeByProductId"]) //Solved
+  ->post("/serve/update", [\App\Controller\ServeController::class, "updateServeById"]) //Solved
+  ->post("/serve/delete", [\App\Controller\ServeController::class, "deleteServeById"]) //Solved
   //order
   ->get("/order/userid", [\App\Controller\OrderController::class, "getOrderByUserId"])
   ->post("/order/new", [\App\Controller\OrderController::class, "createOrderByUserId"])
   ->post("/order/update", [\App\Controller\OrderController::class, "updateOrderByUserId"])
   ->post("/order/delete", [\App\Controller\OrderController::class, "deleteOrderByUserId"])
   //order_product
-  ->get("order_product/orderid", [\App\Controller\OrderProductController::class, "getOrderProductByOrderId"])
-  ->post("order_product/orderid/new", [\App\Controller\OrderProductController::class, "createOrderProductByOrderId"])
-  ->post("order_product/orderid/update", [\App\Controller\OrderProductController::class, "updateOrderProductByOrderId"])
-  ->post("order_product/orderid/delete", [\App\Controller\OrderProductController::class, "deleteOrderProductByOrderId"])
+  // ->get("order_product/orderid", [\App\Controller\OrderProductController::class, "getOrderProductByOrderId"])
+  // ->post("order_product/orderid/new", [\App\Controller\OrderProductController::class, "createOrderProductByOrderId"])
+  // ->post("order_product/orderid/update", [\App\Controller\OrderProductController::class, "updateOrderProductByOrderId"])
+  // ->post("order_product/orderid/delete", [\App\Controller\OrderProductController::class, "deleteOrderProductByOrderId"])
 
   ->get("/admin", [\App\Controller\AdminController::class, "index"])
   ->post("/admin/login", [\App\Controller\AdminController::class, "login"])
