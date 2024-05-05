@@ -16,11 +16,11 @@ class ProductController {
 
   public function getProductById(): string {
     try {
-      if (!array_key_exists("product_id", $_POST)) {
+      if (!array_key_exists("product_id", $_GET)) {
         throw new BadQueryException();
       }
 
-      $productId = filter_input(INPUT_POST, "product_id", FILTER_SANITIZE_NUMBER_INT);
+      $productId = filter_input(INPUT_GET, "product_id", FILTER_SANITIZE_NUMBER_INT);
 
       $product = ProductModel::getById($productId);
       if (!$product) {
@@ -70,11 +70,11 @@ class ProductController {
   
   public function getAllProducts(): string {
     try {
-      if (!array_key_exists("type_id", $_POST)) {
+      if (!array_key_exists("type_id", $_GET)) {
         throw new BadQueryException();
       }
 
-      $typeId = filter_input(INPUT_POST, "type_id", FILTER_SANITIZE_NUMBER_INT);
+      $typeId = filter_input(INPUT_GET, "type_id", FILTER_SANITIZE_NUMBER_INT);
 
       $products = [];
       if ($typeId !== null) {
@@ -97,7 +97,7 @@ class ProductController {
     }
   }
   
-  public function deleteProductById(int $productId): string {
+  public function deleteProductById(): string {
     try {
       if (!array_key_exists("product_id", $_POST)) {
         throw new BadRequestException();
