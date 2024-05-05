@@ -107,16 +107,11 @@ class ProductController {
       // $productModel = ProductModel::getById($productId);
       $isDeleted = ProductModel::delete($productId);
 
-      if (!$$isDeleted) {
+      if (!$isDeleted) {
         throw new EntityNotFoundException('Product');
       }
-  
-      if ($isDeleted) {
-        return json_encode('Product deleted successfully');
-      } else {
-        return json_encode('Failed to delete product');
-      }
-  
+      return json_encode('Product deleted successfully');
+      
     } catch (EntityNotFoundException $ex) {
       return json_encode(['error' => 'Product not found']);
     } catch (PDOException $ex) {
@@ -141,7 +136,7 @@ class ProductController {
         throw new EntityNotFoundException('Product');
       }
   
-      $isUpdated = $productModel->updateProduct($productId, $productName, $description);
+      $isUpdated = ProductModel::updateProduct($productId, $productName, $description);
   
       if ($isUpdated) {
         return json_encode('Product updated successfully');
