@@ -11,7 +11,7 @@ use App\Exception\BadRequestException;
 use App\Model\UserRole;
 use App\Model\UserStatus;
 
-class LoginController {
+class AuthenticateController {
   public const LOGIN_SUCCESS_MSG = "Logged in succesfully";
   public const SIGNUP_SUCCESS_MSG = "Signed up successfully";
   protected const SESSION_USER_ID = "user_id";
@@ -23,30 +23,55 @@ class LoginController {
     return View::make("login");
   }
 
-  public function login(): string {
+  public function login(): string | false {
+    // try {
+    //   if (!array_key_exists("email", $_POST) || !array_key_exists("password", $_POST)) {
+    //     throw new BadQueryException();
+    //   }
+    // } catch (BadQueryException $ex) {
+    //   header("HTTP/1.1 400 Bad Request");
+    //   echo View::make("error/400");
+    // }
+    // $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
+    // $password = $_POST["password"];
+    // $userModel = UserModel::make($email, $email, $password, $password, "", UserRole::getRole(UserRole::MEMBER), UserStatus::getStatus(UserStatus::OFFLINE));
+    // $returnedResult = $userModel->authenticate();
+    // if (is_array($returnedResult)) {
+    //   return json_encode($returnedResult);
+    // }
+    // try {
+    //   $this->setUpSession();
+    //   $_SESSION[static::SESSION_USER_USERNAME] = $email;
+    //   $_SESSION[static::SESSION_USER_PASSWORD] = $password;
+    //   return json_encode(static::LOGIN_SUCCESS_MSG);
+    // } catch (ForbiddenException $ex) {
+    //   header("HTTP/1.1 403 Forbidden");
+    //   echo View::make("error/403");
+    // }
+
     try {
-      if (!array_key_exists("email", $_POST) || !array_key_exists("password", $_POST)) {
-        throw new BadQueryException();
-      }
+        if (!array_key_exists("email", $_POST) || !array_key_exists("password", $_POST)) {
+          throw new BadQueryException();
+        }
     } catch (BadQueryException $ex) {
-      header("HTTP/1.1 400 Bad Request");
-      echo View::make("error/400");
+    header("HTTP/1.1 400 Bad Request");
+    echo View::make("error/400");
     }
     $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
     $password = $_POST["password"];
     $userModel = UserModel::make($email, $email, $password, $password, "", UserRole::getRole(UserRole::MEMBER), UserStatus::getStatus(UserStatus::OFFLINE));
-    $returnedResult = $userModel->verify();
+    $returnedResult = $userModel->authenticate();
     if (is_array($returnedResult)) {
-      return json_encode($returnedResult);
+        return json_encode($returnedResult);
     }
     try {
-      $this->setUpSession();
-      $_SESSION[static::SESSION_USER_USERNAME] = $email;
-      $_SESSION[static::SESSION_USER_PASSWORD] = $password;
-      return json_encode(static::LOGIN_SUCCESS_MSG);
+        $this->setUpSession();
+        $_SESSION[static::SESSION_USER_USERNAME] = $email;
+        $_SESSION[static::SESSION_USER_PASSWORD] = $password;
+        return json_encode(static::LOGIN_SUCCESS_MSG);
     } catch (ForbiddenException $ex) {
-      header("HTTP/1.1 403 Forbidden");
-      echo View::make("error/403");
+    header("HTTP/1.1 403 Forbidden");
+    echo View::make("error/403");
     }
   }
 
