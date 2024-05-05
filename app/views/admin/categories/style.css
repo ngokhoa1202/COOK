@@ -3,6 +3,11 @@
   src: url("/assets/fonts/GillSansW01Medium.woff2") format("woff");
 }
 
+@font-face {
+  font-family: "Inter";
+  src: url("/assets/fonts/Inter-VariableFont_slnt,wght.ttf") format("ttf");
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -50,6 +55,10 @@ button:active {
 
 .margin-bottom-medium {
   margin-bottom: 4.8rem;
+}
+
+.margin-top-small {
+  margin-top: 2.4rem;
 }
 
 .container {
@@ -124,6 +133,10 @@ button:active {
 **************************************
 */
 
+.nav-link {
+  color: inherit;
+}
+
 .nav-link,
 .nav-link:link,
 .nav-link:visited {
@@ -144,10 +157,12 @@ button:active {
 }
 
 .nav-link:hover,
-.nav-link:active {
+.nav-link:active,
+.nav-link--active {
   background-color: #3f728a;
   color: #efefef;
 }
+
 
 
 .icon-link:focus {
@@ -426,11 +441,11 @@ button:active {
 }
 
 /**************************************
-******NEW USER MODAL*******************
+******NEW MENU MODAL*******************
 ***************************************
 */
 
-.new-user-modal {
+.modal {
   position: fixed;
   color: #122a2b;
   top: 50%;
@@ -444,15 +459,11 @@ button:active {
   padding: 2.4rem 3.6rem;
 }
 
-.new-user-modal .input::placeholder {
+.modal .input::placeholder {
   color: #ccc;
   letter-spacing: normal;
 }
 
-.new-user-modal *:focus {
-  outline: none;
-  box-shadow: 0 0 1.2rem rgba(35, 43, 46, 0.25);
-}
 
 
 .btn--close-modal {
@@ -480,7 +491,7 @@ button:active {
 .modal-form {
   display: grid;
   grid-template-columns: 1fr 2fr;
-  align-items: center;
+  align-items: baseline;
   gap: 2.4rem;
   /* padding: 2.4rem 3.6rem; */
 }
@@ -491,14 +502,38 @@ button:active {
   font-family: "Gill Sans";
 }
 
+.modal-form .input-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.modal-form .input-info .error {
+  font-size: 1.4rem;
+  color: red;
+  padding: 0 1.2rem;
+}
+
 .modal-form .input:not(.avatar-input) {
-  
   font-size: 1.8rem;
+  width: 100%;
   font-weight: 400;
   font-family: "Inter";
   padding: 1.2rem 2.4rem;
   border: 1px solid #183233;
+  
   border-radius: 1rem;
+}
+
+.modal-form .textarea {
+  font-size: 1.8rem;
+  letter-spacing: normal;
+  line-height: 1.2;
+  font-family: "Inter";
+  border: 1px solid #183233;
+  border-radius: 1rem;
+  font-weight: 400;
+  padding: 1.2rem 2.4rem;
 }
 
 .modal-form .btn--submit {
@@ -508,20 +543,114 @@ button:active {
 
 .modal-form .select {
   padding: 1.2rem 2.4rem;
-  font-family: inherit;
+  font-family: "Inter";
   font-size: 1.8rem;
   border-radius: 1rem;
 }
 
-.modal-form .select .option li {
-  transition: all 0.3 ease;
+.modal-form *:focus {
+  outline: none;
+  border: none;
+  box-shadow: 0 0 1.2rem rgba(35, 43, 46, 0.25);
+}
+
+/**************************************
+******NOTIFICATION MODAL***************
+***************************************
+*/
+
+.sucesss-notification-modal,
+.failure-notification-modal {
+  top: 25%;
+  box-shadow: 0 1.2rem 1.2rem rgba(24, 50, 51, 0.25);
+  background-color: #E2F3F7;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+}
+
+.success-icon {
+  width: 3.2rem;
+  height: 3.2rem;
+  color: #008000;
+}
+
+.success-notification-modal .notification {
+  font-size: 1.8rem;
+  color: #008000;
+}
+
+.failure-icon {
+  width: 3.2rem;
+  height: 3.2rem;
+  color: red;
+}
+
+.failure-notification-modal .notification {
+  font-size: 1.8rem;
+  color: red;
+}
+
+/**************************************
+******PAGINATION***********************
+***************************************
+*/
+
+.pagination {
+  display: flex;
+  flex-direction: row;
+  gap: 2.4rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1rem;
   
 }
 
-.modal-form .select .option li:hover {
-  background-color: #3f728a;
+.pagination-link:link,
+.pagination-link:visited {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 4.8rem;
+  height: 4.8rem;
+  font-size: 1.8rem;
+  padding: 1.2rem;
+  text-decoration: none;
+  color: #183233;
+  transition: all 0.5s ease;
+  border-radius: 50%;
+  border: 1px solid #b2c7d0;
 }
 
+.pagination-link:hover,
+.pagination-link:active,
+.pagination-link--active {
+  background-color: #3f728a;
+  color: #efefef !important;
+}
+
+
+
+.pagination-link--special:link,
+.pagination-link--special:visited {
+  font-size: 2.4rem;
+  color: #183233;
+}
+
+/**************************************
+******DELETE USER**********************
+***************************************
+*/
+
+.delete-info {
+  font-size: 1.8rem;
+  width: 100%;
+  font-weight: 400;
+  font-family: "Inter";
+  padding: 1.2rem 2.4rem;
+}
 
 /**************************************
 ******FOOTER***************************

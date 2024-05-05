@@ -5,11 +5,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
-  <link rel="stylesheet" href="/views/admin/users/style.css">
-  <script defer src="/views/admin/users/script.js"></script>
+  <link rel="stylesheet" href="/views/admin/menus/style.css">
+  <script defer src="/views/admin/menus/script.js"></script>
   <script async type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script async nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-  <title>COOK Admin - Users</title>
+  <title>COOK Admin - Menus</title>
 </head>
 
 <body>
@@ -24,7 +24,7 @@
       </header>
 
       <nav class="side-nav margin-bottom-small">
-        <a class="nav-link">
+        <a class="nav-link" href="/admin/home">
           <ion-icon name="home-outline" class="icon-link"></ion-icon>
           <p>Dashboard</p>
         </a>
@@ -36,9 +36,9 @@
           <ion-icon name="fast-food-outline" class="icon-link"></ion-icon>
           <p>Products</p>
         </a>
-        <a class="nav-link">
+        <a class="nav-link nav-link--active" href="#">
           <ion-icon name="grid-outline" class="icon-link"></ion-icon>
-          <p>Products</p>
+          <p>Menus</p>
         </a>
         <a class="nav-link" href="/admin/categories">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.0" stroke="currentColor" class="icon-link hero-icon-link">
@@ -46,17 +46,17 @@
           </svg>
           <p>Categories</p>
         </a>
-        <a class="nav-link" href="/admin/types">
+        <a class="nav-link">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.0" stroke="currentColor" class="icon-link hero-icon-link">
             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 0 1-1.125-1.125v-3.75ZM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-8.25ZM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-2.25Z" />
           </svg>
-          <p>Types</p>
+          <p href="#">Types</p>
         </a>
         <a class="nav-link">
           <ion-icon name="calendar-outline" class="icon-link"></ion-icon>
           <p>Calendar</p>
         </a>
-        <a class="nav-link nav-link--active" href="#">
+        <a class="nav-link" href="/admin/users">
           <ion-icon name="people-outline" class="icon-link"></ion-icon>
           <p>Users</p>
         </a>
@@ -70,47 +70,40 @@
         <div class="summary-container">
           <div class="summary-card">
             <div class="summary-info">
-              <p class="summary-title margin-bottom-very-small">Total users</p>
-              <p class="summary-figure summary-figure--user">150000</p>
+              <p class="summary-title margin-bottom-very-small">Total menus</p>
+              <p class="summary-figure summary-figure--menu">150000</p>
             </div>
-            <ion-icon name="people-outline" class="summary-icon"></ion-icon>
+            <ion-icon name="apps-outline" class="summary-icon"></ion-icon>
           </div>
           <div class="summary-card">
             <div class="summary-info">
-              <p class="summary-title margin-bottom-very-small">Total members</p>
-              <p class="summary-figure summary-figure--member">150000</p>
+              <p class="summary-title margin-bottom-very-small">Bestseller menu</p>
+              <p class="summary-figure summary-figure--bestseller-menu">150000</p>
             </div>
-            <ion-icon name="accessibility-outline" class="summary-icon"></ion-icon>
+            <ion-icon name="analytics-outline" class="summary-icon"></ion-icon>
           </div>
           <div class="summary-card">
             <div class="summary-info">
-              <p class="summary-title margin-bottom-very-small">Total online</p>
-              <p class="summary-figure summary-figure--online">150000</p>
+              <p class="summary-title margin-bottom-very-small">Highest rated menu</p>
+              <p class="summary-figure summary-figure--highest-rated-menu">150000</p>
             </div>
-            <ion-icon name="globe-outline" class="summary-icon"></ion-icon>
-          </div>
-          <div class="summary-card">
-            <div class="summary-info">
-              <p class="summary-title margin-bottom-very-small">Orders per user</p>
-              <p class="summary-figure" id="summary-figure--orders-per-user">150000</p>
-            </div>
-            <ion-icon name="receipt-outline" class="summary-icon"></ion-icon>
+            <ion-icon name="trending-up-outline" class="summary-icon"></ion-icon>
           </div>
         </div>
       </section>
 
       <section class="section-button margin-bottom-small">
         <div class="button-container">
-          <button class="btn btn--new-user">
-            <ion-icon name="person-add-outline" class="add-icon icon-link"></ion-icon>
-            <p>New user</p>
+          <button class="btn btn--new-menu">
+            <ion-icon name="add-outline" class="add-icon icon-link"></ion-icon>
+            <p class="btn--new-menu">New menu</p>
           </button>
         </div>
       </section>
 
       <section class="section-search margin-bottom-small">
         <form class="search-form">
-          <input type="search" placeholder="Enter an email" class="search-input">
+          <input type="search" placeholder="Enter a menu" class="search-input">
           <button type="submit" class="search-btn btn">
             Search
           </button>
@@ -122,15 +115,12 @@
           <thead>
             <tr>
               <th class="table-header-id">Id</th>
-              <th class="table-header-email">Email</th>
-              <th class="table-header-avatar">Avatar</th>
-              <th class="table-header-role">Role</th>
-              <th class="table-header-status">Status</th>
+              <th class="table-header-menu-name">Menu name</th>
               <th class="table-header-action">Action</th>
             </tr>
           </thead>
           <tbody class="tbody">
-
+            <!-- Table data for menus -->
           </tbody>
         </table>
 
@@ -192,119 +182,62 @@
     </div>
   </footer>
 
-  <div class="modal new-user-modal hidden">
+  <div class="modal new-menu-modal hidden">
     <button class="btn--close-modal btn--close-create-modal">&times;</button>
-    <h2 class="heading-secondary margin-bottom-small">Create user</h2>
+    <h2 class="heading-secondary margin-bottom-small">Create menu</h2>
     <form class="modal-form create-form" novalidate>
-      <label class="label" for="email-input">Email</label>
+      <label class="label" for="create-menu-name-input">Menu name</label>
       <div class="input-info">
-        <input type="email" placeholder="Email" class="input" name="email" id="create-email-input">
-        <p class="error email-error" id="create-email-error"></p>
+        <input type="text" placeholder="Menu name" class="input" name="menu-name" id="create-menu-name-input">
+        <p class="error menu-name-error" id="create-menu-name-error"></p>
       </div>
-      <label class="label" for="password-input">Password</label>
+      <label class="label" for="">Description</label>
       <div class="input-info">
-        <input type="password" placeholder="********" class="input" name="password" id="create-password-input">
-        <p class="error password-error" id="create-password-error"></p>
-      </div>
-      <label class="label" for="confirm-password-input">Confirm password</label>
-      <div class="input-info">
-        <input type="password" placeholder="********" class="input" name="confirm-password" id="create-confirm-password-input">
-        <p class="error confirm-password-error" id="create-confirm-password-error"></p>
-      </div>
-      <label class="label" for="avatar-input">Avatar</label>
-      <div class="input-info">
-        <input type="file" name="avatar" class="input avatar-input" name="avatar" id="create-avatar-input">
-        <p class="error avatar-error" id="create-avatar-error"></p>
+        <textarea class="textarea create-description-textarea" placeholder="Describe about menu" id="create-description-textarea" rows="15" cols="30"></textarea>
+        <p class="error description-error" id="create-description-error"></p>
       </div>
 
-      <label class="label" class="role-select">Role</label>
-      <div class="input-info">
-        <select class="select select--role" id="create-role-select">
-          <option class="option" value="">Choose a role&hellip;</option>
-          <option class="option" value="member">member</option>
-          <option class="option" value="admin">admin</option>
-        </select>
-        <p class="error role-error" id="create-role-error"></p>
-      </div>
-      <button type="submit" class="btn btn--submit margin-top-small">Create new user</button>
+      <button type="submit" class="btn btn--submit margin-top-small">Create new menu</button>
     </form>
   </div>
 
-  <div class="modal edit-user-modal hidden">
+  <div class="modal edit-menu-modal hidden">
     <button class="btn--close-modal btn--close-edit-modal">&times;</button>
-    <h2 class="heading-secondary margin-bottom-small">Edit user</h2>
+    <h2 class="heading-secondary margin-bottom-small">Edit menu</h2>
     <form class="modal-form edit-form" novalidate>
       <label class="label" for="id-input">Id</label>
       <div class="input-info">
         <input type="text" placeholder="Id" class="input" name="id" id="edit-id-input" readonly>
         <p class="error id-error" id="edit-id-error"></p>
       </div>
-      <!-- <label class="label" for="username-input">Username</label>
+      <label class="label" for="edit-menu-name-input">Menu name</label>
       <div class="input-info">
-        <input type="text" placeholder="Id" class="input" name="username" id="edit-username-input">
-        <p class="error username-error" id="edit-username-error"></p>
-      </div> -->
-      <label class="label" for="email-input">Email</label>
-      <div class="input-info">
-        <input type="email" placeholder="Email" class="input" name="email" id="edit-email-input">
-        <p class="error email-error" id="edit-email-error"></p>
+        <input type="text" placeholder="Menu name" class="input" name="menu-name" id="edit-menu-name-input">
+        <p class="error menu-name-error" id="edit-menu-name-error"></p>
       </div>
-      <label class="label" for="password-input">Password</label>
+      <label class="label" for="edit-description-textarea">Description</label>
       <div class="input-info">
-        <input type="password" placeholder="********" class="input" name="password" id="edit-password-input">
-        <p class="error password-error" id="edit-password-error"></p>
-      </div>
-      <label class="label" for="confirm-password-input">Confirm password</label>
-      <div class="input-info">
-        <input type="password" placeholder="********" class="input" name="confirm-password" id="edit-confirm-password-input">
-        <p class="error confirm-password-error" id="edit-confirm-password-error"></p>
-      </div>
-      <label class="label" for="avatar-input">Avatar</label>
-      <div class="input-info">
-        <input type="file" name="avatar" class="input avatar-input" name="avatar" id="edit-avatar-input">
+        <textarea class="textarea edit-description-textarea" placeholder="Describe about menu" id="edit-description-textarea" rows="15" cols="30"></textarea>
+        <p class="error description-error" id="edit-description-error"></p>
       </div>
 
-      <label class="label" class="role-select">Role</label>
-      <div class="input-info">
-        <select class="select select--role" id="edit-role-select">
-          <option class="option" value="">Choose a role&hellip;</option>
-          <option class="option" value="member">member</option>
-          <option class="option" value="admin">admin</option>
-        </select>
-        <p class="error role-error" id="edit-role-error"></p>
-      </div>
-
-      <label class="label" class="role-select">Status</label>
-      <div class="input-info">
-        <select class="select select--status" id="edit-status-select">
-          <option class="option" value="">Choose a status&hellip;</option>
-          <option class="option" value="active">active</option>
-          <option class="option" value="inactive">inactive</option>
-        </select>
-        <p class="error status-error" id="edit-status-error"></p>
-      </div>
-      <button type="submit" class="btn btn--submit margin-top-small">Update user</button>
+      <button type="submit" class="btn btn--submit margin-top-small">Update menu</button>
     </form>
   </div>
 
-  <div class="modal delete-user-modal hidden">
+  <div class="modal delete-menu-modal hidden">
     <button class="btn--close-modal btn--close-delete-modal">&times;</button>
-    <h2 class="heading-secondary margin-bottom-small">Delete user</h2>
+    <h2 class="heading-secondary margin-bottom-small">Delete menu</h2>
     <form class="modal-form delete-form" novalidate>
-      <label class="label" for="delete-id-input">Id</label>
+      <label class="label" for="id-input">Id</label>
       <div class="input-info">
         <input type="text" placeholder="Id" class="input" name="id" id="delete-id-input" readonly>
       </div>
-      <label class="label" for="delete-username-input">Username</label>
+      <label class="label" for="delete-menu-name-input">Menu name</label>
       <div class="input-info">
-        <input type="text" placeholder="Username" class="input" name="menu-name" id="delete-username-input" readonly>
+        <input type="text" placeholder="Menu name" class="input" name="menu-name" id="delete-menu-name-input" readonly>
       </div>
-      <label class="label" for="delete-email-input">Email</label>
-      <div class="input-info">
-        <input type="email" placeholder="Email" class="input" name="email" id="delete-email-input" readonly>
-      </div>
-
-      <button type="submit" class="btn btn--submit margin-top-small">Delete user</button>
+      <button type="submit" class="btn btn--submit margin-top-small">Delete menu</button>
     </form>
   </div>
 

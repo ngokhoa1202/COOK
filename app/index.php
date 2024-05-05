@@ -48,14 +48,41 @@ $router
 
   ->get("/admin", [\App\Controller\AdminController::class, "index"])
   ->post("/admin/login", [\App\Controller\AdminController::class, "login"])
+
   ->get("/admin/users", [\App\Controller\AdminController::class, "getAdminUsersView"])
   ->get("/admin/users/id", [\App\Controller\AdminController::class, "getUserByUserId"])
+  ->post("/admin/users/update/id", [\App\Controller\AdminController::class, "updateUserByUserId"])
+  ->post("/admin/users/delete/id", [\App\Controller\AdminController::class, "deleteUserByUserId"])
   ->get("/admin/users/list", [\App\Controller\AdminController::class, "getUserForOnePage"])
   ->get("/admin/users/total", [\App\Controller\AdminController::class, "getNumberOfUsers"])
   ->get("/admin/users/pages/total", [\App\Controller\AdminController::class, "getNumberOfUserPages"])
   ->get("/admin/users/members/total", [\App\Controller\AdminController::class, "getNumberOfMembers"])
   ->get("/admin/users/active/total", [\App\Controller\AdminController::class, "getNumberOfActiveUsers"])
   ->post("/admin/users/new", [\App\Controller\AdminController::class, "createUser"])
+
+  ->get("/admin/menus", [\App\Controller\AdminController::class, "getAdminMenusView"])
+  ->get("/admin/menus/total", [\App\Controller\AdminController::class, "getNumberOfMenus"])
+  ->post("/admin/menus/new", [\App\Controller\AdminController::class, "createMenu"])
+  ->get("/admin/menus/list", [\App\Controller\AdminController::class, "getMenuForOnePage"])
+  ->post("/admin/menus/update/id", [\App\Controller\AdminController::class, "updateMenuByMenuId"])
+  ->post("/admin/menus/delete/id", [\App\Controller\AdminController::class, "deleteMenuByMenuId"])
+  ->get("/admin/menus/pages/total", [\App\Controller\AdminController::class, "getNumberOfMenuPages"])
+
+  ->get("/admin/categories", [\App\Controller\AdminController::class, "getAdminCategoriesView"])
+  ->post("/admin/categories/new", [\App\Controller\AdminController::class, "createCategory"])
+  ->post("/admin/categories/update/id", [\App\Controller\AdminController::class, "updateCategoryByCategoryId"])
+  ->post("/admin/categories/delete/id", [\App\Controller\AdminController::class, "deleteCategoryByCategoryId"])
+  ->get("/admin/categories/list", [\App\Controller\AdminController::class, "getCategoryForOnePage"])
+  ->get("/admin/categories/pages/total", [\App\Controller\AdminController::class, "getNumberOfCategoryPages"])
+  ->get("/admin/categories/total", [\App\Controller\AdminController::class, "getNumberOfCategories"])
+
+  ->get("/admin/types", [\App\Controller\AdminController::class, "getAdminTypesView"])
+  ->get("/admin/types/total", [\App\Controller\AdminController::class, "getNumberOfTypes"])
+  ->get("/admin/types/pages/total", [\App\Controller\AdminController::class, "getNumberOfTypePages"])
+  ->get("/admin/types/list", [\App\Controller\AdminController::class, "getTypeForOnePage"])
+  ->post("/admin/types/new", [\App\Controller\AdminController::class, "createType"])
+  ->post("/admin/types/update/id", [\App\Controller\AdminController::class, "updateTypeByTypeId"])
+  ->post("/admin/types/delete/id", [\App\Controller\AdminController::class, "deleteTypeByTypeId"])
   ;
   
 $config = new Configuration($_ENV);

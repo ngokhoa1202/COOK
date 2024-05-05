@@ -157,10 +157,12 @@ button:active {
 }
 
 .nav-link:hover,
-.nav-link:active {
+.nav-link:active,
+.nav-link--active {
   background-color: #3f728a;
   color: #efefef;
 }
+
 
 
 .icon-link:focus {
@@ -439,7 +441,7 @@ button:active {
 }
 
 /**************************************
-******NEW USER MODAL*******************
+******NEW MENU MODAL*******************
 ***************************************
 */
 
@@ -457,10 +459,11 @@ button:active {
   padding: 2.4rem 3.6rem;
 }
 
-.modal.input::placeholder {
+.modal .input::placeholder {
   color: #ccc;
   letter-spacing: normal;
 }
+
 
 
 .btn--close-modal {
@@ -518,7 +521,19 @@ button:active {
   font-family: "Inter";
   padding: 1.2rem 2.4rem;
   border: 1px solid #183233;
+  
   border-radius: 1rem;
+}
+
+.modal-form .textarea {
+  font-size: 1.8rem;
+  letter-spacing: normal;
+  line-height: 1.2;
+  font-family: "Inter";
+  border: 1px solid #183233;
+  border-radius: 1rem;
+  font-weight: 400;
+  padding: 1.2rem 2.4rem;
 }
 
 .modal-form .btn--submit {
