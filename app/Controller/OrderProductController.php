@@ -9,7 +9,7 @@ use App\View;
 use PDOException;
 use PDO;
 
-class OrderController {
+class OrderProductController {
     public const SUCCESS = "Operation Success!";
     public const FAIL = "Operation Failed!";
 

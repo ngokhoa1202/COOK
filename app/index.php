@@ -14,9 +14,9 @@ $dotenv->load();
 $router = new Router();
 $router
   ->get("/", [\App\Controller\HomeController::class, "index"])
-  ->get("/login", [\App\Controller\LoginController::class, "index"])
-  ->post("/login", [\App\Controller\LoginController::class, "login"])
-  ->post("/signup", [\App\Controller\LoginController::class, "signup"])
+  ->get("/login", [\App\Controller\AuthenticateController::class, "index"])
+  ->post("/login", [\App\Controller\AuthenticateController::class, "login"])
+  ->post("/signup", [\App\Controller\AuthenticateController::class, "signup"])
   ->get("/menu", [\App\Controller\MenuController::class, "index"])
   ->get("/menu/all", [\App\Controller\MenuController::class, "readAllMenus"])
   ->post("/menu/new", [\App\Controller\MenuController::class, "createMenu"])
