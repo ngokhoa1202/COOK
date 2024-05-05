@@ -200,15 +200,16 @@ function submitUserData(formData, url) {
       return response.json();
     })
     .then((data) => {
-      successNotificationMessage.textContent = data;
-      openSuccessNotificationModal();
-      setTimeout(closeSuccessNotificationModal, NOTIFICATION_TIMEOUT);
-      getUserForPage(userPageIndex);
-    })
-    .catch((error) => {
-      failureNotificationMessage.textContent = error;
-      openFailureNotificationModal();
-      setTimeout(closeFailureNotificationModal, NOTIFICATION_TIMEOUT);
+      if (data.includes("successfully")) {
+        successNotificationMessage.textContent = data;
+        openSuccessNotificationModal();
+        setTimeout(closeSuccessNotificationModal, NOTIFICATION_TIMEOUT);
+        getUserForPage(userPageIndex);
+      } else {
+        failureNotificationMessage.textContent = error;
+        openFailureNotificationModal();
+        setTimeout(closeFailureNotificationModal, NOTIFICATION_TIMEOUT);
+      }
     });
 }
 

@@ -133,6 +133,10 @@ button:active {
 **************************************
 */
 
+.nav-link {
+  color: inherit;
+}
+
 .nav-link,
 .nav-link:link,
 .nav-link:visited {
@@ -153,10 +157,12 @@ button:active {
 }
 
 .nav-link:hover,
-.nav-link:active {
+.nav-link:active,
+.nav-link--active {
   background-color: #3f728a;
   color: #efefef;
 }
+
 
 
 .icon-link:focus {
@@ -435,7 +441,7 @@ button:active {
 }
 
 /**************************************
-******NEW USER MODAL*******************
+******NEW MENU MODAL*******************
 ***************************************
 */
 
@@ -453,10 +459,11 @@ button:active {
   padding: 2.4rem 3.6rem;
 }
 
-.modal.input::placeholder {
+.modal .input::placeholder {
   color: #ccc;
   letter-spacing: normal;
 }
+
 
 
 .btn--close-modal {
@@ -514,7 +521,19 @@ button:active {
   font-family: "Inter";
   padding: 1.2rem 2.4rem;
   border: 1px solid #183233;
+  
   border-radius: 1rem;
+}
+
+.modal-form .textarea {
+  font-size: 1.8rem;
+  letter-spacing: normal;
+  line-height: 1.2;
+  font-family: "Inter";
+  border: 1px solid #183233;
+  border-radius: 1rem;
+  font-weight: 400;
+  padding: 1.2rem 2.4rem;
 }
 
 .modal-form .btn--submit {
@@ -533,6 +552,45 @@ button:active {
   outline: none;
   border: none;
   box-shadow: 0 0 1.2rem rgba(35, 43, 46, 0.25);
+}
+
+/**************************************
+******NOTIFICATION MODAL***************
+***************************************
+*/
+
+.sucesss-notification-modal,
+.failure-notification-modal {
+  top: 25%;
+  box-shadow: 0 1.2rem 1.2rem rgba(24, 50, 51, 0.25);
+  background-color: #E2F3F7;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+}
+
+.success-icon {
+  width: 3.2rem;
+  height: 3.2rem;
+  color: #008000;
+}
+
+.success-notification-modal .notification {
+  font-size: 1.8rem;
+  color: #008000;
+}
+
+.failure-icon {
+  width: 3.2rem;
+  height: 3.2rem;
+  color: red;
+}
+
+.failure-notification-modal .notification {
+  font-size: 1.8rem;
+  color: red;
 }
 
 /**************************************

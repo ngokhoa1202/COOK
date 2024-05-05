@@ -4,24 +4,24 @@
 
 
 /**OPEN AND CLOSE MODAL WINDOW WHEN CREATING A NEW MENU */
-const createMenuModal = document.querySelector(".new-menu-modal");
+const createTypeModal = document.querySelector(".new-type-modal");
 const overlay = document.querySelector(".overlay");
 
-const openCreateMenuModalButton = document.querySelector(".btn--new-menu");
-const closeCreateMenuModalButton = document.querySelector(".btn--close-create-modal");
+const openCreateTypeModalButton = document.querySelector(".btn--new-type");
+const closeCreateTypeModalButton = document.querySelector(".btn--close-create-modal");
 
 const successNotificationModal = document.querySelector(".success-notification-modal");
 const successNotificationMessage = document.querySelector(".success-notification-modal .notification");
 const failureNotificationModal = document.querySelector(".failure-notification-modal");
 const failureNotificationMessage = document.querySelector(".failure-notification-modal .notification");
 
-function openCreateMenuModal() {
-  createMenuModal.classList.remove("hidden");
+function openCreateTypeModal() {
+  createTypeModal.classList.remove("hidden");
   overlay.classList.remove("hidden");
 }
 
-function closeCreateMenuModal() {
-  createMenuModal.classList.add("hidden");
+function closeCreateTypeModal() {
+  createTypeModal.classList.add("hidden");
   overlay.classList.add("hidden");
 }
 
@@ -45,15 +45,15 @@ function closeFailureNotificationModal() {
   overlay.classList.add("hidden");
 }
 
-openCreateMenuModalButton.addEventListener("click", (e) => openCreateMenuModal());
-closeCreateMenuModalButton.addEventListener("click", (e) => closeCreateMenuModal());
+openCreateTypeModalButton.addEventListener("click", (e) => openCreateTypeModal());
+closeCreateTypeModalButton.addEventListener("click", (e) => closeCreateTypeModal());
 overlay.addEventListener("click", (e) => {
-  closeCreateMenuModal();
+  closeCreateTypeModal();
   closeSuccessNotificationModal();
 });
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && ! createMenuModal.classList.contains("hidden")) {
-    closeCreateMenuModal();
+  if (e.key === "Escape" && ! createTypeModal.classList.contains("hidden")) {
+    closeCreateTypeModal();
   }
 
   if (e.key === "Escape" && ! successNotificationModal.classList.contains("hidden")) {
@@ -69,17 +69,57 @@ document.addEventListener("keydown", (e) => {
  * VALIDATE AND SEND USER DATA**************************** 
  * *******************************************************/
 
-const CREATE_MENU_URL = "/admin/menus/new";
+const CREATE_TYPE_URL = "/admin/types/new";
+const TYPE_NAME_PATTERN = /^[a-zA-Z][a-zA-Z0-9_\s]+$/;
+const CATEGORY_NAME_PATTERN = /^[a-zA-Z][a-zA-Z0-9_\s]+$/;
+const REQUIRED_TYPE_NAME_MSG = "Type name is required";
+const WRONG_TYPE_NAME_PATTERN_MSG = "Wrong type name pattern";
+const WRONG_CATEGORY_NAME_PATTERN_MSG = "Wrong category name pattern";
+const REQUIRED_CATEGORY_NAME_MSG = "Category name is required";
+const REQUIRED_MENU_NAME_MSG = "Menu name is required";
 const MENU_NAME_PATTERN = /^[a-zA-Z][a-zA-Z0-9_\s]+$/;
 const WRONG_MENU_NAME_PATTERN_MSG = "Wrong menu name pattern";
-const REQUIRED_MENU_NAME_MSG = "Menu name is required";
 const MAX_LENGTH_DESCRIPTION = 1000;
 const TOO_LONG_DESCRIPTION_MSG = "Description is too long";
 const NETWORK_ERROR_MSG = "Your network connection is not stable";
 
+const createCategoryNameInput = document.querySelector("#create-category-name-input");
 const createMenuNameInput = document.querySelector("#create-menu-name-input");
 const createDescriptionTextArea = document.querySelector("#create-description-textarea");
 const NOTIFICATION_TIMEOUT = 3000;
+
+/**
+ *
+ * @param {HTMLInputElement} typeNameInput
+ * @return {Promise<string>}
+ */
+function validateTypeName(typeNameInput) {
+  return new Promise((resolve, reject) => {
+    if (! typeNameInput.value) {
+      reject(REQUIRED_TYPE_NAME_MSG);
+    } else if (! TYPE_NAME_PATTERN.test(typeNameInput.value)) {
+      reject(WRONG_TYPE_NAME_PATTERN_MSG);
+    } else {
+      resolve(typeNameInput.value);
+    }
+  });
+}
+/**
+ * 
+ * @param {HTMLInputElement} categoryNameInput
+ * @returns {Promise<string>}
+ */
+function validateCategoryName(categoryNameInput) {
+  return new Promise((resolve, reject) => {
+    if (!categoryNameInput.value) {
+      reject(REQUIRED_CATEGORY_NAME_MSG);
+    } else if (! CATEGORY_NAME_PATTERN.test(categoryNameInput.value)) {
+      reject(WRONG_CATEGORY_NAME_PATTERN_MSG);
+    } else {
+      resolve(categoryNameInput.value);
+    }
+  });
+}
 
 /**
  * @param {HTMLInputElement} menuNameInput 
@@ -111,13 +151,33 @@ function validateDescription(descriptionTextarea) {
   });
 }
 
-const createMenuModalForm = document.querySelector(".create-form");
+/**
+ * 
+ * @param {string} data 
+ */
+function displaySuccessNotification(data) {
+  successNotificationMessage.textContent = data;
+  openSuccessNotificationModal();
+  setTimeout(closeSuccessNotificationModal, NOTIFICATION_TIMEOUT);
+}
+
+/**
+ * 
+ * @param {string} error 
+ */
+function displayFailureNotification(error) {
+  failureNotificationMessage.textContent = error;
+  openFailureNotificationModal();
+  setTimeout(closeFailureNotificationModal, NOTIFICATION_TIMEOUT);
+}
+
+const createTypeModalForm = document.querySelector(".create-form");
 
 /**
  * @param {string} url 
  * @param {FormData} formData
  */
-function submitUserData(formData, url) {
+function submitCategoryData(formData, url) {
   fetch(url, {
     method: "POST",
     body: formData,
@@ -126,20 +186,25 @@ function submitUserData(formData, url) {
       return response.json();
     })
     .then((data) => {
-      successNotificationMessage.textContent = data;
-      openSuccessNotificationModal();
-      setTimeout(closeSuccessNotificationModal, NOTIFICATION_TIMEOUT);
-      getMenuForPage(menuPageIndex);
-    })
-    .catch((error) => {
-      failureNotificationMessage.textContent = error;
-      openFailureNotificationModal();
-      setTimeout(closeFailureNotificationModal, NOTIFICATION_TIMEOUT);
+      if (data.includes("successfully")) {
+        displaySuccessNotification(data);
+        getTypeForPage(categoryPageIndex);
+      } else {
+        displayFailureNotification(data);
+      }
     });
 }
 
-createMenuModalForm.addEventListener("submit", function (e) {
+createTypeModalForm.addEventListener("submit", function (e) {
   e.preventDefault();
+  const categoryNameValidatorPromise = validateCategoryName(createCategoryNameInput)
+    .then((categoryName) => {
+      validatedCategoryName = categoryName;
+      createCategoryNameError.textContent = "";
+    })
+    .catch((msg) => {
+      createCategoryNameError.textContent = msg;
+    });
   const menuNameValidatorPromise = validateMenuName(createMenuNameInput)
     .then((menuName) => {
       validatedMenuName = menuName;
@@ -157,29 +222,63 @@ createMenuModalForm.addEventListener("submit", function (e) {
       createDescriptionError.textContent = msg;
     });
   
-  function handleMenuData() {
-    Promise.all([menuNameValidatorPromise, descriptionValidatorPromise])
+  function handleCategoryData() {
+    Promise.all([categoryNameValidatorPromise, menuNameValidatorPromise, descriptionValidatorPromise])
       .then(() => {
-        if (validatedMenuName) {
+        if (validatedCategoryName && validatedMenuName) {
           const formData = new FormData();
+          formData.append("category_name", validatedCategoryName);
           formData.append("menu_name", validatedMenuName);
           formData.append("description", validatedDescription);
-          submitUserData(formData, CREATE_MENU_URL);
+          submitCategoryData(formData, CREATE_TYPE_URL);
         }
       })
       .finally(() => {});
   }
-  handleMenuData();
+  handleCategoryData();
 });
 
 /*********************************************************
  *HANDLE INPUT GAINING FOUCS AND LOSING FOCUS EVENT******* 
  * *******************************************************/
+let validatedCategoryName = "";
 let validatedMenuName = "";
 let validatedDescription = "";
 
+const createCategoryNameError = document.querySelector("#create-category-name-error");
 const createMenuNameError = document.querySelector("#create-menu-name-error");
 const createDescriptionError = document.querySelector("#create-description-error");
+
+createCategoryNameInput.addEventListener("focus", function (e) {
+  validateCategoryName(this)
+    .then((categoryName) => {
+      validatedCategoryName = categoryName;
+      createCategoryNameError.textContent = "";
+    })
+    .catch((msg) => {
+      createCategoryNameError.textContent = msg;
+    });
+});
+createCategoryNameInput.addEventListener("input", function (e) {
+  validateCategoryName(this)
+    .then((categoryName) => {
+      validatedCategoryName = categoryName;
+      createCategoryNameError.textContent = "";
+    })
+    .catch((msg) => {
+      createCategoryNameError.textContent = msg;
+    });
+});
+createCategoryNameInput.addEventListener("focusout", function (e) {
+  validateCategoryName(this)
+    .then((categoryName) => {
+      validatedCategoryName = categoryName;
+      createCategoryNameError.textContent = "";
+    })
+    .catch((msg) => {
+      createCategoryNameError.textContent = msg;
+    });
+});
 
 createMenuNameInput.addEventListener("focus", function (e) {
   validateMenuName(this)
@@ -247,14 +346,15 @@ createDescriptionTextArea.addEventListener("focusout", function (e) {
  *FETCH SUMMARY FIGURE FROM SERVER************************ 
  * *******************************************************/
 const SUMMARY_FIGURE_INTERVAL = 5000;
-const summaryFigureOfMenus = document.querySelector(".summary-figure--menu");
-const summaryFigureOfBestSellerMenu = document.querySelector(".summary-figure--bestseller-menu");
-const summaryFigureOfHighestRatedMenu = document.querySelector(".summary-figure--highest-rated-menu");
-const GET_MENU_FIGURE_URL = "/admin/menus/total";
+const TYPE_LIST_INTERVAL = 10000;
+const summaryFigureOfCategory = document.querySelector(".summary-figure--category");
+const summaryFigureOfBestSellerCategory = document.querySelector(".summary-figure--bestseller-category");
+const summaryFigureOfHighestRatedCategory = document.querySelector(".summary-figure--highest-rated-category");
+const GET_CATEGORY_FIGURE_URL = "/admin/types/total";
 
 
-async function getSummaryFigureOfMenu() {
-  await fetch(GET_MENU_FIGURE_URL, {
+async function getSummaryFigureOfCategory() {
+  await fetch(GET_CATEGORY_FIGURE_URL, {
     method: "GET"
   }).then((response) => {
     if (! response.ok) {
@@ -262,20 +362,23 @@ async function getSummaryFigureOfMenu() {
     }
     return response.json();
   }).then((data) => {
-    summaryFigureOfMenus.textContent = data;
+    summaryFigureOfCategory.textContent = data;
   }).catch((error) => {
     console.log(error.message);
   })
 }
 
+getSummaryFigureOfCategory();
+setInterval(getSummaryFigureOfCategory, SUMMARY_FIGURE_INTERVAL);
+
 /*********************************************************
  *FETCH SUMMARY FIGURE FROM SERVER************************ 
  * *******************************************************/
-const GET_MENU_URL = "/admin/menus/list";
-const MENU_LIST_LENGTH = 10;
-let menuPageIndex = 1;
+const GET_TYPE_URL = "/admin/types/list";
+const TYPE_LIST_LENGTH = 10;
+let categoryPageIndex = 1;
 
-function removeOldUserTableData() {
+function removeOldTypeTableData() {
   let tableRow = null;
   while (tableRow = document.querySelector(".tbody tr")) {
     tableRow.remove();
@@ -283,41 +386,47 @@ function removeOldUserTableData() {
 }
 
 const tableBody = document.querySelector(".tbody");
-let menus = [];
+let types = [];
 
 /**
  * 
  * @param {int} pageIndex
  * @returns {Promise<void>}
  */
-async function getMenuForPage(pageIndex) {
+async function getTypeForPage(pageIndex) {
   await fetch(
-    GET_MENU_URL + "?" + new URLSearchParams({
+    GET_TYPE_URL + "?" + new URLSearchParams({
       page: pageIndex,
-      length: MENU_LIST_LENGTH
+      length: TYPE_LIST_LENGTH
     }), 
     {
       method: "GET"
     })
     .then((response) => {
-      if (! response.ok) {
-        throw new Error(NETWORK_ERROR_MSG);
-      }
       return response.json();
     }).then((data) => {
-      menus = data;
-      removeOldUserTableData();  
-      menus.forEach((menu) => {
+      types = data;
+      removeOldTypeTableData();  
+      types.forEach((type) => {
         const tableRow = document.createElement("tr");
 
         const tableDataForId = document.createElement("td");
-        tableDataForId.textContent = menu.menu_id;
+        tableDataForId.textContent = type.type_id;
         tableRow.appendChild(tableDataForId);
 
+        const tableDataForTypeName = document.createElement("td");
+        tableDataForTypeName.textContent = type.type_name;
+        tableRow.append(tableDataForTypeName);
+
+        const tableDataForCategoryName = document.createElement("td");
+        tableDataForCategoryName.textContent = type.category_name;
+        tableRow.appendChild(tableDataForCategoryName);
+
         const tableDataForMenuName = document.createElement("td");
-        tableDataForMenuName.textContent = menu.menu_name;
+        tableDataForMenuName.textContent = type.menu_name;
         tableRow.appendChild(tableDataForMenuName);
-      
+
+        
         const tableDataForAction = document.createElement("td");
         const actionForm = document.createElement("div");
         actionForm.classList.add("action-form");
@@ -343,12 +452,12 @@ async function getMenuForPage(pageIndex) {
         tableBody.appendChild(tableRow);
       })
     }).catch((error) => {
-      console.log(error.message);
-    })
+      displayFailureNotification(error);
+    });
 }
-const MENU_LIST_INTERVAL = 10000;
-getMenuForPage(menuPageIndex);
-setInterval(() => getMenuForPage(menuPageIndex), MENU_LIST_INTERVAL);
+getTypeForPage(categoryPageIndex);
+setInterval(() => getTypeForPage(categoryPageIndex), TYPE_LIST_INTERVAL);
+
 /*********************************************************
  *PAGINATION************************ 
  * *******************************************************/
@@ -361,21 +470,21 @@ const MAX_PAGINATION_LENGTH = 5;
  * @returns {void}
  */
 function renderPageIndexForPagination(offset = 1) {
-  if (numberOfMenuPages === 0) {
+  if (numberOfCategoryPages === 0) {
     return;
   }
   if (offset < 1) {
     offset = 1;
   }
   const allPaginationItems = document.querySelectorAll(".pagination-link--item");
-  if (MAX_PAGINATION_LENGTH > numberOfMenuPages && numberOfMenuPages > 0) {
-    for (let i = numberOfMenuPages; i < MAX_PAGINATION_LENGTH; ++i) {
+  if (MAX_PAGINATION_LENGTH > numberOfCategoryPages && numberOfCategoryPages > 0) {
+    for (let i = numberOfCategoryPages; i < MAX_PAGINATION_LENGTH; ++i) {
       allPaginationItems[i].classList.add("hidden");
     }
     return;
   }
   
-  let paginationLength = Math.min(MAX_PAGINATION_LENGTH, numberOfMenuPages - offset + 1);
+  let paginationLength = Math.min(MAX_PAGINATION_LENGTH, numberOfCategoryPages - offset + 1);
   for (let i = 0; i < paginationLength; ++i) {
     allPaginationItems[i].classList.remove("hidden");
     allPaginationItems[i].textContent = offset + i;
@@ -386,38 +495,35 @@ function renderPageIndexForPagination(offset = 1) {
   }
 }
 
-const NUMBER_OF_MENU_PAGES_URL = "/admin/menus/pages/total";
-let numberOfMenuPages = 0;
+const NUMBER_OF_TYPE_PAGES_URL = "/admin/types/pages/total";
+let numberOfCategoryPages = 0;
 
-async function getNumberOfMenuPages() {
+async function getNumberOTypePages() {
   await fetch(  
-    NUMBER_OF_MENU_PAGES_URL +
+    NUMBER_OF_TYPE_PAGES_URL +
       "?" +
       new URLSearchParams({
-        length: MENU_LIST_LENGTH,
+        length: TYPE_LIST_LENGTH,
       }),
     {
       method: "GET",
     }
   )
     .then((response) => {
-      if (!response.ok) {
-        throw new Error(NETWORK_ERROR_MSG);
-      }
       return response.json();
     })
     .then((data) => {
-      numberOfMenuPages = data;
+      numberOfCategoryPages = data;
     })
     .catch((error) => {
-      console.log(error.message);
-    })
+      displayFailureNotification(error);
+    });
 }
-
+getNumberOTypePages();
+setInterval(() => getNumberOTypePages(), TYPE_LIST_INTERVAL);
 
 window.addEventListener("DOMContentLoaded", function (e) {
-
-  getNumberOfMenuPages().then(() => {
+  getNumberOTypePages().then(() => {
     renderPageIndexForPagination();
   });
 });
@@ -435,8 +541,9 @@ window.addEventListener("load", (e) => {
       ev.preventDefault();
       removeAllActivePaginationItems();
       this.classList.add("pagination-link--active");
-      menuPageIndex = Number.parseInt(item.textContent);
-      getMenuForPage(menuPageIndex);
+      categoryPageIndex = Number.parseInt(item.textContent);
+      console.log(categoryPageIndex);
+      getTypeForPage(categoryPageIndex);
     })
   });
 
@@ -452,7 +559,7 @@ window.addEventListener("load", (e) => {
     } else if (item.id === "start-link") {
       offset = 1;
     } else {
-      offset = Math.floor(numberOfMenuPages / MAX_PAGINATION_LENGTH) * MAX_PAGINATION_LENGTH + 1;
+      offset = Math.floor(numberOfCategoryPages / MAX_PAGINATION_LENGTH) * MAX_PAGINATION_LENGTH + 1;
     }
     item.addEventListener("click", function (ev) {
       ev.preventDefault();
@@ -469,29 +576,102 @@ window.addEventListener("load", (e) => {
  * @param {Array<MutationRecord>} mutationRecords 
  * @param {MutationObserver} observer 
  */
-const EDIT_MENU_URL = "/admin/menus/update/id";
-const DELETE_MENU_URL = "/admin/menus/delete/id";
+const EDIT_TYPE_URL = "/admin/types/update/id";
+const DELETE_TYPE_URL = "/admin/types/delete/id";
 function handleMenuTableBodyMutation(mutationRecords, observer) {
   /*******EDIT USER************************************************** */
-  const editMenuModal = document.querySelector(".edit-menu-modal");
+  const editTypeModal = document.querySelector(".edit-type-modal");
+  const editTypeNameInput = document.querySelector("#edit-type-name-input");
+  const editCategoryNameInput = document.querySelector("#edit-category-name-input");
   const editIdInput = document.querySelector("#edit-id-input");
   const editMenuNameInput = document.querySelector("#edit-menu-name-input");
   const editDescriptionTextarea = document.querySelector("#edit-description-textarea");
   const allEditButtons = document.querySelectorAll(".btn--edit");
+
+  function openEditTypeModal() {
+    editTypeModal.classList.remove("hidden");
+    overlay.classList.remove("hidden");
+  }
+
   allEditButtons.forEach((btn, index) => {
     btn.addEventListener("click", function (ev) {
       ev.preventDefault();
-      editMenuModal.classList.remove("hidden");
-      overlay.classList.remove("hidden");
-      editIdInput.value = menus[index].menu_id;
-      editMenuNameInput.value = menus[index].menu_name;
-      editDescriptionTextarea.innerHTML = menus[index].description;
+      openEditTypeModal();
+      editIdInput.value = types[index].type_id;
+      editTypeNameInput.value = types[index].type_name;
+      editCategoryNameInput.value = types[index].category_name;
+      editMenuNameInput.value = types[index].menu_name;
+      editDescriptionTextarea.innerHTML = types[index].description;
     })
   });
-  
+  let validatedTypeName = "";
+  let validatedCategoryName = "";
   let validatedMenuName = "";
   let validatedDescription = "";
-  const editMenuNameError =  document.querySelector("#edit-menu-name-error");
+  const editTypeNameError = document.querySelector("#edit-type-name-error");
+  editTypeNameInput.addEventListener("focus", function (e) {
+    validateTypeName(this)
+      .then((typeName) => {
+        validatedTypeName = typeName;
+        editTypeNameError.textContent = "";
+      })
+      .catch((msg) => {
+        editTypeNameError.textContent = msg;
+      });
+  });
+  editTypeNameInput.addEventListener("input", function (e) {
+    validateTypeName(this)
+      .then((typeName) => {
+        validatedTypeName = typeName;
+        editTypeNameError.textContent = "";
+      })
+      .catch((msg) => {
+        editTypeNameError.textContent = msg;
+      });
+  });
+  editTypeNameInput.addEventListener("focusout", function (e) {
+    validateTypeName(this)
+      .then((typeName) => {
+        validatedTypeName = typeName;
+        editTypeNameError.textContent = "";
+      })
+      .catch((msg) => {
+        editTypeNameError.textContent = msg;
+      });
+  });
+  const editCategoryNameError = document.querySelector("#edit-category-name-error");
+  editCategoryNameInput.addEventListener("focus", function (e) {
+    validateCategoryName(this)
+      .then((categoryName) => {
+        validatedCategoryName = categoryName;
+        editCategoryNameError.textContent = "";
+      })
+      .catch((msg) => {
+        editCategoryNameError.textContent = msg;
+      });
+  });
+  editCategoryNameInput.addEventListener("input", function (e) {
+    validateCategoryName(this)
+      .then((categoryName) => {
+        validatedCategoryName = categoryName;
+        editCategoryNameError.textContent = "";
+      })
+      .catch((msg) => {
+        editCategoryNameError.textContent = msg;
+      });
+  });
+  editCategoryNameInput.addEventListener("focusout", function (e) {
+    validateCategoryName(this)
+      .then((categoryName) => {
+        validatedCategoryName = categoryName;
+        editCategoryNameError.textContent = "";
+      })
+      .catch((msg) => {
+        editCategoryNameError.textContent = msg;
+      });
+  });
+
+  const editMenuNameError = document.querySelector("#edit-menu-name-error");
   editMenuNameInput.addEventListener("focus", function (e) {
     validateMenuName(this)
       .then((menuName) => {
@@ -534,10 +714,36 @@ function handleMenuTableBodyMutation(mutationRecords, observer) {
         editDescriptionError.textContent = msg;
       });
   });
+   editDescriptionTextarea.addEventListener("focusout", function (e) {
+     validateDescription(this)
+       .then((description) => {
+         validatedDescription = description;
+         editDescriptionError.textContent = "";
+       })
+       .catch((msg) => {
+         editDescriptionError.textContent = msg;
+       });
+   });
 
-  const editMenuForm = document.querySelector(".edit-form");
-  editMenuForm.addEventListener("submit", function (e) {
+  const editTypeForm = document.querySelector(".edit-form");
+  editTypeForm.addEventListener("submit", function (e) {
     e.preventDefault();
+    const typeNameValidatorPromise = validateTypeName(editTypeNameInput)
+      .then((typeName) => {
+        validatedTypeName = typeName;
+        editTypeNameError.textContent = "";
+      })
+      .catch((msg) => {
+        editTypeNameError.textContent = msg;
+      });
+    const categoryNameValidatorPromise = validateCategoryName(editCategoryNameInput)
+      .then((categoryName) => {
+        validatedCategoryName = categoryName;
+        editCategoryNameError.textContent = "";
+      })
+      .catch((msg) => {
+        editCategoryNameError.textContent = msg;
+      });
     const menuNameValidatorPromise = validateMenuName(editMenuNameInput)
       .then((menuName) => {
         validatedMenuName = menuName;
@@ -555,61 +761,69 @@ function handleMenuTableBodyMutation(mutationRecords, observer) {
         editDescriptionError.textContent = msg;
       });
     
-    function handleMenuData() {
+    function handleCategoryData() {
       let validatedId = editIdInput.value;
-      Promise.all([menuNameValidatorPromise, descriptionValidatorPromise])
-        .then(() => {
-          if (validatedId && validatedMenuName) {
-            const formData = new FormData();
-            formData.append("menu_id", validatedId);
-            formData.append("menu_name", validatedMenuName);
-            formData.append("description", validatedDescription);
-            submitUserData(formData, EDIT_MENU_URL);
-          }
-        });
+      Promise.all([
+        typeNameValidatorPromise,
+        categoryNameValidatorPromise,
+        menuNameValidatorPromise,
+        descriptionValidatorPromise,
+      ]).then(() => {
+        if (validatedId && validatedTypeName && validatedMenuName && validatedCategoryName) {
+          const formData = new FormData();
+          formData.append("type_id", validatedId);
+          formData.append("type_name", validatedTypeName);
+          formData.append("category_name", validatedCategoryName);
+          formData.append("menu_name", validatedMenuName);
+          formData.append("description", validatedDescription);
+          submitCategoryData(formData, EDIT_TYPE_URL);
+        }
+      });
     }
-    handleMenuData();
+    handleCategoryData();
   });
 
-  function closeEditMenuModal() {
-    editMenuModal.classList.add("hidden");
+  function closeEditTypeModal() {
+    editTypeModal.classList.add("hidden");
     overlay.classList.add("hidden");
   }
   
-  const closeMenuModalButton = document.querySelector(".btn--close-edit-modal");
-  closeMenuModalButton.addEventListener("click", function (ev) {
-    closeEditMenuModal();
+  const closeEditTypeModalButton = document.querySelector(".btn--close-edit-modal");
+  closeEditTypeModalButton.addEventListener("click", function (ev) {
+    closeEditTypeModal();
   });
 
   overlay.addEventListener("click", (ev) => {
-    closeEditMenuModal();
+    closeEditTypeModal();
   });
   
   document.addEventListener("keydown", (ev) => {
-    if (ev.key === "Escape" && ! editMenuModal.classList.contains("hidden")) {
-      closeEditMenuModal();
+    if (ev.key === "Escape" && ! editTypeModal.classList.contains("hidden")) {
+      closeEditTypeModal();
     }
   });
 
   /******DELETE USER************************************************** */
-  const deleteMenuModal = document.querySelector(".delete-menu-modal");
-  const closeDeleteUserModalButton = document.querySelector(".btn--close-delete-modal");
-  const deleteMenuIdInput = document.querySelector("#delete-id-input");
+  const deleteCategoryModal = document.querySelector(".delete-category-modal");
+  const closeDeleteCategoryModalButton = document.querySelector(".btn--close-delete-modal");
+  const deleteIdInput = document.querySelector("#delete-id-input");
+  const deleteTypeNameInput = document.querySelector("#delete-type-name-input");
+  const deleteCategoryNameInput = document.querySelector("#delete-category-name-input");
   const deleteMenuNameInput = document.querySelector("#delete-menu-name-input"); 
-  function closeDeleteMenuModal() {
-    deleteMenuModal.classList.add("hidden");
+  function closeDeleteCategoryModal() {
+    deleteCategoryModal.classList.add("hidden");
     overlay.classList.add("hidden");
   }
 
-  function openDeleteMenuModal() {
-    deleteMenuModal.classList.remove("hidden");
+  function openDeleteCategoryModal() {
+    deleteCategoryModal.classList.remove("hidden");
     overlay.classList.remove("hidden");
   }
 
-  closeDeleteUserModalButton.addEventListener("click", (e) => closeDeleteMenuModal());
+  closeDeleteCategoryModalButton.addEventListener("click", (e) => closeDeleteCategoryModal());
   document.addEventListener("keydown", (ev) => {
-    if (ev.key === "Escape" && ! deleteMenuModal.classList.contains("hidden")) {
-      closeDeleteMenuModal();
+    if (ev.key === "Escape" && ! deleteCategoryModal.classList.contains("hidden")) {
+      closeDeleteCategoryModal();
     }
   });
 
@@ -617,24 +831,25 @@ function handleMenuTableBodyMutation(mutationRecords, observer) {
   allDeleteButtons.forEach((btn, index) => {
     btn.addEventListener("click", function (ev) {
       ev.preventDefault();
-      openDeleteMenuModal();
-      deleteMenuIdInput.value = menus[index].menu_id;
-      deleteMenuNameInput.value = menus[index].menu_name;
+      openDeleteCategoryModal();
+      deleteIdInput.value = types[index].type_id;
+      deleteTypeNameInput.value = types[index].type_name;
+      deleteCategoryNameInput.value = types[index].category_name;
+      deleteMenuNameInput.value = types[index].menu_name;
     });
   });
-  let validatedMenuId = "";
+  let validatedTypeId = "";
 
   const deleteMenuForm = document.querySelector(".delete-form");
   deleteMenuForm.addEventListener("submit", function (e) {
     e.preventDefault();
-    console.log("submitted");
-    function handleMenuData() {
-      validatedMenuId = deleteMenuIdInput.value;
+    function handleCategoryData() {
+      validatedTypeId = deleteIdInput.value;
       const formData = new FormData();
-      formData.append("menu_id", validatedMenuId);
-      submitUserData(formData, DELETE_MENU_URL);
+      formData.append("type_id", validatedTypeId);
+      submitCategoryData(formData, DELETE_TYPE_URL);
     }
-    handleMenuData();
+    handleCategoryData();
   });
 } 
 

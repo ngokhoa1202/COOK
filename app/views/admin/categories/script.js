@@ -4,7 +4,7 @@
 
 
 /**OPEN AND CLOSE MODAL WINDOW WHEN CREATING A NEW MENU */
-const createMenuModal = document.querySelector(".new-menu-modal");
+const createCategoryModal = document.querySelector(".new-category-modal");
 const overlay = document.querySelector(".overlay");
 
 const openCreateMenuModalButton = document.querySelector(".btn--new-menu");
@@ -15,13 +15,13 @@ const successNotificationMessage = document.querySelector(".success-notification
 const failureNotificationModal = document.querySelector(".failure-notification-modal");
 const failureNotificationMessage = document.querySelector(".failure-notification-modal .notification");
 
-function openCreateMenuModal() {
-  createMenuModal.classList.remove("hidden");
+function openCreateCategoryModal() {
+  createCategoryModal.classList.remove("hidden");
   overlay.classList.remove("hidden");
 }
 
-function closeCreateMenuModal() {
-  createMenuModal.classList.add("hidden");
+function closeCreateCategoryModal() {
+  createCategoryModal.classList.add("hidden");
   overlay.classList.add("hidden");
 }
 
@@ -45,15 +45,15 @@ function closeFailureNotificationModal() {
   overlay.classList.add("hidden");
 }
 
-openCreateMenuModalButton.addEventListener("click", (e) => openCreateMenuModal());
-closeCreateMenuModalButton.addEventListener("click", (e) => closeCreateMenuModal());
+openCreateMenuModalButton.addEventListener("click", (e) => openCreateCategoryModal());
+closeCreateMenuModalButton.addEventListener("click", (e) => closeCreateCategoryModal());
 overlay.addEventListener("click", (e) => {
-  closeCreateMenuModal();
+  closeCreateCategoryModal();
   closeSuccessNotificationModal();
 });
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && ! createMenuModal.classList.contains("hidden")) {
-    closeCreateMenuModal();
+  if (e.key === "Escape" && ! createCategoryModal.classList.contains("hidden")) {
+    closeCreateCategoryModal();
   }
 
   if (e.key === "Escape" && ! successNotificationModal.classList.contains("hidden")) {
@@ -69,17 +69,38 @@ document.addEventListener("keydown", (e) => {
  * VALIDATE AND SEND USER DATA**************************** 
  * *******************************************************/
 
-const CREATE_MENU_URL = "/admin/menus/new";
+const CREATE_CATEGORY_URL = "/admin/categories/new";
+const CATEGORY_NAME_PATTERN = /^[a-zA-Z][a-zA-Z0-9_\s]+$/;
+const WRONG_CATEGORY_NAME_PATTERN_MSG = "Wrong category name pattern";
+const REQUIRED_CATEGORY_NAME_MSG = "Category name is required";
+const REQUIRED_MENU_NAME_MSG = "Menu name is required";
 const MENU_NAME_PATTERN = /^[a-zA-Z][a-zA-Z0-9_\s]+$/;
 const WRONG_MENU_NAME_PATTERN_MSG = "Wrong menu name pattern";
-const REQUIRED_MENU_NAME_MSG = "Menu name is required";
 const MAX_LENGTH_DESCRIPTION = 1000;
 const TOO_LONG_DESCRIPTION_MSG = "Description is too long";
 const NETWORK_ERROR_MSG = "Your network connection is not stable";
 
+const createCategoryNameInput = document.querySelector("#create-category-name-input");
 const createMenuNameInput = document.querySelector("#create-menu-name-input");
 const createDescriptionTextArea = document.querySelector("#create-description-textarea");
 const NOTIFICATION_TIMEOUT = 3000;
+
+/**
+ * 
+ * @param {HTMLInputElement} categoryNameInput
+ * @returns {Promise<string>}
+ */
+function validateCategoryNameInput(categoryNameInput) {
+  return new Promise((resolve, reject) => {
+    if (!categoryNameInput.value) {
+      reject(REQUIRED_CATEGORY_NAME_MSG);
+    } else if (! CATEGORY_NAME_PATTERN.test(categoryNameInput.value)) {
+      reject(WRONG_CATEGORY_NAME_PATTERN_MSG);
+    } else {
+      resolve(categoryNameInput.value);
+    }
+  });
+}
 
 /**
  * @param {HTMLInputElement} menuNameInput 
@@ -111,13 +132,33 @@ function validateDescription(descriptionTextarea) {
   });
 }
 
-const createMenuModalForm = document.querySelector(".create-form");
+/**
+ * 
+ * @param {string} data 
+ */
+function displaySuccessNotification(data) {
+  successNotificationMessage.textContent = data;
+  openSuccessNotificationModal();
+  setTimeout(closeSuccessNotificationModal, NOTIFICATION_TIMEOUT);
+}
+
+/**
+ * 
+ * @param {string} error 
+ */
+function displayFailureNotification(error) {
+  failureNotificationMessage.textContent = error;
+  openFailureNotificationModal();
+  setTimeout(closeFailureNotificationModal, NOTIFICATION_TIMEOUT);
+}
+
+const createCategoryModalForm = document.querySelector(".create-form");
 
 /**
  * @param {string} url 
  * @param {FormData} formData
  */
-function submitUserData(formData, url) {
+function submitCategoryData(formData, url) {
   fetch(url, {
     method: "POST",
     body: formData,
@@ -126,20 +167,27 @@ function submitUserData(formData, url) {
       return response.json();
     })
     .then((data) => {
-      successNotificationMessage.textContent = data;
-      openSuccessNotificationModal();
-      setTimeout(closeSuccessNotificationModal, NOTIFICATION_TIMEOUT);
-      getMenuForPage(menuPageIndex);
-    })
-    .catch((error) => {
-      failureNotificationMessage.textContent = error;
-      openFailureNotificationModal();
-      setTimeout(closeFailureNotificationModal, NOTIFICATION_TIMEOUT);
+      if (data.includes("successfully")) {
+        displaySuccessNotification(data);
+        getCategoryForPage(categoryPageIndex);
+      } else {
+        displayFailureNotification(data);
+      }
+
     });
 }
 
-createMenuModalForm.addEventListener("submit", function (e) {
+createCategoryModalForm.addEventListener("submit", function (e) {
   e.preventDefault();
+  console.log("submit");
+  const categoryNameValidatorPromise = validateCategoryNameInput(createCategoryNameInput)
+    .then((categoryName) => {
+      validatedCategoryName = categoryName;
+      createCategoryNameError.textContent = "";
+    })
+    .catch((msg) => {
+      createCategoryNameError.textContent = msg;
+    });
   const menuNameValidatorPromise = validateMenuName(createMenuNameInput)
     .then((menuName) => {
       validatedMenuName = menuName;
@@ -157,29 +205,63 @@ createMenuModalForm.addEventListener("submit", function (e) {
       createDescriptionError.textContent = msg;
     });
   
-  function handleMenuData() {
-    Promise.all([menuNameValidatorPromise, descriptionValidatorPromise])
+  function handleCategoryData() {
+    Promise.all([categoryNameValidatorPromise, menuNameValidatorPromise, descriptionValidatorPromise])
       .then(() => {
-        if (validatedMenuName) {
+        if (validatedCategoryName && validatedMenuName) {
           const formData = new FormData();
+          formData.append("category_name", validatedCategoryName);
           formData.append("menu_name", validatedMenuName);
           formData.append("description", validatedDescription);
-          submitUserData(formData, CREATE_MENU_URL);
+          submitCategoryData(formData, CREATE_CATEGORY_URL);
         }
       })
       .finally(() => {});
   }
-  handleMenuData();
+  handleCategoryData();
 });
 
 /*********************************************************
  *HANDLE INPUT GAINING FOUCS AND LOSING FOCUS EVENT******* 
  * *******************************************************/
+let validatedCategoryName = "";
 let validatedMenuName = "";
 let validatedDescription = "";
 
+const createCategoryNameError = document.querySelector("#create-category-name-error");
 const createMenuNameError = document.querySelector("#create-menu-name-error");
 const createDescriptionError = document.querySelector("#create-description-error");
+
+createCategoryNameInput.addEventListener("focus", function (e) {
+  validateCategoryNameInput(this)
+    .then((categoryName) => {
+      validatedCategoryName = categoryName;
+      createCategoryNameError.textContent = "";
+    })
+    .catch((msg) => {
+      createCategoryNameError.textContent = msg;
+    });
+});
+createCategoryNameInput.addEventListener("input", function (e) {
+  validateCategoryNameInput(this)
+    .then((categoryName) => {
+      validatedCategoryName = categoryName;
+      createCategoryNameError.textContent = "";
+    })
+    .catch((msg) => {
+      createCategoryNameError.textContent = msg;
+    });
+});
+createCategoryNameInput.addEventListener("focusout", function (e) {
+  validateCategoryNameInput(this)
+    .then((categoryName) => {
+      validatedCategoryName = categoryName;
+      createCategoryNameError.textContent = "";
+    })
+    .catch((msg) => {
+      createCategoryNameError.textContent = msg;
+    });
+});
 
 createMenuNameInput.addEventListener("focus", function (e) {
   validateMenuName(this)
@@ -247,14 +329,15 @@ createDescriptionTextArea.addEventListener("focusout", function (e) {
  *FETCH SUMMARY FIGURE FROM SERVER************************ 
  * *******************************************************/
 const SUMMARY_FIGURE_INTERVAL = 5000;
-const summaryFigureOfMenus = document.querySelector(".summary-figure--menu");
-const summaryFigureOfBestSellerMenu = document.querySelector(".summary-figure--bestseller-menu");
-const summaryFigureOfHighestRatedMenu = document.querySelector(".summary-figure--highest-rated-menu");
-const GET_MENU_FIGURE_URL = "/admin/menus/total";
+const CATEGORY_LIST_INTERVAL = 10000;
+const summaryFigureOfCategory = document.querySelector(".summary-figure--category");
+const summaryFigureOfBestSellerCategory = document.querySelector(".summary-figure--bestseller-category");
+const summaryFigureOfHighestRatedCategory = document.querySelector(".summary-figure--highest-rated-category");
+const GET_CATEGORY_FIGURE_URL = "/admin/categories/total";
 
 
-async function getSummaryFigureOfMenu() {
-  await fetch(GET_MENU_FIGURE_URL, {
+async function getSummaryFigureOfCategory() {
+  await fetch(GET_CATEGORY_FIGURE_URL, {
     method: "GET"
   }).then((response) => {
     if (! response.ok) {
@@ -262,20 +345,23 @@ async function getSummaryFigureOfMenu() {
     }
     return response.json();
   }).then((data) => {
-    summaryFigureOfMenus.textContent = data;
+    summaryFigureOfCategory.textContent = data;
   }).catch((error) => {
     console.log(error.message);
   })
 }
 
+getSummaryFigureOfCategory();
+setInterval(getSummaryFigureOfCategory, SUMMARY_FIGURE_INTERVAL);
+
 /*********************************************************
  *FETCH SUMMARY FIGURE FROM SERVER************************ 
  * *******************************************************/
-const GET_MENU_URL = "/admin/menus/list";
-const MENU_LIST_LENGTH = 10;
-let menuPageIndex = 1;
+const GET_CATEGORY_URL = "/admin/categories/list";
+const CATEGORY_LIST_LENGTH = 10;
+let categoryPageIndex = 1;
 
-function removeOldUserTableData() {
+function removeOldCategoryTableData() {
   let tableRow = null;
   while (tableRow = document.querySelector(".tbody tr")) {
     tableRow.remove();
@@ -283,41 +369,43 @@ function removeOldUserTableData() {
 }
 
 const tableBody = document.querySelector(".tbody");
-let menus = [];
+let categories = [];
 
 /**
  * 
  * @param {int} pageIndex
  * @returns {Promise<void>}
  */
-async function getMenuForPage(pageIndex) {
+async function getCategoryForPage(pageIndex) {
   await fetch(
-    GET_MENU_URL + "?" + new URLSearchParams({
+    GET_CATEGORY_URL + "?" + new URLSearchParams({
       page: pageIndex,
-      length: MENU_LIST_LENGTH
+      length: CATEGORY_LIST_LENGTH
     }), 
     {
       method: "GET"
     })
     .then((response) => {
-      if (! response.ok) {
-        throw new Error(NETWORK_ERROR_MSG);
-      }
       return response.json();
     }).then((data) => {
-      menus = data;
-      removeOldUserTableData();  
-      menus.forEach((menu) => {
+      categories = data;
+      removeOldCategoryTableData();  
+      categories.forEach((category) => {
         const tableRow = document.createElement("tr");
 
         const tableDataForId = document.createElement("td");
-        tableDataForId.textContent = menu.menu_id;
+        tableDataForId.textContent = category.category_id;
         tableRow.appendChild(tableDataForId);
 
+        const tableDataForCategoryName = document.createElement("td");
+        tableDataForCategoryName.textContent = category.category_name;
+        tableRow.appendChild(tableDataForCategoryName);
+
         const tableDataForMenuName = document.createElement("td");
-        tableDataForMenuName.textContent = menu.menu_name;
+        tableDataForMenuName.textContent = category.menu_name;
         tableRow.appendChild(tableDataForMenuName);
-      
+
+        
         const tableDataForAction = document.createElement("td");
         const actionForm = document.createElement("div");
         actionForm.classList.add("action-form");
@@ -343,12 +431,12 @@ async function getMenuForPage(pageIndex) {
         tableBody.appendChild(tableRow);
       })
     }).catch((error) => {
-      console.log(error.message);
-    })
+      displayFailureNotification(error);
+    });
 }
-const MENU_LIST_INTERVAL = 10000;
-getMenuForPage(menuPageIndex);
-setInterval(() => getMenuForPage(menuPageIndex), MENU_LIST_INTERVAL);
+getCategoryForPage(categoryPageIndex);
+setInterval(() => getCategoryForPage(categoryPageIndex), CATEGORY_LIST_INTERVAL);
+
 /*********************************************************
  *PAGINATION************************ 
  * *******************************************************/
@@ -361,21 +449,21 @@ const MAX_PAGINATION_LENGTH = 5;
  * @returns {void}
  */
 function renderPageIndexForPagination(offset = 1) {
-  if (numberOfMenuPages === 0) {
+  if (numberOfCategoryPages === 0) {
     return;
   }
   if (offset < 1) {
     offset = 1;
   }
   const allPaginationItems = document.querySelectorAll(".pagination-link--item");
-  if (MAX_PAGINATION_LENGTH > numberOfMenuPages && numberOfMenuPages > 0) {
-    for (let i = numberOfMenuPages; i < MAX_PAGINATION_LENGTH; ++i) {
+  if (MAX_PAGINATION_LENGTH > numberOfCategoryPages && numberOfCategoryPages > 0) {
+    for (let i = numberOfCategoryPages; i < MAX_PAGINATION_LENGTH; ++i) {
       allPaginationItems[i].classList.add("hidden");
     }
     return;
   }
   
-  let paginationLength = Math.min(MAX_PAGINATION_LENGTH, numberOfMenuPages - offset + 1);
+  let paginationLength = Math.min(MAX_PAGINATION_LENGTH, numberOfCategoryPages - offset + 1);
   for (let i = 0; i < paginationLength; ++i) {
     allPaginationItems[i].classList.remove("hidden");
     allPaginationItems[i].textContent = offset + i;
@@ -386,38 +474,35 @@ function renderPageIndexForPagination(offset = 1) {
   }
 }
 
-const NUMBER_OF_MENU_PAGES_URL = "/admin/menus/pages/total";
-let numberOfMenuPages = 0;
+const NUMBER_OF_CATEGORY_PAGES_URL = "/admin/categories/pages/total";
+let numberOfCategoryPages = 0;
 
-async function getNumberOfMenuPages() {
+async function getNumberOfCategoryPages() {
   await fetch(  
-    NUMBER_OF_MENU_PAGES_URL +
+    NUMBER_OF_CATEGORY_PAGES_URL +
       "?" +
       new URLSearchParams({
-        length: MENU_LIST_LENGTH,
+        length: CATEGORY_LIST_LENGTH,
       }),
     {
       method: "GET",
     }
   )
     .then((response) => {
-      if (!response.ok) {
-        throw new Error(NETWORK_ERROR_MSG);
-      }
       return response.json();
     })
     .then((data) => {
-      numberOfMenuPages = data;
+      numberOfCategoryPages = data;
     })
     .catch((error) => {
-      console.log(error.message);
-    })
+      displayFailureNotification(error);
+    });
 }
-
+getNumberOfCategoryPages();
+setInterval(() => getNumberOfCategoryPages(), CATEGORY_LIST_INTERVAL);
 
 window.addEventListener("DOMContentLoaded", function (e) {
-
-  getNumberOfMenuPages().then(() => {
+  getNumberOfCategoryPages().then(() => {
     renderPageIndexForPagination();
   });
 });
@@ -435,8 +520,9 @@ window.addEventListener("load", (e) => {
       ev.preventDefault();
       removeAllActivePaginationItems();
       this.classList.add("pagination-link--active");
-      menuPageIndex = Number.parseInt(item.textContent);
-      getMenuForPage(menuPageIndex);
+      categoryPageIndex = Number.parseInt(item.textContent);
+      console.log(categoryPageIndex);
+      getCategoryForPage(categoryPageIndex);
     })
   });
 
@@ -452,7 +538,7 @@ window.addEventListener("load", (e) => {
     } else if (item.id === "start-link") {
       offset = 1;
     } else {
-      offset = Math.floor(numberOfMenuPages / MAX_PAGINATION_LENGTH) * MAX_PAGINATION_LENGTH + 1;
+      offset = Math.floor(numberOfCategoryPages / MAX_PAGINATION_LENGTH) * MAX_PAGINATION_LENGTH + 1;
     }
     item.addEventListener("click", function (ev) {
       ev.preventDefault();
@@ -469,29 +555,68 @@ window.addEventListener("load", (e) => {
  * @param {Array<MutationRecord>} mutationRecords 
  * @param {MutationObserver} observer 
  */
-const EDIT_MENU_URL = "/admin/menus/update/id";
-const DELETE_MENU_URL = "/admin/menus/delete/id";
+const EDIT_CATEGORY_URL = "/admin/categories/update/id";
+const DELETE_CATEGORY_URL = "/admin/categories/delete/id";
 function handleMenuTableBodyMutation(mutationRecords, observer) {
   /*******EDIT USER************************************************** */
-  const editMenuModal = document.querySelector(".edit-menu-modal");
+  const editCategoryModal = document.querySelector(".edit-category-modal");
+  const editCategoryNameInput = document.querySelector("#edit-category-name-input");
   const editIdInput = document.querySelector("#edit-id-input");
   const editMenuNameInput = document.querySelector("#edit-menu-name-input");
   const editDescriptionTextarea = document.querySelector("#edit-description-textarea");
   const allEditButtons = document.querySelectorAll(".btn--edit");
+
+  function openEditCategoryModal() {
+    editCategoryModal.classList.remove("hidden");
+    overlay.classList.remove("hidden");
+  }
+
   allEditButtons.forEach((btn, index) => {
     btn.addEventListener("click", function (ev) {
       ev.preventDefault();
-      editMenuModal.classList.remove("hidden");
-      overlay.classList.remove("hidden");
-      editIdInput.value = menus[index].menu_id;
-      editMenuNameInput.value = menus[index].menu_name;
-      editDescriptionTextarea.innerHTML = menus[index].description;
+      openEditCategoryModal();
+      editIdInput.value = categories[index].category_id;
+      editCategoryNameInput.value = categories[index].category_name;
+      editMenuNameInput.value = categories[index].menu_name;
+      editDescriptionTextarea.innerHTML = categories[index].description;
     })
   });
-  
+  let validatedCategoryName = "";
   let validatedMenuName = "";
   let validatedDescription = "";
-  const editMenuNameError =  document.querySelector("#edit-menu-name-error");
+  const editCategoryNameError = document.querySelector("#edit-category-name-error");
+  editCategoryNameInput.addEventListener("focus", function (e) {
+    validateCategoryNameInput(this)
+      .then((categoryName) => {
+        validatedCategoryName = categoryName;
+        editCategoryNameError.textContent = "";
+      })
+      .catch((msg) => {
+        editCategoryNameError.textContent = msg;
+      });
+  });
+  editCategoryNameInput.addEventListener("input", function (e) {
+    validateCategoryNameInput(this)
+      .then((categoryName) => {
+        validatedCategoryName = categoryName;
+        editCategoryNameError.textContent = "";
+      })
+      .catch((msg) => {
+        editCategoryNameError.textContent = msg;
+      });
+  });
+  editCategoryNameInput.addEventListener("focusout", function (e) {
+    validateCategoryNameInput(this)
+      .then((categoryName) => {
+        validatedCategoryName = categoryName;
+        editCategoryNameError.textContent = "";
+      })
+      .catch((msg) => {
+        editCategoryNameError.textContent = msg;
+      });
+  });
+
+  const editMenuNameError = document.querySelector("#edit-menu-name-error");
   editMenuNameInput.addEventListener("focus", function (e) {
     validateMenuName(this)
       .then((menuName) => {
@@ -534,10 +659,28 @@ function handleMenuTableBodyMutation(mutationRecords, observer) {
         editDescriptionError.textContent = msg;
       });
   });
+   editDescriptionTextarea.addEventListener("focusout", function (e) {
+     validateDescription(this)
+       .then((description) => {
+         validatedDescription = description;
+         editDescriptionError.textContent = "";
+       })
+       .catch((msg) => {
+         editDescriptionError.textContent = msg;
+       });
+   });
 
-  const editMenuForm = document.querySelector(".edit-form");
-  editMenuForm.addEventListener("submit", function (e) {
+  const editCategoryForm = document.querySelector(".edit-form");
+  editCategoryForm.addEventListener("submit", function (e) {
     e.preventDefault();
+    const categoryNameValidatorPromise = validateCategoryNameInput(editCategoryNameInput)
+      .then((categoryName) => {
+        validatedCategoryName = categoryName;
+        editCategoryNameError.textContent = "";
+      })
+      .catch((msg) => {
+        editCategoryNameError.textContent = msg;
+      });
     const menuNameValidatorPromise = validateMenuName(editMenuNameInput)
       .then((menuName) => {
         validatedMenuName = menuName;
@@ -555,24 +698,24 @@ function handleMenuTableBodyMutation(mutationRecords, observer) {
         editDescriptionError.textContent = msg;
       });
     
-    function handleMenuData() {
+    function handleCategoryData() {
       let validatedId = editIdInput.value;
-      Promise.all([menuNameValidatorPromise, descriptionValidatorPromise])
+      Promise.all([categoryNameValidatorPromise, menuNameValidatorPromise, descriptionValidatorPromise])
         .then(() => {
-          if (validatedId && validatedMenuName) {
+          if (validatedId && validatedMenuName && validatedCategoryName) {
             const formData = new FormData();
             formData.append("menu_id", validatedId);
             formData.append("menu_name", validatedMenuName);
             formData.append("description", validatedDescription);
-            submitUserData(formData, EDIT_MENU_URL);
+            submitCategoryData(formData, EDIT_CATEGORY_URL);
           }
         });
     }
-    handleMenuData();
+    handleCategoryData();
   });
 
   function closeEditMenuModal() {
-    editMenuModal.classList.add("hidden");
+    editCategoryModal.classList.add("hidden");
     overlay.classList.add("hidden");
   }
   
@@ -586,30 +729,31 @@ function handleMenuTableBodyMutation(mutationRecords, observer) {
   });
   
   document.addEventListener("keydown", (ev) => {
-    if (ev.key === "Escape" && ! editMenuModal.classList.contains("hidden")) {
+    if (ev.key === "Escape" && ! editCategoryModal.classList.contains("hidden")) {
       closeEditMenuModal();
     }
   });
 
   /******DELETE USER************************************************** */
-  const deleteMenuModal = document.querySelector(".delete-menu-modal");
-  const closeDeleteUserModalButton = document.querySelector(".btn--close-delete-modal");
-  const deleteMenuIdInput = document.querySelector("#delete-id-input");
+  const deleteCategoryModal = document.querySelector(".delete-category-modal");
+  const closeDeleteCategoryModalButton = document.querySelector(".btn--close-delete-modal");
+  const deleteIdInput = document.querySelector("#delete-id-input");
+  const deleteCategroyNameInput = document.querySelector("#delete-category-name-input");
   const deleteMenuNameInput = document.querySelector("#delete-menu-name-input"); 
-  function closeDeleteMenuModal() {
-    deleteMenuModal.classList.add("hidden");
+  function closeDeleteCategoryModal() {
+    deleteCategoryModal.classList.add("hidden");
     overlay.classList.add("hidden");
   }
 
-  function openDeleteMenuModal() {
-    deleteMenuModal.classList.remove("hidden");
+  function openDeleteCategoryModal() {
+    deleteCategoryModal.classList.remove("hidden");
     overlay.classList.remove("hidden");
   }
 
-  closeDeleteUserModalButton.addEventListener("click", (e) => closeDeleteMenuModal());
+  closeDeleteCategoryModalButton.addEventListener("click", (e) => closeDeleteCategoryModal());
   document.addEventListener("keydown", (ev) => {
-    if (ev.key === "Escape" && ! deleteMenuModal.classList.contains("hidden")) {
-      closeDeleteMenuModal();
+    if (ev.key === "Escape" && ! deleteCategoryModal.classList.contains("hidden")) {
+      closeDeleteCategoryModal();
     }
   });
 
@@ -617,24 +761,24 @@ function handleMenuTableBodyMutation(mutationRecords, observer) {
   allDeleteButtons.forEach((btn, index) => {
     btn.addEventListener("click", function (ev) {
       ev.preventDefault();
-      openDeleteMenuModal();
-      deleteMenuIdInput.value = menus[index].menu_id;
-      deleteMenuNameInput.value = menus[index].menu_name;
+      openDeleteCategoryModal();
+      deleteIdInput.value = categories[index].category_id;
+      deleteCategroyNameInput.value = categories[index].category_name;
+      deleteMenuNameInput.value = categories[index].menu_name;
     });
   });
-  let validatedMenuId = "";
+  let validatedCategoryId = "";
 
   const deleteMenuForm = document.querySelector(".delete-form");
   deleteMenuForm.addEventListener("submit", function (e) {
     e.preventDefault();
-    console.log("submitted");
-    function handleMenuData() {
-      validatedMenuId = deleteMenuIdInput.value;
+    function handleCategoryData() {
+      validatedCategoryId = deleteIdInput.value;
       const formData = new FormData();
-      formData.append("menu_id", validatedMenuId);
-      submitUserData(formData, DELETE_MENU_URL);
+      formData.append("category_id", validatedCategoryId);
+      submitCategoryData(formData, DELETE_CATEGORY_URL);
     }
-    handleMenuData();
+    handleCategoryData();
   });
 } 
 

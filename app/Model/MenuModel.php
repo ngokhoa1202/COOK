@@ -70,7 +70,8 @@ class MenuModel extends Model {
    * @return int menu id of menu. -1 if error
    */
   public static function findMenuIdByName(string $menuName): int {
-    $menuId = -1;
+    $menuName = filter_var($menuName, FILTER_SANITIZE_SPECIAL_CHARS);
+    $menuId = 0;
     try {
       App::getDatabaseConnection()->beginTransaction();
       $query = "SELECT * FROM menus WHERE menus.menu_name = :menuName";
@@ -79,8 +80,7 @@ class MenuModel extends Model {
       if (! $stmt->execute()) {
         throw new BadQueryException();
       }
-      $menu = $stmt->fetchAll(PDO::FETCH_ASSOC)[0];
-      $menuId = $menu["menu_id"];
+      $menuId = (int) $stmt->fetch(PDO::FETCH_ASSOC)["menu_id"];
       App::getDatabaseConnection()->commit();
     } catch (PDOException | BadQueryException $ex) {
       if (App::getDatabaseConnection()->inTransaction()) {
