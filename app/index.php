@@ -54,6 +54,7 @@ $router
   ->get("/admin/categories", [\App\Controller\AdminController::class, "getAdminCategoriesView"])
   ->post("/admin/categories/new", [\App\Controller\AdminController::class, "createCategory"])
   ->post("/admin/categories/update/id", [\App\Controller\AdminController::class, "updateCategoryByCategoryId"])
+  ->post("/admin/categories/delete/id", [\App\Controller\AdminController::class, "deleteCategoryByCategoryId"])
   ->get("/admin/categories/list", [\App\Controller\AdminController::class, "getCategoryForOnePage"])
   ->get("/admin/categories/pages/total", [\App\Controller\AdminController::class, "getNumberOfCategoryPages"])
   ->get("/admin/categories/total", [\App\Controller\AdminController::class, "getNumberOfCategories"])

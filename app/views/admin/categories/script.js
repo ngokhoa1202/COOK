@@ -167,11 +167,13 @@ function submitCategoryData(formData, url) {
       return response.json();
     })
     .then((data) => {
-      displaySuccessNotification(data);
-      getCategoryForPage(categoryPageIndex);
-    })
-    .catch((error) => {
-      displayFailureNotification(error);
+      if (data.includes("successfully")) {
+        displaySuccessNotification(data);
+        getCategoryForPage(categoryPageIndex);
+      } else {
+        displayFailureNotification(data);
+      }
+
     });
 }
 
@@ -327,6 +329,7 @@ createDescriptionTextArea.addEventListener("focusout", function (e) {
  *FETCH SUMMARY FIGURE FROM SERVER************************ 
  * *******************************************************/
 const SUMMARY_FIGURE_INTERVAL = 5000;
+const CATEGORY_LIST_INTERVAL = 10000;
 const summaryFigureOfCategory = document.querySelector(".summary-figure--category");
 const summaryFigureOfBestSellerCategory = document.querySelector(".summary-figure--bestseller-category");
 const summaryFigureOfHighestRatedCategory = document.querySelector(".summary-figure--highest-rated-category");
@@ -347,6 +350,9 @@ async function getSummaryFigureOfCategory() {
     console.log(error.message);
   })
 }
+
+getSummaryFigureOfCategory();
+setInterval(getSummaryFigureOfCategory, SUMMARY_FIGURE_INTERVAL);
 
 /*********************************************************
  *FETCH SUMMARY FIGURE FROM SERVER************************ 
@@ -428,9 +434,9 @@ async function getCategoryForPage(pageIndex) {
       displayFailureNotification(error);
     });
 }
-const CATEGORY_LIST_INTERVAL = 10000;
 getCategoryForPage(categoryPageIndex);
 setInterval(() => getCategoryForPage(categoryPageIndex), CATEGORY_LIST_INTERVAL);
+
 /*********************************************************
  *PAGINATION************************ 
  * *******************************************************/
@@ -492,10 +498,10 @@ async function getNumberOfCategoryPages() {
       displayFailureNotification(error);
     });
 }
-
+getNumberOfCategoryPages();
+setInterval(() => getNumberOfCategoryPages(), CATEGORY_LIST_INTERVAL);
 
 window.addEventListener("DOMContentLoaded", function (e) {
-
   getNumberOfCategoryPages().then(() => {
     renderPageIndexForPagination();
   });
@@ -515,6 +521,7 @@ window.addEventListener("load", (e) => {
       removeAllActivePaginationItems();
       this.classList.add("pagination-link--active");
       categoryPageIndex = Number.parseInt(item.textContent);
+      console.log(categoryPageIndex);
       getCategoryForPage(categoryPageIndex);
     })
   });
@@ -728,50 +735,51 @@ function handleMenuTableBodyMutation(mutationRecords, observer) {
   });
 
   /******DELETE USER************************************************** */
-  // const deleteMenuModal = document.querySelector(".delete-menu-modal");
-  // const closeDeleteUserModalButton = document.querySelector(".btn--close-delete-modal");
-  // const deleteMenuIdInput = document.querySelector("#delete-id-input");
-  // const deleteMenuNameInput = document.querySelector("#delete-menu-name-input"); 
-  // function closeDeleteMenuModal() {
-  //   deleteMenuModal.classList.add("hidden");
-  //   overlay.classList.add("hidden");
-  // }
+  const deleteCategoryModal = document.querySelector(".delete-category-modal");
+  const closeDeleteCategoryModalButton = document.querySelector(".btn--close-delete-modal");
+  const deleteIdInput = document.querySelector("#delete-id-input");
+  const deleteCategroyNameInput = document.querySelector("#delete-category-name-input");
+  const deleteMenuNameInput = document.querySelector("#delete-menu-name-input"); 
+  function closeDeleteCategoryModal() {
+    deleteCategoryModal.classList.add("hidden");
+    overlay.classList.add("hidden");
+  }
 
-  // function openDeleteMenuModal() {
-  //   deleteMenuModal.classList.remove("hidden");
-  //   overlay.classList.remove("hidden");
-  // }
+  function openDeleteCategoryModal() {
+    deleteCategoryModal.classList.remove("hidden");
+    overlay.classList.remove("hidden");
+  }
 
-  // closeDeleteUserModalButton.addEventListener("click", (e) => closeDeleteMenuModal());
-  // document.addEventListener("keydown", (ev) => {
-  //   if (ev.key === "Escape" && ! deleteMenuModal.classList.contains("hidden")) {
-  //     closeDeleteMenuModal();
-  //   }
-  // });
+  closeDeleteCategoryModalButton.addEventListener("click", (e) => closeDeleteCategoryModal());
+  document.addEventListener("keydown", (ev) => {
+    if (ev.key === "Escape" && ! deleteCategoryModal.classList.contains("hidden")) {
+      closeDeleteCategoryModal();
+    }
+  });
 
-  // const allDeleteButtons = document.querySelectorAll(".btn--delete");
-  // allDeleteButtons.forEach((btn, index) => {
-  //   btn.addEventListener("click", function (ev) {
-  //     ev.preventDefault();
-  //     openDeleteMenuModal();
-  //     deleteMenuIdInput.value = categories[index].menu_id;
-  //     deleteMenuNameInput.value = categories[index].menu_name;
-  //   });
-  // });
-  // let validatedMenuId = "";
+  const allDeleteButtons = document.querySelectorAll(".btn--delete");
+  allDeleteButtons.forEach((btn, index) => {
+    btn.addEventListener("click", function (ev) {
+      ev.preventDefault();
+      openDeleteCategoryModal();
+      deleteIdInput.value = categories[index].category_id;
+      deleteCategroyNameInput.value = categories[index].category_name;
+      deleteMenuNameInput.value = categories[index].menu_name;
+    });
+  });
+  let validatedCategoryId = "";
 
-  // const deleteMenuForm = document.querySelector(".delete-form");
-  // deleteMenuForm.addEventListener("submit", function (e) {
-  //   e.preventDefault();
-  //   console.log("submitted");
-  //   function handleMenuData() {
-  //     validatedMenuId = deleteMenuIdInput.value;
-  //     const formData = new FormData();
-  //     formData.append("menu_id", validatedMenuId);
-  //     submitCategoryData(formData, DELETE_CATEGORY_URL);
-  //   }
-  //   handleMenuData();
-  // });
+  const deleteMenuForm = document.querySelector(".delete-form");
+  deleteMenuForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    function handleCategoryData() {
+      validatedCategoryId = deleteIdInput.value;
+      const formData = new FormData();
+      formData.append("category_id", validatedCategoryId);
+      submitCategoryData(formData, DELETE_CATEGORY_URL);
+    }
+    handleCategoryData();
+  });
 } 
 
 const tableBodyObserver = new MutationObserver(handleMenuTableBodyMutation);

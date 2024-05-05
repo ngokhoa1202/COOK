@@ -46,8 +46,8 @@ class CategoryModel extends Model {
       if (!$stmt->execute()) {
         throw new BadQueryException();
       }
+      $this->categoryId = (int) $this->database->lastInsertId();
       $this->database->commit();
-      $this->categoryId = $this->database->lastInsertId();
     } catch (PDOException | BadQueryException $ex) {
       if ($this->database->inTransaction()) {
         $this->database->rollBack();
@@ -187,6 +187,7 @@ class CategoryModel extends Model {
   }
 
   public static function deleteByCategoryId(int &$categoryId): int {
+    
     try {
       App::getDatabaseConnection()->beginTransaction();
       $query = 'DELETE FROM categories WHERE categories.category_id = :categoryId';

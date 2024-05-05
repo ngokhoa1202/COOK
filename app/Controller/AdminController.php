@@ -32,6 +32,8 @@ class AdminController {
   public const UPDATE_CATEGORY_SUCCESS_MSG = "Category updated successfully";
   public const UPDATE_CATEGORY_FAILURE_MSG = "Failed to update category";
   public const CREATE_USER_FAILURE_MSG = "Failed to create category";
+  public const DELETE_CATEGORY_SUCCESS_MSG = "Delete category successfully";
+  public const DELETE_CATEGORY_FAILURE_MSG = "Failed to delete category";
   public const INVALID_FIELDS_MSG = "Invalid fields in form";
   public const NOT_EXIST_MENU_MSG = "Menu does not exist";
   public const NOT_EXIST_CATEGORY_MSG = "Category does not exist";
@@ -379,23 +381,23 @@ class AdminController {
       if (!array_key_exists("menu_name", $_POST) || !array_key_exists("description", $_POST)
         || !array_key_exists("category_name", $_POST)
       ) {
-        throw new BadRequestException(static::INVALID_FIELDS_MSG, 400);
+        throw new BadRequestException(static::INVALID_FIELDS_MSG);
       }
 
       $categoryName = $_POST["category_name"];
       $menuName = $_POST["menu_name"];
       $menuId = MenuModel::findMenuIdByName($menuName);
       if ($menuId === 0) {
-        throw new BadRequestException(static::NOT_EXIST_MENU_MSG, 400);
+        throw new BadRequestException(static::NOT_EXIST_MENU_MSG);
       }
 
       $description = $_POST["description"] ?? "";
       $categoryModel = CategoryModel::make($menuId, $categoryName, $description);
       if ($categoryModel->create() === 0) {
-        throw new BadQueryException(static::DUPLICATE_CATEGORY_IN_SAME_MENU_MSG);
+        throw new BadRequestException(static::DUPLICATE_CATEGORY_IN_SAME_MENU_MSG);
       }
       return json_encode(static::CREATE_CATEGORY_SUCCESS_MSG);
-    } catch (BadRequestException | BadQueryException $ex) {
+    } catch (BadRequestException $ex) {
       header("HTTP/1.1 400 Bad Request");
       return json_encode($ex->getMessage());
     }
@@ -415,7 +417,7 @@ class AdminController {
       header("HTTP/1.1 400 Bad Request");
       return json_encode($ex->getMessage());
     }
-    return json_encode(MenuModel::countNumberOfMenuPages($length));
+    return json_encode(CategoryModel::countNumberOfCategoryPages($length));
   }
 
   public function updateCategoryByCategoryId() {
@@ -423,7 +425,7 @@ class AdminController {
       if (! array_key_exists("category_id", $_POST) || ! array_key_exists("category_name", $_POST) 
         || ! array_key_exists("menu_name", $_POST) || ! array_key_exists("description", $_POST)
       ) {
-        throw new BadRequestException(static::INVALID_FIELDS_MSG,);
+        throw new BadRequestException(static::INVALID_FIELDS_MSG, 400);
       }
 
       $categoryId = $_POST["category_id"];
@@ -432,11 +434,11 @@ class AdminController {
       $description = $_POST["description"] ?? "";
       $menuId = MenuModel::findMenuIdByName($menuName);
       if ($menuId === 0) {
-        throw new BadRequestException(static::NOT_EXIST_MENU_MSG);
+        throw new BadRequestException(static::NOT_EXIST_MENU_MSG, 400);
       }
       $categoryModel = CategoryModel::make($menuId, $categoryName, $description, $categoryId);
       if ($categoryModel->update() === 0) {
-        throw new BadRequestException(static::DUPLICATE_CATEGORY_IN_SAME_MENU_MSG);
+        throw new BadRequestException(static::DUPLICATE_CATEGORY_IN_SAME_MENU_MSG, 400);
       }
       return json_encode(static::UPDATE_CATEGORY_SUCCESS_MSG);
     } catch (BadRequestException $ex) {
@@ -445,7 +447,7 @@ class AdminController {
     }
   }
 
-  public function deleteCategoryByCategoryId() {
+  public function deleteCategoryByCategoryId(): string {
     try {
       if (! array_key_exists("category_id", $_POST)) {
         throw new BadRequestException(static::INVALID_FIELDS_MSG);
@@ -454,6 +456,7 @@ class AdminController {
       if (CategoryModel::deleteByCategoryId($categoryId) === 0) {
         throw new BadQueryException(static::NOT_EXIST_CATEGORY_MSG);
       }
+      return json_encode(static::DELETE_CATEGORY_SUCCESS_MSG);
     } catch (BadRequestException $ex) {
       header("HTTP/1.1 400 Bad Request");
       return json_encode($ex->getMessage());
