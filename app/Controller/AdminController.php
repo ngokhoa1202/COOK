@@ -6,6 +6,7 @@ use App\App;
 use App\Exception\BadQueryException;
 use App\Exception\BadRequestException;
 use App\Exception\ForbiddenException;
+use App\Model\CategoryModel;
 use App\Model\MenuModel;
 use App\Model\UserModel;
 use App\Model\UserRole;
@@ -26,6 +27,15 @@ class AdminController {
   public const UPDATE_MENU_FAILURE_MSG = "Failed to update menu";
   public const DELETE_MENU_SUCCESS_MSG = "Delete menu successfully";
   public const DELETE_MENU_FAILURE_MSG = "Failed to delete menu";
+  public const CREATE_CATEGORY_SUCCESS_MSG = "Category created successfully";
+  public const CREATE_CATEGORY_FAILURE_MSG = "Failed to create category successfully";
+  public const UPDATE_CATEGORY_SUCCESS_MSG = "Category updated successfully";
+  public const UPDATE_CATEGORY_FAILURE_MSG = "Failed to update category";
+  public const CREATE_USER_FAILURE_MSG = "Failed to create category";
+  public const INVALID_FIELDS_MSG = "Invalid fields in form";
+  public const NOT_EXIST_MENU_MSG = "Menu does not exist";
+  public const NOT_EXIST_CATEGORY_MSG = "Category does not exist";
+  public const DUPLICATE_CATEGORY_IN_SAME_MENU_MSG = "Duplicate category in the same menu";
   protected const SESSION_USER_ID = "user_id";
   protected const SESSION_LAST_GENERATED = "last_generated";
   protected const SESSION_USER_USERNAME = "user_username";
@@ -230,13 +240,13 @@ class AdminController {
       }
     } catch (BadRequestException $ex) {
       header("HTTP/1.1 400 Bad Request");
-      echo View::make("error/400");
+      return json_encode([]);
     }
     $offset = ($pageIndex - 1) * $length;
     return json_encode(MenuModel::getAllMenusInRange($offset, $length));
   }
 
-  public static function getNumberOfMenuPages(): int {
+  public function getNumberOfMenuPages(): int {
     $length = filter_input(INPUT_GET, "length", FILTER_VALIDATE_INT);
     try {
       if ($length === false || is_null($length)) {
@@ -325,7 +335,7 @@ class AdminController {
     }
   }
 
-  public static function deleteUserByUserId(): string {
+  public function deleteUserByUserId(): string {
     try {
       if (! array_key_exists("user_id", $_POST)) {
         throw new BadRequestException();
@@ -342,6 +352,111 @@ class AdminController {
     } catch (BadRequestException $ex) {
       header("HTTP/1.1 400 Bad Request");
       return json_encode(static::DELETE_USER_FAILURE_MSG);
+    }
+  }
+
+  public function getCategoryForOnePage(): string {
+    $pageIndex = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+    $length = filter_input(INPUT_GET, "length", FILTER_VALIDATE_INT);
+    try {
+      if ($pageIndex === false || $length === false) {
+        throw new BadQueryException(static::INVALID_FIELDS_MSG, 400);
+      }
+    } catch (BadRequestException $ex) {
+      header("HTTP/1.1 400 Bad Request");
+      return json_encode($ex->getMessage());
+    }
+    $offset = ($pageIndex - 1) * $length;
+    return json_encode(CategoryModel::getAllCategoriesInRange($offset, $length));
+  }
+
+  public function getAdminCategoriesView(): string {
+    return View::make("admin/categories");
+  }
+
+  public function createCategory(): string {
+    try {
+      if (!array_key_exists("menu_name", $_POST) || !array_key_exists("description", $_POST)
+        || !array_key_exists("category_name", $_POST)
+      ) {
+        throw new BadRequestException(static::INVALID_FIELDS_MSG, 400);
+      }
+
+      $categoryName = $_POST["category_name"];
+      $menuName = $_POST["menu_name"];
+      $menuId = MenuModel::findMenuIdByName($menuName);
+      if ($menuId === 0) {
+        throw new BadRequestException(static::NOT_EXIST_MENU_MSG, 400);
+      }
+
+      $description = $_POST["description"] ?? "";
+      $categoryModel = CategoryModel::make($menuId, $categoryName, $description);
+      if ($categoryModel->create() === 0) {
+        throw new BadQueryException(static::DUPLICATE_CATEGORY_IN_SAME_MENU_MSG);
+      }
+      return json_encode(static::CREATE_CATEGORY_SUCCESS_MSG);
+    } catch (BadRequestException | BadQueryException $ex) {
+      header("HTTP/1.1 400 Bad Request");
+      return json_encode($ex->getMessage());
+    }
+  }
+
+  public function getNumberOfCategories(): string {
+    return json_encode(CategoryModel::countNumberOfCategories());
+  }
+
+  public function getNumberOfCategoryPages(): string {
+    $length = filter_input(INPUT_GET, "length", FILTER_VALIDATE_INT);
+    try {
+      if ($length === false || is_null($length)) {
+        throw new BadQueryException(static::INVALID_FIELDS_MSG, 400);
+      }
+    } catch (BadQueryException $ex) {
+      header("HTTP/1.1 400 Bad Request");
+      return json_encode($ex->getMessage());
+    }
+    return json_encode(MenuModel::countNumberOfMenuPages($length));
+  }
+
+  public function updateCategoryByCategoryId() {
+    try {
+      if (! array_key_exists("category_id", $_POST) || ! array_key_exists("category_name", $_POST) 
+        || ! array_key_exists("menu_name", $_POST) || ! array_key_exists("description", $_POST)
+      ) {
+        throw new BadRequestException(static::INVALID_FIELDS_MSG,);
+      }
+
+      $categoryId = $_POST["category_id"];
+      $categoryName = $_POST["category_name"];
+      $menuName = $_POST["menu_name"];
+      $description = $_POST["description"] ?? "";
+      $menuId = MenuModel::findMenuIdByName($menuName);
+      if ($menuId === 0) {
+        throw new BadRequestException(static::NOT_EXIST_MENU_MSG);
+      }
+      $categoryModel = CategoryModel::make($menuId, $categoryName, $description, $categoryId);
+      if ($categoryModel->update() === 0) {
+        throw new BadRequestException(static::DUPLICATE_CATEGORY_IN_SAME_MENU_MSG);
+      }
+      return json_encode(static::UPDATE_CATEGORY_SUCCESS_MSG);
+    } catch (BadRequestException $ex) {
+      header("HTTP/1.1 400 Bad Request");
+      return json_encode($ex->getMessage());
+    }
+  }
+
+  public function deleteCategoryByCategoryId() {
+    try {
+      if (! array_key_exists("category_id", $_POST)) {
+        throw new BadRequestException(static::INVALID_FIELDS_MSG);
+      }
+      $categoryId = $_POST["category_id"];
+      if (CategoryModel::deleteByCategoryId($categoryId) === 0) {
+        throw new BadQueryException(static::NOT_EXIST_CATEGORY_MSG);
+      }
+    } catch (BadRequestException $ex) {
+      header("HTTP/1.1 400 Bad Request");
+      return json_encode($ex->getMessage());
     }
   }
 }

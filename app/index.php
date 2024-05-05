@@ -31,6 +31,7 @@ $router
   
   ->get("/admin", [\App\Controller\AdminController::class, "index"])
   ->post("/admin/login", [\App\Controller\AdminController::class, "login"])
+
   ->get("/admin/users", [\App\Controller\AdminController::class, "getAdminUsersView"])
   ->get("/admin/users/id", [\App\Controller\AdminController::class, "getUserByUserId"])
   ->post("/admin/users/update/id", [\App\Controller\AdminController::class, "updateUserByUserId"])
@@ -41,6 +42,7 @@ $router
   ->get("/admin/users/members/total", [\App\Controller\AdminController::class, "getNumberOfMembers"])
   ->get("/admin/users/active/total", [\App\Controller\AdminController::class, "getNumberOfActiveUsers"])
   ->post("/admin/users/new", [\App\Controller\AdminController::class, "createUser"])
+
   ->get("/admin/menus", [\App\Controller\AdminController::class, "getAdminMenusView"])
   ->get("/admin/menus/total", [\App\Controller\AdminController::class, "getNumberOfMenus"])
   ->post("/admin/menus/new", [\App\Controller\AdminController::class, "createMenu"])
@@ -48,6 +50,13 @@ $router
   ->post("/admin/menus/update/id", [\App\Controller\AdminController::class, "updateMenuByMenuId"])
   ->post("/admin/menus/delete/id", [\App\Controller\AdminController::class, "deleteMenuByMenuId"])
   ->get("/admin/menus/pages/total", [\App\Controller\AdminController::class, "getNumberOfMenuPages"])
+
+  ->get("/admin/categories", [\App\Controller\AdminController::class, "getAdminCategoriesView"])
+  ->post("/admin/categories/new", [\App\Controller\AdminController::class, "createCategory"])
+  ->post("/admin/categories/update/id", [\App\Controller\AdminController::class, "updateCategoryByCategoryId"])
+  ->get("/admin/categories/list", [\App\Controller\AdminController::class, "getCategoryForOnePage"])
+  ->get("/admin/categories/pages/total", [\App\Controller\AdminController::class, "getNumberOfCategoryPages"])
+  ->get("/admin/categories/total", [\App\Controller\AdminController::class, "getNumberOfCategories"])
   ;
   
 $config = new Configuration($_ENV);
