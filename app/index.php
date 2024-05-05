@@ -22,13 +22,28 @@ $router
   ->post("/menu/category/new", [\App\Controller\MenuController::class, "createCategory"])
   ->post("/menu/category/type/new", [\App\Controller\MenuController::class, "createType"])
   ->get("/admin/login", [\App\Controller\AdminController::class, "getAdminLoginView"])
-
+  //product
   ->get("/product/typeid", [\App\Controller\ProductController::class, "getAllProducts"]) //Solved
   ->get("/product/id", [\App\Controller\ProductController::class, "getProductById"]) //Solved
-  ->post("/product/new", [\App\Controller\ProductController::class, "createProduct"]) //Solved
+  ->post("/product/new", [\App\Controller\ProductController::class, "createProductByTypeId"]) //Solved
   ->post("/product/update", [\App\Controller\ProductController::class, "updateProductById"]) //Solved
   ->post("/product/delete", [\App\Controller\ProductController::class, "deleteProductById"]) //Solved
-  
+  //serve
+  ->get("/serve/productid", [\App\Controller\ServeController::class, "getAllServesByProductId"])
+  ->post("/serve/new", [\App\Controller\ServeController::class, "createServe"])
+  ->post("/serve/update", [\App\Controller\ServeController::class, "updateServe"])
+  ->post("/serve/delete", [\App\Controller\ServeController::class, "deleteServe"])
+  //order
+  ->get("/order/userid", [\App\Controller\OrderController::class, "getOrderByUserId"])
+  ->post("/order/new", [\App\Controller\OrderController::class, "createOrderByUserId"])
+  ->post("/order/update", [\App\Controller\OrderController::class, "updateOrderByUserId"])
+  ->post("/order/delete", [\App\Controller\OrderController::class, "deleteOrderByUserId"])
+  //order_product
+  ->get("order_product/orderid", [\App\Controller\OrderProductController::class, "getOrderProductByOrderId"])
+  ->post("order_product/orderid/new", [\App\Controller\OrderProductController::class, "createOrderProductByOrderId"])
+  ->post("order_product/orderid/update", [\App\Controller\OrderProductController::class, "updateOrderProductByOrderId"])
+  ->post("order_product/orderid/delete", [\App\Controller\OrderProductController::class, "deleteOrderProductByOrderId"])
+
   ->get("/admin", [\App\Controller\AdminController::class, "index"])
   ->post("/admin/login", [\App\Controller\AdminController::class, "login"])
   ->get("/admin/users", [\App\Controller\AdminController::class, "getAdminUsersView"])

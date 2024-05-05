@@ -38,7 +38,7 @@ class ProductController {
   }
   
 
-  public function createProduct(): string {
+  public function createProductByTypeId(): string {
     try {
       // Validate request data
       if (!array_key_exists("type_id", $_POST) || !array_key_exists("product_name", $_POST) || !array_key_exists("description", $_POST)) {
