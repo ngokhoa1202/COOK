@@ -19,9 +19,9 @@ class ProductModel extends Model {
   protected string $description;
   protected Database $database;
 
-  public function index(): View {
-    return View::make("/product");
-  }
+  // public function index(): View {
+  //   return View::make("/product");
+  // }
 
   private function __construct(int $typeId, string $productName, string $description) {
     parent::__construct();
@@ -67,7 +67,6 @@ class ProductModel extends Model {
         if (!$productData) {
             throw new EntityNotFoundException('Product');
         }
-        // return new ProductModel($productData['type_id'], $productData['product_name'], $productData['description']);
         return $productData;
     } catch (PDOException | EntityNotFoundException $ex) {
         return null;
