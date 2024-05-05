@@ -26,8 +26,8 @@ $router
   ->get("/product/typeid", [\App\Controller\ProductController::class, "getAllProducts"]) //Solved
   ->get("/product/id", [\App\Controller\ProductController::class, "getProductById"]) //Solved
   ->post("/product/new", [\App\Controller\ProductController::class, "createProduct"]) //Solved
-  ->put("/product/id", [\App\Controller\ProductController::class, "updateProductById"]) //
-  ->delete("/product/id", [\App\Controller\ProductController::class, "deleteProductById"])
+  ->post("/product/update", [\App\Controller\ProductController::class, "updateProductById"]) //Solved
+  ->post("/product/delete", [\App\Controller\ProductController::class, "deleteProductById"]) //Solved
   
   ->get("/admin", [\App\Controller\AdminController::class, "index"])
   ->post("/admin/login", [\App\Controller\AdminController::class, "login"])

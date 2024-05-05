@@ -106,7 +106,7 @@ class ProductModel extends Model {
 
   public static function updateProduct(int $productId, string $productName, string $description): bool {
     try {
-        $query = "UPDATE products SET product_name = :productName, description = :description WHERE product_id = :productId";
+        $query = "UPDATE products SET product_name = :productName, `description` = :description WHERE product_id = :productId";
         $stmt = App::getDatabaseConnection()->prepare($query);
         $stmt->bindValue(':productId', $productId);
         $stmt->bindValue(':productName', $productName);
