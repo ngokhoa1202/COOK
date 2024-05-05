@@ -58,6 +58,14 @@ $router
   ->get("/admin/categories/list", [\App\Controller\AdminController::class, "getCategoryForOnePage"])
   ->get("/admin/categories/pages/total", [\App\Controller\AdminController::class, "getNumberOfCategoryPages"])
   ->get("/admin/categories/total", [\App\Controller\AdminController::class, "getNumberOfCategories"])
+
+  ->get("/admin/types", [\App\Controller\AdminController::class, "getAdminTypesView"])
+  ->get("/admin/types/total", [\App\Controller\AdminController::class, "getNumberOfTypes"])
+  ->get("/admin/types/pages/total", [\App\Controller\AdminController::class, "getNumberOfTypePages"])
+  ->get("/admin/types/list", [\App\Controller\AdminController::class, "getTypeForOnePage"])
+  ->post("/admin/types/new", [\App\Controller\AdminController::class, "createType"])
+  ->post("/admin/types/update/id", [\App\Controller\AdminController::class, "updateTypeByTypeId"])
+  ->post("/admin/types/delete/id", [\App\Controller\AdminController::class, "deleteTypeByTypeId"])
   ;
   
 $config = new Configuration($_ENV);

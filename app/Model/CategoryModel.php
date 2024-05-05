@@ -107,23 +107,30 @@ class CategoryModel extends Model {
     return $categories;
   }
 
-  public static function findCategoryIdByMenuNameAndCategoryName(string $menuName, string $categoryName): int {
-    $categoryId = -1;
+  public static function findCategoryIdByMenuIdAndCategoryName(int | string &$menuId, string &$categoryName): int {
+    if (is_string($menuId)) {
+      $menuId = filter_var($menuId, FILTER_VALIDATE_INT);
+    }
+    $categoryName = filter_var($categoryName, FILTER_SANITIZE_SPECIAL_CHARS);
+    $categoryId = 0;
     try {
       App::getDatabaseConnection()->beginTransaction();
-      $query = "SELECT * FROM categories WHERE categories.category_name = :categoryName";
+      $query = 
+        "SELECT * FROM categories 
+          WHERE categories.category_name = :categoryName AND categories.menu_id = :menuId;
+        ";
       $stmt = App::getDatabaseConnection()->prepare($query);
       $stmt->bindValue(":categoryName", $categoryName);
+      $stmt->bindValue(":menuId", $menuId);
       if (! $stmt->execute()) {
         throw new BadQueryException();
       }
-      $categoryId = $stmt->fetch(PDO::FETCH_ASSOC)["category_id"];
+      $categoryId = (int) $stmt->fetch(PDO::FETCH_ASSOC)["category_id"];
       App::getDatabaseConnection()->commit();
     } catch (PDOException | BadQueryException $ex) {
       if (App::getDatabaseConnection()->inTransaction()) {
         App::getDatabaseConnection()->rollBack();
       }
-      $categoryId = -1;
     }
     return $categoryId;
   }
@@ -132,13 +139,13 @@ class CategoryModel extends Model {
     $categories = [];
     try {
       App::getDatabaseConnection()->beginTransaction();
-      $query = "
-        SELECT category_id, category_name, menu_name, categories.description 
-        FROM categories
-        INNER JOIN menus
-        WHERE categories.menu_id = menus.menu_id
-        ORDER BY category_id
-        LIMIT :limit OFFSET :offset;
+      $query = 
+          "SELECT category_id, category_name, menu_name, categories.description 
+          FROM categories
+          INNER JOIN menus
+          WHERE categories.menu_id = menus.menu_id
+          ORDER BY category_id
+          LIMIT :limit OFFSET :offset;
       ";
       $stmt = App::getDatabaseConnection()->prepare($query);
       $stmt->bindValue(":offset", $offset);
