@@ -1,0 +1,715 @@
+@font-face {
+  font-family: "Gill Sans";
+  src: url("/assets/fonts/GillSansW01Medium.woff2") format("woff");
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/assets/fonts/Inter-VariableFont_slnt,wght.ttf") format("ttf");
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+ul {
+  list-style: none;
+}
+
+body {
+  color: #203945;
+  font-family: "Inter";
+}
+
+button:hover,
+button:active {
+  cursor: pointer;
+}
+
+.hidden {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.margin-bottom-very-small {
+  margin-bottom: 1.2rem;;
+}
+
+.margin-bottom-smaller {
+  margin-bottom: 1.8rem;
+}
+
+.margin-bottom-small {
+  margin-bottom: 2.4rem;
+}
+
+.margin-bottom-rather-small {
+  margin-bottom: 3.6rem;
+}
+
+.margin-bottom-medium {
+  margin-bottom: 4.8rem;
+}
+
+.margin-top-small {
+  margin-top: 2.4rem;
+}
+
+.container {
+  text-align: center;
+}
+
+.grid {
+  display: grid;
+}
+
+.grid--2-cols {
+  grid-template-columns: 20fr 80fr;
+}
+
+.header {
+  grid-column: 1 / 2;
+  margin: 1.2rem;
+}
+
+.main {
+  grid-column: 2 / 3;
+}
+
+
+.header-brand  {
+  padding: 1.2rem 2.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-brand *:focus {
+  outline: none;
+  box-shadow: 0 0 0.8rem #183233;
+}
+
+/*************************************
+**************HEADING*****************
+**************************************
+*/
+
+.heading-primary,
+.heading-secondary,
+.heading-tertiary {
+  font-family: "Gill Sans";
+}
+
+.heading-primary {
+  font-size: 4.8rem;
+  font-weight: 500;
+}
+
+.heading-secondary {
+  font-size: 3.6rem;
+}
+
+.heading-tertiary {
+  font-size: 2.4rem;
+}
+
+.brand-box {
+  display: block;
+}
+
+.brand-img {
+  width: 15rem;
+}
+
+
+/*************************************
+**************NAVIGATION**************
+**************************************
+*/
+
+.nav-link {
+  color: inherit;
+}
+
+.nav-link,
+.nav-link:link,
+.nav-link:visited {
+  width: 70%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1.2rem;
+  
+  font-size: 2rem;
+  padding: 1.2rem;
+  font-weight: 500;
+  
+  text-decoration: none;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: all 0.5s;
+}
+
+.nav-link:hover,
+.nav-link:active,
+.nav-link--active {
+  background-color: #3f728a;
+  color: #efefef;
+}
+
+
+
+.icon-link:focus {
+  box-shadow: none;
+  outline: 0.2rem dashed #235456;
+}
+
+.icon-link {
+  width: 2.4rem;
+  height: 2.4rem;
+  margin-top: -0.5rem;
+}
+
+.icon-link:link,
+.icon-link:visited {
+  color: #204c4d;
+  transition: all 0.5s ease;
+}
+
+.icon-link:active,
+.icon-link:hover {
+  background-color: #3f728a;
+  color: #efefef;
+}
+
+.hero-icon-link {
+  display: block;
+  margin-top: -0.2rem;
+}
+
+
+.side-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+  background-color: #e9eeee;
+  font-family: "Gill Sans";
+  margin: 3.6rem;
+  border-radius: 1rem;
+}
+
+.side-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  
+}
+
+.side-nav *:focus {
+  outline: none;
+  box-shadow: 0 0 0.8rem #bdcccc;
+}
+
+.main {
+  margin: 3.6rem 1.2rem;
+}
+
+/**************************************
+******SEARCH SECTION*******************
+***************************************
+*/
+
+.section-search {
+  width: 100%;
+}
+
+.search-form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1.8rem;
+}
+
+.search-form *:focus {
+  outline: none;
+  box-shadow: 0 0 0.8rem rgba(35, 43, 46, 0.25);
+}
+
+.search-input {
+  font-family: "Inter";
+  font-size: 1.8rem;
+  width: 50%;
+  padding: 0.8rem 2.4rem;
+  border-radius: 1rem;
+  border: 1px solid #45565c;
+}
+
+.search-input::placeholder {
+  color: #ccc;
+  font-family: inherit;
+  letter-spacing: normal;
+}
+
+
+.search-icon {
+  width: 3.2rem;
+  height: 3.2rem;
+  color: #576c73;
+  transition: all 0.5s ease;
+}
+
+.search-icon:hover,
+.search-icon:active {
+  cursor: pointer;
+  color: #344145;
+  stroke: 1.2;
+}
+
+/**************************************
+******SUMMARY CARDS********************
+***************************************
+*/
+
+.summary-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  column-gap: 1.8rem;
+}
+
+.summary-card {
+  width: 100%;
+  
+  padding: 2.4rem 1.2rem;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  border-radius: 1rem;
+}
+
+.summary-card:nth-child(odd) {
+  background-color: #e6f3f8;
+}
+
+.summary-card:nth-child(even) {
+  background-color: #d3f8d3;
+}
+
+.summary-title {
+  font-size: 2.4rem;
+  font-weight: 500;
+  font-family: "Gill Sans";
+}
+
+.summary-figure {
+  font-size: 1.8rem;
+  font-weight: 400;
+}
+
+.summary-icon {
+  width: 4.2rem;
+  height: 4.2rem;
+}
+
+.summary-card:nth-child(odd) .summary-icon {
+  color: #576c73;
+}
+
+.summary-card:nth-child(even) .summary-icon {
+  color: #3a5f3a;
+}
+
+/**************************************
+******SECTION UTILITY BUTTON***********
+***************************************
+*/
+
+.section-button {
+  width: 100%;
+}
+
+.button-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 2.4rem;
+}
+
+.btn {
+  font-family: "Inter";
+  font-size: 1.8rem;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1.2rem 2.4rem;
+  background-color: #3f728a;
+  color: #efefef;
+  transition: all 0.5s ease;
+  border: none;
+  border-radius: 1rem;
+}
+
+.btn:hover,
+.btn:active {
+  background-color: #325b6e;
+  color: #f2f2f2;
+}
+
+.add-icon {
+  margin-top: 0;
+}
+
+
+
+/**************************************
+******SECTION PRODUCT DASHBOARD********
+***************************************
+*/
+
+.section-dashboard {
+  width: 100%;
+}
+
+.products-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.products-table thead tr {
+  font-family: "Gill Sans";
+  font-size: 1.6rem;
+  text-align: left;
+  font-weight: 400;
+  color: #bbb;
+}
+
+.products-table thead tr th {
+  padding: 1.2rem;
+}
+
+.products-table tbody tr {
+  border-radius: 1rem;
+}
+
+.products-table tbody tr:nth-child(odd) {
+  background-color: #eff7fa;
+}
+
+.products-table tbody tr:nth-child(even) {
+  background-color: #e9fce9;
+}
+
+.products-table tbody td {
+  font-size: 1.8rem;
+  padding: 1.2rem;
+  text-align: left;
+}
+
+.products-table tbody td:last-child .action-form {
+  display: flex;
+  flex-direction: row;
+  gap: 1.2rem;
+}
+
+.table-btn {
+  display: block;
+  color: inherit;
+  background-color: inherit;
+  border: none;
+}
+
+
+.table-icon {
+  width: 2.4rem;
+  height: 2.4rem;
+  color: #7997a1;
+  transition: all 0.5s ease;
+}
+
+.table-icon:hover,
+.table-icon:active {
+  color: #111617;
+}
+
+/**************************************
+******NEW MENU MODAL*******************
+***************************************
+*/
+
+.modal {
+  position: fixed;
+  color: #122a2b;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #efefef;
+  border-radius: 1rem;
+  box-shadow: 0 4rem 6rem rgba(24, 50, 51, 0.5);
+  z-index: 1000;
+  transition: all 0.5s ease;
+  padding: 2.4rem 3.6rem;
+}
+
+.modal .input::placeholder {
+  color: #ccc;
+  letter-spacing: normal;
+}
+
+
+
+.btn--close-modal {
+  position: absolute;
+  top: 0.5rem;
+  right: 2rem;
+  font-size: 4.8rem;
+  color: inherit;
+  border: none;
+  background: none;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(18, 42, 43, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  transition: all 0.5s ease;
+}
+
+.modal-form {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  align-items: baseline;
+  gap: 2.4rem;
+  /* padding: 2.4rem 3.6rem; */
+}
+
+.modal-form .label {
+  font-size: 2.4rem;
+  font-weight: 500;
+  font-family: "Gill Sans";
+}
+
+.modal-form .input-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.modal-form .input-info .error {
+  font-size: 1.4rem;
+  color: red;
+  padding: 0 1.2rem;
+}
+
+.modal-form .input:not(.avatar-input) {
+  font-size: 1.8rem;
+  width: 100%;
+  font-weight: 400;
+  font-family: "Inter";
+  padding: 1.2rem 2.4rem;
+  border: 1px solid #183233;
+  
+  border-radius: 1rem;
+}
+
+.modal-form .textarea {
+  font-size: 1.8rem;
+  letter-spacing: normal;
+  line-height: 1.2;
+  font-family: "Inter";
+  border: 1px solid #183233;
+  border-radius: 1rem;
+  font-weight: 400;
+  padding: 1.2rem 2.4rem;
+}
+
+.modal-form .btn--submit {
+  grid-column: 1 / span 2;
+  justify-self: center;
+}
+
+.modal-form .select {
+  padding: 1.2rem 2.4rem;
+  font-family: "Inter";
+  font-size: 1.8rem;
+  border-radius: 1rem;
+}
+
+.modal-form *:focus {
+  outline: none;
+  border: none;
+  box-shadow: 0 0 1.2rem rgba(35, 43, 46, 0.25);
+}
+
+/**************************************
+******NOTIFICATION MODAL***************
+***************************************
+*/
+
+.sucesss-notification-modal,
+.failure-notification-modal {
+  top: 25%;
+  box-shadow: 0 1.2rem 1.2rem rgba(24, 50, 51, 0.25);
+  background-color: #E2F3F7;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+}
+
+.success-icon {
+  width: 3.2rem;
+  height: 3.2rem;
+  color: #008000;
+}
+
+.success-notification-modal .notification {
+  font-size: 1.8rem;
+  color: #008000;
+}
+
+.failure-icon {
+  width: 3.2rem;
+  height: 3.2rem;
+  color: red;
+}
+
+.failure-notification-modal .notification {
+  font-size: 1.8rem;
+  color: red;
+}
+
+/**************************************
+******PAGINATION***********************
+***************************************
+*/
+
+.pagination {
+  display: flex;
+  flex-direction: row;
+  gap: 2.4rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1rem;
+  
+}
+
+.pagination-link:link,
+.pagination-link:visited {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 4.8rem;
+  height: 4.8rem;
+  font-size: 1.8rem;
+  padding: 1.2rem;
+  text-decoration: none;
+  color: #183233;
+  transition: all 0.5s ease;
+  border-radius: 50%;
+  border: 1px solid #b2c7d0;
+}
+
+.pagination-link:hover,
+.pagination-link:active,
+.pagination-link--active {
+  background-color: #3f728a;
+  color: #efefef !important;
+}
+
+
+
+.pagination-link--special:link,
+.pagination-link--special:visited {
+  font-size: 2.4rem;
+  color: #183233;
+}
+
+/**************************************
+******DELETE USER**********************
+***************************************
+*/
+
+.delete-info {
+  font-size: 1.8rem;
+  width: 100%;
+  font-weight: 400;
+  font-family: "Inter";
+  padding: 1.2rem 2.4rem;
+}
+
+/**************************************
+******FOOTER***************************
+***************************************
+*/
+
+.footer {
+  background-color: #fffcf8;
+}
+
+
+.footer-container {
+  padding: 3.6rem 12.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+  flex-direction: column;
+  border-top: 1px solid rgba(24, 50, 51, 0.2);
+}
+
+.media-links {
+  display: flex;
+  flex-direction: row;
+  gap: 2.4rem;
+}
+
+.media-links *:focus {
+  outline: none;
+  box-shadow: 0 0 1.2rem rgba(18, 42, 43, 0.5);
+}
+
+.footer-link:link,
+.footer-link:visited {
+  display: block;
+  text-decoration: none;
+  transition: all 0.5s ease;
+  color: #3f728a;
+}
+
+.footer-link:hover,
+.footer-link:active {
+  color: #122a2b;
+  cursor: pointer;
+}
+
+.media-icon {
+  width: 2.4rem;
+  height: 2.4rem;
+}
+
+.footer-brand-img {
+  width: 20rem;
+}
+
+.copyright {
+  font-size: 1.2rem;
+}
+
+.footer-heading {
+  font-weight: 500;
+}

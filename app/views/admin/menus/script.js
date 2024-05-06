@@ -45,8 +45,8 @@ function closeFailureNotificationModal() {
   overlay.classList.add("hidden");
 }
 
-openCreateMenuModalButton.addEventListener("click", (e) => openCreateMenuModal());
-closeCreateMenuModalButton.addEventListener("click", (e) => closeCreateMenuModal());
+openCreateCategoryModalButton.addEventListener("click", (e) => openCreateMenuModal());
+closeCreateCategoryModalButton.addEventListener("click", (e) => closeCreateMenuModal());
 overlay.addEventListener("click", (e) => {
   closeCreateMenuModal();
   closeSuccessNotificationModal();
@@ -471,7 +471,7 @@ window.addEventListener("load", (e) => {
  */
 const EDIT_MENU_URL = "/admin/menus/update/id";
 const DELETE_MENU_URL = "/admin/menus/delete/id";
-function handleMenuTableBodyMutation(mutationRecords, observer) {
+function handleProductTableBodyMutation(mutationRecords, observer) {
   /*******EDIT USER************************************************** */
   const editMenuModal = document.querySelector(".edit-menu-modal");
   const editIdInput = document.querySelector("#edit-id-input");
@@ -638,7 +638,7 @@ function handleMenuTableBodyMutation(mutationRecords, observer) {
   });
 } 
 
-const tableBodyObserver = new MutationObserver(handleMenuTableBodyMutation);
+const tableBodyObserver = new MutationObserver(handleProductTableBodyMutation);
 tableBodyObserver.observe(tableBody, {
   attributes: false,
   childList: true,

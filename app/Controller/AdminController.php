@@ -12,11 +12,13 @@ use App\Model\TypeModel;
 use App\Model\UserModel;
 use App\Model\UserRole;
 use App\Model\UserStatus;
+use App\Model\ProductModel;
 use App\View;
 use Exception;
 use PDOException;
 
 class AdminController {
+  public const INVALID_FIELDS_MSG = "Invalid fields in form";
   public const ADMIN_LOGIN_SUCCESS_MSG = "Admin logged in successfully";
 
   public const CREATE_USER_SUCCESS_MSG = "User created successfully";
@@ -51,9 +53,13 @@ class AdminController {
   public const DELETE_TYPE_FAILURE_MSG = "Failed to delete type";
   public const NOT_EXIST_TYPE_MSG = "Type does not exist";
   public const DUPLICATE_TYPE_IN_SAME_CATEGORY_MSG = "Duplicate type in the same category";
-  
-  public const INVALID_FIELDS_MSG = "Invalid fields in form";
 
+  public const CREATE_PRODUCT_SUCCESS_MSG = "Product created successfully";
+  public const CREATE_PRODUCT_FAILURE_MSG = "Failed to create product";
+  public const DUPLICATE_PRODUCT_IN_SAME_TYPE_MSG = "Duplicate product in the same type";
+  public const UPDATE_PRODUCT_SUCCESS_MSG = "Product updated successfully";
+  public const UPDATE_PRODUCT_FAILURE_MSG = "Failed to update product";
+  public const NOT_EXIST_PRODUCT_MSG = "Product does not exist";
 
   protected const SESSION_USER_ID = "user_id";
   protected const SESSION_LAST_GENERATED = "last_generated";
@@ -599,6 +605,139 @@ class AdminController {
     }
     $offset = ($pageIndex - 1) * $length;
     return json_encode(TypeModel::getAllTypesInRange($offset, $length));
+  }
+
+  public function createProduct(): string {
+    try {
+      if (!array_key_exists("product_name", $_POST) || !array_key_exists("type_name", $_POST) 
+        || !array_key_exists("category_name", $_POST) || !array_key_exists("menu_name", $_POST)
+        || !array_key_exists("description", $_POST)
+      ) {
+        throw new BadRequestException(static::INVALID_FIELDS_MSG);
+      }
+      
+      $productName = $_POST["product_name"];
+      $typeName = $_POST["type_name"];
+      $categoryName = $_POST["category_name"];
+      $menuName = $_POST["menu_name"];
+      $description = $_POST["description"] ?? "";
+
+      $menuId = MenuModel::findMenuIdByName($menuName);
+      if ($menuId === 0) {
+        throw new BadRequestException(static::NOT_EXIST_MENU_MSG);
+      }
+      $categoryId = CategoryModel::findCategoryIdByMenuIdAndCategoryName($menuId, $categoryName);
+      if ($categoryId === 0) {
+        throw new BadRequestException(static::NOT_EXIST_CATEGORY_MSG);
+      }
+      $typeId = TypeModel::findTypeIdByCategoryIdAndTypeName($categoryId, $typeName);
+      if ($typeId === 0) {
+        throw new BadRequestException(static::NOT_EXIST_TYPE_MSG);
+      }
+      $productModel = ProductModel::make($typeId, $productName, $description);
+      if ($productModel->create() === 0) {
+        throw new BadRequestException(static::DUPLICATE_PRODUCT_IN_SAME_TYPE_MSG);
+      }
+      return json_encode(static::CREATE_PRODUCT_SUCCESS_MSG);
+    } catch (BadRequestException $ex) {
+      header("HTTP/1.1 400 Bad Request");
+      return json_encode($ex->getMessage());
+    }
+  }
+
+  public function getAdminProductsView(): string {
+    return View::make("admin/products");
+  }
+
+  public function getNumberOfProducts(): string {
+    return json_encode(ProductModel::countNumberOfProducts());
+  }
+
+  public function getNumberOfProductPages(): string {
+    $length = filter_input(INPUT_GET, "length", FILTER_VALIDATE_INT);
+    try {
+      if ($length === false || is_null($length)) {
+        throw new BadQueryException(static::INVALID_FIELDS_MSG, 400);
+      }
+    } catch (BadQueryException $ex) {
+      header("HTTP/1.1 400 Bad Request");
+      return json_encode($ex->getMessage());
+    }
+    return json_encode(ProductModel::countNumberOfProductPages($length));
+  }
+
+  public function getProductForOnePage(): string {
+    $pageIndex = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+    $length = filter_input(INPUT_GET, "length", FILTER_VALIDATE_INT);
+    try {
+      if ($pageIndex === false || $length === false) {
+        throw new BadQueryException(static::INVALID_FIELDS_MSG);
+      }
+    } catch (BadRequestException $ex) {
+      header("HTTP/1.1 400 Bad Request"); 
+      return json_encode($ex->getMessage());
+    }
+    $offset = ($pageIndex - 1) * $length;
+    return json_encode(ProductModel::getAllProductsInRange($offset, $length));
+  }
+
+  public function updateProductByProductId() {
+    try {
+      if (
+        !array_key_exists("product_name", $_POST) || !array_key_exists("type_name", $_POST)
+        || !array_key_exists("category_name", $_POST) || !array_key_exists("menu_name", $_POST)
+        || !array_key_exists("description", $_POST)
+      ) {
+        throw new BadRequestException(static::INVALID_FIELDS_MSG);
+      }
+
+      $productId = $_POST["product_id"];
+      $productName = $_POST["product_name"];
+      $typeName = $_POST["type_name"];
+      $categoryName = $_POST["category_name"];
+      $menuName = $_POST["menu_name"];
+      $description = $_POST["description"] ?? "";
+
+      $menuId = MenuModel::findMenuIdByName($menuName);
+      if ($menuId === 0) {
+        throw new BadRequestException(static::NOT_EXIST_MENU_MSG);
+      }
+      $categoryId = CategoryModel::findCategoryIdByMenuIdAndCategoryName($menuId, $categoryName);
+      if ($categoryId === 0) {
+        throw new BadRequestException(static::NOT_EXIST_CATEGORY_MSG);
+      }
+      $typeId = TypeModel::findTypeIdByCategoryIdAndTypeName($categoryId, $typeName);
+      if ($typeId === 0) {
+        throw new BadRequestException(static::NOT_EXIST_TYPE_MSG);
+      }
+      $productModel = ProductModel::make($typeId, $productName, $description, $productId);
+      if ($productModel->update() === 0) {
+        throw new BadRequestException(static::DUPLICATE_PRODUCT_IN_SAME_TYPE_MSG);
+      }
+      return json_encode(static::UPDATE_PRODUCT_SUCCESS_MSG);
+    } catch (BadRequestException $ex) {
+      header("HTTP/1.1 400 Bad Request");
+      return json_encode($ex->getMessage());
+    }
+  }
+
+  public function deleteProductByProductId(): string {
+    try {
+      if (!array_key_exists("product_id", $_POST)) {
+        throw new BadRequestException(static::INVALID_FIELDS_MSG);
+      }
+      $productId = filter_input(INPUT_POST, "product_id", FILTER_VALIDATE_INT);
+      if ($productId === false) {
+        throw new BadRequestException(static::INVALID_FIELDS_MSG);
+      }
+      if (ProductModel::deleteByProductId($productId) === 0) {
+        throw new BadRequestException(static::NOT_EXIST_PRODUCT_MSG);
+      }
+      return json_encode(static::DELETE_TYPE_SUCCESS_MSG);
+    } catch (BadRequestException $ex) {
+      header("HTTP/1.1 400 Bad Request");
+      return json_encode($ex->getMessage());
+    }
   }
 }
   

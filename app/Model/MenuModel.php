@@ -69,7 +69,7 @@ class MenuModel extends Model {
    * @param string $menuName
    * @return int menu id of menu. -1 if error
    */
-  public static function findMenuIdByName(string $menuName): int {
+  public static function findMenuIdByName(string &$menuName): int {
     $menuName = filter_var($menuName, FILTER_SANITIZE_SPECIAL_CHARS);
     $menuId = 0;
     try {

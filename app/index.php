@@ -24,7 +24,7 @@ $router
   ->post("/menu/category/type/new", [\App\Controller\MenuController::class, "createType"])
   ->get("/admin/login", [\App\Controller\AdminController::class, "getAdminLoginView"])
   //product
-  ->get("/product/typeid", [\App\Controller\ProductController::class, "getAllProducts"]) //Solved
+  ->get("/product/type/id", [\App\Controller\ProductController::class, "getAllProducts"]) //Solved
   ->get("/product/id", [\App\Controller\ProductController::class, "getProductById"]) //Solved
   ->post("/product/new", [\App\Controller\ProductController::class, "createProductByTypeId"]) //Solved
   ->post("/product/update", [\App\Controller\ProductController::class, "updateProductById"]) //Solved
@@ -83,6 +83,14 @@ $router
   ->post("/admin/types/new", [\App\Controller\AdminController::class, "createType"])
   ->post("/admin/types/update/id", [\App\Controller\AdminController::class, "updateTypeByTypeId"])
   ->post("/admin/types/delete/id", [\App\Controller\AdminController::class, "deleteTypeByTypeId"])
+
+  ->get("/admin/products", [\App\Controller\AdminController::class, "getAdminProductsView"])
+  ->post("/admin/products/new", [\App\Controller\AdminController::class, "createProduct"])
+  ->get("/admin/products/list", [\App\Controller\AdminController::class, "getProductForOnePage"])
+  ->get("/admin/products/total", [\App\Controller\AdminController::class, "getNumberOfProducts"])
+  ->get("/admin/products/pages/total", [\App\Controller\AdminController::class, "getNumberOfProductPages"])
+  ->post("/admin/products/update/id", [\App\Controller\AdminController::class, "updateProductByProductId"])
+  ->post("/admin/products/delete/id", [\App\Controller\AdminController::class, "deleteProductByProductId"])
   ;
   
 $config = new Configuration($_ENV);

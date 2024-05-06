@@ -70,8 +70,8 @@ class AuthenticateController {
         $_SESSION[static::SESSION_USER_PASSWORD] = $password;
         return json_encode(static::LOGIN_SUCCESS_MSG);
     } catch (ForbiddenException $ex) {
-    header("HTTP/1.1 403 Forbidden");
-    echo View::make("error/403");
+      header("HTTP/1.1 403 Forbidden");
+      echo View::make("error/403");
     }
   }
 

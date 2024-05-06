@@ -168,6 +168,34 @@ class TypeModel extends Model {
     }
     return $types;
   }
+
+  public static function findTypeIdByCategoryIdAndTypeName(int | string &$categoryId, string &$typeName): int {
+    if (is_string($categoryId)) {
+      $categoryId = filter_var($categoryId, FILTER_VALIDATE_INT);
+    }
+    $typeName = filter_var($typeName, FILTER_SANITIZE_SPECIAL_CHARS);
+    $typeId = 0;
+    try {
+      App::getDatabaseConnection()->beginTransaction();
+      $query =
+        "SELECT * FROM types 
+          WHERE types.type_name = :typeName AND types.category_id = :categoryId;
+        ";
+      $stmt = App::getDatabaseConnection()->prepare($query);
+      $stmt->bindValue(":typeName", $typeName);
+      $stmt->bindValue(":categoryId", $categoryId);
+      if (! $stmt->execute()) {
+        throw new BadQueryException();
+      }
+      App::getDatabaseConnection()->commit();
+    } catch (PDOException | BadQueryException $ex) {
+      if (App::getDatabaseConnection()->inTransaction()) {
+        App::getDatabaseConnection()->rollBack();
+      }
+    }
+
+    return $typeId;
+  }
 }
 
 

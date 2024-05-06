@@ -7,20 +7,20 @@
 const createCategoryModal = document.querySelector(".new-category-modal");
 const overlay = document.querySelector(".overlay");
 
-const openCreateMenuModalButton = document.querySelector(".btn--new-menu");
-const closeCreateMenuModalButton = document.querySelector(".btn--close-create-modal");
+const openCreateCategoryModalButton = document.querySelector(".btn--new-category");
+const closeCreateCategoryModalButton = document.querySelector(".btn--close-create-modal");
 
 const successNotificationModal = document.querySelector(".success-notification-modal");
 const successNotificationMessage = document.querySelector(".success-notification-modal .notification");
 const failureNotificationModal = document.querySelector(".failure-notification-modal");
 const failureNotificationMessage = document.querySelector(".failure-notification-modal .notification");
 
-function openCreateCategoryModal() {
+function openCreateProductModal() {
   createCategoryModal.classList.remove("hidden");
   overlay.classList.remove("hidden");
 }
 
-function closeCreateCategoryModal() {
+function closeCreateProductModal() {
   createCategoryModal.classList.add("hidden");
   overlay.classList.add("hidden");
 }
@@ -45,15 +45,15 @@ function closeFailureNotificationModal() {
   overlay.classList.add("hidden");
 }
 
-openCreateMenuModalButton.addEventListener("click", (e) => openCreateCategoryModal());
-closeCreateMenuModalButton.addEventListener("click", (e) => closeCreateCategoryModal());
+openCreateCategoryModalButton.addEventListener("click", (e) => openCreateProductModal());
+closeCreateCategoryModalButton.addEventListener("click", (e) => closeCreateProductModal());
 overlay.addEventListener("click", (e) => {
-  closeCreateCategoryModal();
+  closeCreateProductModal();
   closeSuccessNotificationModal();
 });
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && ! createCategoryModal.classList.contains("hidden")) {
-    closeCreateCategoryModal();
+    closeCreateProductModal();
   }
 
   if (e.key === "Escape" && ! successNotificationModal.classList.contains("hidden")) {
@@ -158,7 +158,7 @@ const createCategoryModalForm = document.querySelector(".create-form");
  * @param {string} url 
  * @param {FormData} formData
  */
-function submitTypeData(formData, url) {
+function submitProductData(formData, url) {
   fetch(url, {
     method: "POST",
     body: formData,
@@ -169,7 +169,7 @@ function submitTypeData(formData, url) {
     .then((data) => {
       if (data.includes("successfully")) {
         displaySuccessNotification(data);
-        getCategoryForPage(categoryPageIndex);
+        getProductForPage(productPageIndex);
       } else {
         displayFailureNotification(data);
       }
@@ -213,7 +213,7 @@ createCategoryModalForm.addEventListener("submit", function (e) {
           formData.append("category_name", validatedCategoryName);
           formData.append("menu_name", validatedMenuName);
           formData.append("description", validatedDescription);
-          submitTypeData(formData, CREATE_CATEGORY_URL);
+          submitProductData(formData, CREATE_CATEGORY_URL);
         }
       })
       .finally(() => {});
@@ -329,14 +329,14 @@ createDescriptionTextArea.addEventListener("focusout", function (e) {
  *FETCH SUMMARY FIGURE FROM SERVER************************ 
  * *******************************************************/
 const SUMMARY_FIGURE_INTERVAL = 5000;
-const CATEGORY_LIST_INTERVAL = 10000;
+const PRODUCT_LIST_INTERVAL = 10000;
 const summaryFigureOfCategory = document.querySelector(".summary-figure--category");
 const summaryFigureOfBestSellerCategory = document.querySelector(".summary-figure--bestseller-category");
 const summaryFigureOfHighestRatedCategory = document.querySelector(".summary-figure--highest-rated-category");
 const GET_CATEGORY_FIGURE_URL = "/admin/categories/total";
 
 
-async function getSummaryFigureOfCategory() {
+async function getSummaryFigureOfProduct() {
   await fetch(GET_CATEGORY_FIGURE_URL, {
     method: "GET"
   }).then((response) => {
@@ -347,21 +347,21 @@ async function getSummaryFigureOfCategory() {
   }).then((data) => {
     summaryFigureOfCategory.textContent = data;
   }).catch((error) => {
-    console.log(error.message);
+    displayFailureNotification(error);
   })
 }
 
-getSummaryFigureOfCategory();
-setInterval(getSummaryFigureOfCategory, SUMMARY_FIGURE_INTERVAL);
+getSummaryFigureOfProduct();
+setInterval(getSummaryFigureOfProduct, SUMMARY_FIGURE_INTERVAL);
 
 /*********************************************************
  *FETCH SUMMARY FIGURE FROM SERVER************************ 
  * *******************************************************/
 const GET_CATEGORY_URL = "/admin/categories/list";
-const CATEGORY_LIST_LENGTH = 10;
-let categoryPageIndex = 1;
+const PRODUCT_LIST_LENGTH = 10;
+let productPageIndex = 1;
 
-function removeOldCategoryTableData() {
+function removeOldProductTableData() {
   let tableRow = null;
   while (tableRow = document.querySelector(".tbody tr")) {
     tableRow.remove();
@@ -369,18 +369,18 @@ function removeOldCategoryTableData() {
 }
 
 const tableBody = document.querySelector(".tbody");
-let categories = [];
+let products = [];
 
 /**
  * 
  * @param {int} pageIndex
  * @returns {Promise<void>}
  */
-async function getCategoryForPage(pageIndex) {
+async function getProductForPage(pageIndex) {
   await fetch(
     GET_CATEGORY_URL + "?" + new URLSearchParams({
       page: pageIndex,
-      length: CATEGORY_LIST_LENGTH
+      length: PRODUCT_LIST_LENGTH
     }), 
     {
       method: "GET"
@@ -388,9 +388,9 @@ async function getCategoryForPage(pageIndex) {
     .then((response) => {
       return response.json();
     }).then((data) => {
-      categories = data;
-      removeOldCategoryTableData();  
-      categories.forEach((category) => {
+      products = data;
+      removeOldProductTableData();  
+      products.forEach((category) => {
         const tableRow = document.createElement("tr");
 
         const tableDataForId = document.createElement("td");
@@ -434,8 +434,8 @@ async function getCategoryForPage(pageIndex) {
       displayFailureNotification(error);
     });
 }
-getCategoryForPage(categoryPageIndex);
-setInterval(() => getCategoryForPage(categoryPageIndex), CATEGORY_LIST_INTERVAL);
+getProductForPage(productPageIndex);
+setInterval(() => getProductForPage(productPageIndex), PRODUCT_LIST_INTERVAL);
 
 /*********************************************************
  *PAGINATION************************ 
@@ -449,21 +449,21 @@ const MAX_PAGINATION_LENGTH = 5;
  * @returns {void}
  */
 function renderPageIndexForPagination(offset = 1) {
-  if (numberOfCategoryPages === 0) {
+  if (numberOfProductPages === 0) {
     return;
   }
   if (offset < 1) {
     offset = 1;
   }
   const allPaginationItems = document.querySelectorAll(".pagination-link--item");
-  if (MAX_PAGINATION_LENGTH > numberOfCategoryPages && numberOfCategoryPages > 0) {
-    for (let i = numberOfCategoryPages; i < MAX_PAGINATION_LENGTH; ++i) {
+  if (MAX_PAGINATION_LENGTH > numberOfProductPages && numberOfProductPages > 0) {
+    for (let i = numberOfProductPages; i < MAX_PAGINATION_LENGTH; ++i) {
       allPaginationItems[i].classList.add("hidden");
     }
     return;
   }
   
-  let paginationLength = Math.min(MAX_PAGINATION_LENGTH, numberOfCategoryPages - offset + 1);
+  let paginationLength = Math.min(MAX_PAGINATION_LENGTH, numberOfProductPages - offset + 1);
   for (let i = 0; i < paginationLength; ++i) {
     allPaginationItems[i].classList.remove("hidden");
     allPaginationItems[i].textContent = offset + i;
@@ -474,15 +474,15 @@ function renderPageIndexForPagination(offset = 1) {
   }
 }
 
-const NUMBER_OF_CATEGORY_PAGES_URL = "/admin/categories/pages/total";
-let numberOfCategoryPages = 0;
+const NUMBER_OF_PRODUCT_PAGES_URL = "/admin/products/pages/total";
+let numberOfProductPages = 0;
 
-async function getNumberOfCategoryPages() {
+async function getNumberOfProductPages() {
   await fetch(  
-    NUMBER_OF_CATEGORY_PAGES_URL +
+    NUMBER_OF_PRODUCT_PAGES_URL +
       "?" +
       new URLSearchParams({
-        length: CATEGORY_LIST_LENGTH,
+        length: PRODUCT_LIST_LENGTH,
       }),
     {
       method: "GET",
@@ -492,17 +492,17 @@ async function getNumberOfCategoryPages() {
       return response.json();
     })
     .then((data) => {
-      numberOfCategoryPages = data;
+      numberOfProductPages = data;
     })
     .catch((error) => {
       displayFailureNotification(error);
     });
 }
-getNumberOfCategoryPages();
-setInterval(() => getNumberOfCategoryPages(), CATEGORY_LIST_INTERVAL);
+getNumberOfProductPages();
+setInterval(() => getNumberOfProductPages(), PRODUCT_LIST_INTERVAL);
 
 window.addEventListener("DOMContentLoaded", function (e) {
-  getNumberOfCategoryPages().then(() => {
+  getNumberOfProductPages().then(() => {
     renderPageIndexForPagination();
   });
 });
@@ -520,9 +520,9 @@ window.addEventListener("load", (e) => {
       ev.preventDefault();
       removeAllActivePaginationItems();
       this.classList.add("pagination-link--active");
-      categoryPageIndex = Number.parseInt(item.textContent);
-      console.log(categoryPageIndex);
-      getCategoryForPage(categoryPageIndex);
+      productPageIndex = Number.parseInt(item.textContent);
+      console.log(productPageIndex);
+      getProductForPage(productPageIndex);
     })
   });
 
@@ -538,7 +538,7 @@ window.addEventListener("load", (e) => {
     } else if (item.id === "start-link") {
       offset = 1;
     } else {
-      offset = Math.floor(numberOfCategoryPages / MAX_PAGINATION_LENGTH) * MAX_PAGINATION_LENGTH + 1;
+      offset = Math.floor(numberOfProductPages / MAX_PAGINATION_LENGTH) * MAX_PAGINATION_LENGTH + 1;
     }
     item.addEventListener("click", function (ev) {
       ev.preventDefault();
@@ -555,9 +555,9 @@ window.addEventListener("load", (e) => {
  * @param {Array<MutationRecord>} mutationRecords 
  * @param {MutationObserver} observer 
  */
-const EDIT_CATEGORY_URL = "/admin/categories/update/id";
-const DELETE_CATEGORY_URL = "/admin/categories/delete/id";
-function handleMenuTableBodyMutation(mutationRecords, observer) {
+const EDIT_PRODUCT_URL = "/admin/products/update/id";
+const DELETE_PRODUCT_URL = "/admin/products/delete/id";
+function handleProductTableBodyMutation(mutationRecords, observer) {
   /*******EDIT USER************************************************** */
   const editCategoryModal = document.querySelector(".edit-category-modal");
   const editCategoryNameInput = document.querySelector("#edit-category-name-input");
@@ -575,10 +575,10 @@ function handleMenuTableBodyMutation(mutationRecords, observer) {
     btn.addEventListener("click", function (ev) {
       ev.preventDefault();
       openEditCategoryModal();
-      editIdInput.value = categories[index].category_id;
-      editCategoryNameInput.value = categories[index].category_name;
-      editMenuNameInput.value = categories[index].menu_name;
-      editDescriptionTextarea.innerHTML = categories[index].description;
+      editIdInput.value = products[index].category_id;
+      editCategoryNameInput.value = products[index].category_name;
+      editMenuNameInput.value = products[index].menu_name;
+      editDescriptionTextarea.innerHTML = products[index].description;
     })
   });
   let validatedCategoryName = "";
@@ -707,7 +707,7 @@ function handleMenuTableBodyMutation(mutationRecords, observer) {
             formData.append("menu_id", validatedId);
             formData.append("menu_name", validatedMenuName);
             formData.append("description", validatedDescription);
-            submitTypeData(formData, EDIT_CATEGORY_URL);
+            submitProductData(formData, EDIT_PRODUCT_URL);
           }
         });
     }
@@ -762,9 +762,9 @@ function handleMenuTableBodyMutation(mutationRecords, observer) {
     btn.addEventListener("click", function (ev) {
       ev.preventDefault();
       openDeleteCategoryModal();
-      deleteIdInput.value = categories[index].category_id;
-      deleteCategroyNameInput.value = categories[index].category_name;
-      deleteMenuNameInput.value = categories[index].menu_name;
+      deleteIdInput.value = products[index].category_id;
+      deleteCategroyNameInput.value = products[index].category_name;
+      deleteMenuNameInput.value = products[index].menu_name;
     });
   });
   let validatedCategoryId = "";
@@ -776,13 +776,13 @@ function handleMenuTableBodyMutation(mutationRecords, observer) {
       validatedCategoryId = deleteIdInput.value;
       const formData = new FormData();
       formData.append("category_id", validatedCategoryId);
-      submitTypeData(formData, DELETE_CATEGORY_URL);
+      submitProductData(formData, DELETE_PRODUCT_URL);
     }
     handleCategoryData();
   });
 } 
 
-const tableBodyObserver = new MutationObserver(handleMenuTableBodyMutation);
+const tableBodyObserver = new MutationObserver(handleProductTableBodyMutation);
 tableBodyObserver.observe(tableBody, {
   attributes: false,
   childList: true,

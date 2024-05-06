@@ -32,7 +32,7 @@
           <ion-icon name="receipt-outline" class="icon-link"></ion-icon>
           <p>Orders</p>
         </a>
-        <a class="nav-link">
+        <a class="nav-link" href="/admin/products">
           <ion-icon name="fast-food-outline" class="icon-link"></ion-icon>
           <p>Products</p>
         </a>

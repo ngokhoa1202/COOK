@@ -64,13 +64,13 @@ class CategoryModel extends Model {
   public static function updateByCategoryId(int &$categoryId, int &$menuId, string &$categoryName, string &$description): int {
     try {
       App::getDatabaseConnection()->beginTransaction();
-      $query = '
-        UPDATE categories 
-        SET menu_id = :menuId, 
-            category_name = :categoryName, 
-            `description` = :description
-        WHERE categories.category_id = :categoryId;
-      ';
+      $query = 
+        'UPDATE categories 
+          SET menu_id = :menuId, 
+              category_name = :categoryName, 
+              `description` = :description
+          WHERE categories.category_id = :categoryId;
+        ';
       $stmt = App::getDatabaseConnection()->prepare($query);
       $stmt->bindValue(":menuId", $menuId);
       $stmt->bindValue(":categoryName", $categoryName);
