@@ -158,7 +158,7 @@ const createCategoryModalForm = document.querySelector(".create-form");
  * @param {string} url 
  * @param {FormData} formData
  */
-function submitCategoryData(formData, url) {
+function submitTypeData(formData, url) {
   fetch(url, {
     method: "POST",
     body: formData,
@@ -213,7 +213,7 @@ createCategoryModalForm.addEventListener("submit", function (e) {
           formData.append("category_name", validatedCategoryName);
           formData.append("menu_name", validatedMenuName);
           formData.append("description", validatedDescription);
-          submitCategoryData(formData, CREATE_CATEGORY_URL);
+          submitTypeData(formData, CREATE_CATEGORY_URL);
         }
       })
       .finally(() => {});
@@ -707,7 +707,7 @@ function handleMenuTableBodyMutation(mutationRecords, observer) {
             formData.append("menu_id", validatedId);
             formData.append("menu_name", validatedMenuName);
             formData.append("description", validatedDescription);
-            submitCategoryData(formData, EDIT_CATEGORY_URL);
+            submitTypeData(formData, EDIT_CATEGORY_URL);
           }
         });
     }
@@ -776,7 +776,7 @@ function handleMenuTableBodyMutation(mutationRecords, observer) {
       validatedCategoryId = deleteIdInput.value;
       const formData = new FormData();
       formData.append("category_id", validatedCategoryId);
-      submitCategoryData(formData, DELETE_CATEGORY_URL);
+      submitTypeData(formData, DELETE_CATEGORY_URL);
     }
     handleCategoryData();
   });

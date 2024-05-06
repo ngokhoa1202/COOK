@@ -247,7 +247,7 @@
     </form>
   </div>
 
-  <div class="modal delete-category-modal hidden">
+  <div class="modal delete-type-modal hidden">
     <button class="btn--close-modal btn--close-delete-modal">&times;</button>
     <h2 class="heading-secondary margin-bottom-small">Delete type</h2>
     <form class="modal-form delete-form" novalidate>

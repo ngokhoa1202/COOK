@@ -177,7 +177,7 @@ const createTypeModalForm = document.querySelector(".create-form");
  * @param {string} url 
  * @param {FormData} formData
  */
-function submitCategoryData(formData, url) {
+function submitTypeData(formData, url) {
   fetch(url, {
     method: "POST",
     body: formData,
@@ -230,7 +230,7 @@ createTypeModalForm.addEventListener("submit", function (e) {
           formData.append("category_name", validatedCategoryName);
           formData.append("menu_name", validatedMenuName);
           formData.append("description", validatedDescription);
-          submitCategoryData(formData, CREATE_TYPE_URL);
+          submitTypeData(formData, CREATE_TYPE_URL);
         }
       })
       .finally(() => {});
@@ -776,7 +776,7 @@ function handleMenuTableBodyMutation(mutationRecords, observer) {
           formData.append("category_name", validatedCategoryName);
           formData.append("menu_name", validatedMenuName);
           formData.append("description", validatedDescription);
-          submitCategoryData(formData, EDIT_TYPE_URL);
+          submitTypeData(formData, EDIT_TYPE_URL);
         }
       });
     }
@@ -804,25 +804,25 @@ function handleMenuTableBodyMutation(mutationRecords, observer) {
   });
 
   /******DELETE USER************************************************** */
-  const deleteCategoryModal = document.querySelector(".delete-category-modal");
-  const closeDeleteCategoryModalButton = document.querySelector(".btn--close-delete-modal");
+  const deleteTypeModal = document.querySelector(".delete-type-modal");
+  const closeDeleteTypeModalButton = document.querySelector(".btn--close-delete-modal");
   const deleteIdInput = document.querySelector("#delete-id-input");
   const deleteTypeNameInput = document.querySelector("#delete-type-name-input");
   const deleteCategoryNameInput = document.querySelector("#delete-category-name-input");
   const deleteMenuNameInput = document.querySelector("#delete-menu-name-input"); 
   function closeDeleteCategoryModal() {
-    deleteCategoryModal.classList.add("hidden");
+    deleteTypeModal.classList.add("hidden");
     overlay.classList.add("hidden");
   }
 
-  function openDeleteCategoryModal() {
-    deleteCategoryModal.classList.remove("hidden");
+  function openDeleteTypeModal() {
+    deleteTypeModal.classList.remove("hidden");
     overlay.classList.remove("hidden");
   }
 
-  closeDeleteCategoryModalButton.addEventListener("click", (e) => closeDeleteCategoryModal());
+  closeDeleteTypeModalButton.addEventListener("click", (e) => closeDeleteCategoryModal());
   document.addEventListener("keydown", (ev) => {
-    if (ev.key === "Escape" && ! deleteCategoryModal.classList.contains("hidden")) {
+    if (ev.key === "Escape" && ! deleteTypeModal.classList.contains("hidden")) {
       closeDeleteCategoryModal();
     }
   });
@@ -831,7 +831,7 @@ function handleMenuTableBodyMutation(mutationRecords, observer) {
   allDeleteButtons.forEach((btn, index) => {
     btn.addEventListener("click", function (ev) {
       ev.preventDefault();
-      openDeleteCategoryModal();
+      openDeleteTypeModal();
       deleteIdInput.value = types[index].type_id;
       deleteTypeNameInput.value = types[index].type_name;
       deleteCategoryNameInput.value = types[index].category_name;
@@ -847,7 +847,7 @@ function handleMenuTableBodyMutation(mutationRecords, observer) {
       validatedTypeId = deleteIdInput.value;
       const formData = new FormData();
       formData.append("type_id", validatedTypeId);
-      submitCategoryData(formData, DELETE_TYPE_URL);
+      submitTypeData(formData, DELETE_TYPE_URL);
     }
     handleCategoryData();
   });
