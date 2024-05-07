@@ -36,9 +36,9 @@
           <ion-icon name="fast-food-outline" class="icon-link"></ion-icon>
           <p>Products</p>
         </a>
-        <a class="nav-link">
+        <a class="nav-link" href="/admin/menus">
           <ion-icon name="grid-outline" class="icon-link"></ion-icon>
-          <p>Products</p>
+          <p>Menus</p>
         </a>
         <a class="nav-link" href="/admin/categories">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.0" stroke="currentColor" class="icon-link hero-icon-link">
@@ -213,7 +213,8 @@
       </div>
       <label class="label" for="avatar-input">Avatar</label>
       <div class="input-info">
-        <input type="file" name="avatar" class="input avatar-input" name="avatar" id="create-avatar-input">
+        <input type="file" name="avatar" class="input avatar-input" id="create-avatar-input" accept="image/*">
+        <div class="avatar" id="create-avatar"></div>
         <p class="error avatar-error" id="create-avatar-error"></p>
       </div>
 

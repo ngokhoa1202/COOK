@@ -521,6 +521,18 @@ button:active {
   border-radius: 1rem;
 }
 
+.avatar-input {
+  font-size: 1.8rem;
+  font-family: inherit;
+}
+
+.avatar {
+  display: block;
+  width: 4.8rem;
+  background-size: cover;
+  height: 4.8rem;
+}
+
 .modal-form .btn--submit {
   grid-column: 1 / span 2;
   justify-self: center;

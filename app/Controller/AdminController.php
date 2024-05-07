@@ -156,6 +156,8 @@ class AdminController {
     $password = $_POST["password"];
     $confirmPassword = $_POST["confirm_password"];
     $role = $_POST["role"];
+    $avatar = $_POST["avatar"] ?? "";
+    var_dump($avatar);
     $userModel = UserModel::make($email, $email, $password, $confirmPassword, "", $role, UserStatus::getStatus((UserStatus::OFFLINE)));
     if (is_array($userModel)) {
       return json_encode($userModel);
@@ -309,7 +311,7 @@ class AdminController {
         !array_key_exists("menu_id", $_POST) || !array_key_exists("menu_name", $_POST)
         || !array_key_exists("description", $_POST)
       ) {
-        throw new BadRequestException();
+        throw new BadRequestException(static::INVALID_FIELDS_MSG);
       }
 
       $menuId = filter_input(INPUT_POST, "menu_id", FILTER_VALIDATE_INT);

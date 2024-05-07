@@ -143,6 +143,8 @@ function validateConfirmPassword(confirmPasswordInput, passwordInput, empty = fa
   });
 }
 
+const createAvatarInput = document.querySelector("#create-avatar-input");
+
 const createRoleSelect = document.querySelector("#create-role-select");
 /**
  * @param {HTMLSelectElement} roleSelect 
@@ -267,6 +269,7 @@ newUserModalForm.addEventListener("submit", function (e) {
         formData.append("email", validatedEmail);
         formData.append("password", validatedPassword);
         formData.append("confirm_password", validatedPassword);
+        formData.append("avatar", validatedAvatar);
         formData.append("role", validatedRole);
         if (! newUserModal.classList.contains("hidden")) {
           newUserModal.classList.add("hidden");
@@ -389,6 +392,17 @@ createConfirmPasswordInput.addEventListener("focusout", function (e) {
       createConfirmPasswordError.textContent = msg;
     })
     .finally(() => {});
+});
+
+let validatedAvatar = "";
+const avatar = document.querySelector("#create-avatar");
+createAvatarInput.addEventListener("change", function (e) {
+  const fileReader = new FileReader();
+  fileReader.addEventListener("load", function (ev) {
+    validatedAvatar = fileReader.result;
+    avatar.style.backgroundImage = `url(${validatedAvatar})`;
+  });
+  fileReader.readAsDataURL(this.files[0]);
 });
 
 createRoleSelect.addEventListener("change", function (e) {
@@ -839,6 +853,16 @@ function handleUserTableBodyMutation(mutationRecords, observer) {
         editConfirmPasswordError.textContent = msg;
       })
       .finally(() => {});
+  });
+  const avatar = document.querySelector("#create-avatar");
+  editAvatarInput.addEventListener("change", function (e) {
+    console.log("change");
+    const fileReader = new FileReader();
+    fileReader.addEventListener("load", function (ev) {
+      validatedAvatar = fileReader.result;
+      avatar.style.backgroundImage = `url(${validatedAvatar})`;
+    });
+    fileReader.readAsDataURL(this.files[0]);
   });
 
   editRoleSelect.addEventListener("focus", function (ev) {

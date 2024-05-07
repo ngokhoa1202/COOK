@@ -45,8 +45,8 @@ function closeFailureNotificationModal() {
   overlay.classList.add("hidden");
 }
 
-openCreateCategoryModalButton.addEventListener("click", (e) => openCreateMenuModal());
-closeCreateCategoryModalButton.addEventListener("click", (e) => closeCreateMenuModal());
+openCreateMenuModalButton.addEventListener("click", (e) => openCreateMenuModal());
+closeCreateMenuModalButton.addEventListener("click", (e) => closeCreateMenuModal());
 overlay.addEventListener("click", (e) => {
   closeCreateMenuModal();
   closeSuccessNotificationModal();

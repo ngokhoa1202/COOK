@@ -7,7 +7,7 @@
 const createCategoryModal = document.querySelector(".new-category-modal");
 const overlay = document.querySelector(".overlay");
 
-const openCreateCategoryModalButton = document.querySelector(".btn--new-category");
+const openCreateMenuModalButton = document.querySelector(".btn--new-category");
 const closeCreateCategoryModalButton = document.querySelector(".btn--close-create-modal");
 
 const successNotificationModal = document.querySelector(".success-notification-modal");
@@ -45,7 +45,7 @@ function closeFailureNotificationModal() {
   overlay.classList.add("hidden");
 }
 
-openCreateCategoryModalButton.addEventListener("click", (e) => openCreateProductModal());
+openCreateMenuModalButton.addEventListener("click", (e) => openCreateProductModal());
 closeCreateCategoryModalButton.addEventListener("click", (e) => closeCreateProductModal());
 overlay.addEventListener("click", (e) => {
   closeCreateProductModal();
