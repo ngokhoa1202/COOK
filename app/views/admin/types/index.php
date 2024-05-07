@@ -32,7 +32,7 @@
           <ion-icon name="receipt-outline" class="icon-link"></ion-icon>
           <p>Orders</p>
         </a>
-        <a class="nav-link">
+        <a class="nav-link" href="/admin/products">
           <ion-icon name="fast-food-outline" class="icon-link"></ion-icon>
           <p>Products</p>
         </a>
@@ -96,7 +96,7 @@
         <div class="button-container">
           <button class="btn btn--new-type">
             <ion-icon name="add-outline" class="add-icon icon-link"></ion-icon>
-            <p class="btn--new-type">New category</p>
+            <p class="btn--new-type">New type</p>
           </button>
         </div>
       </section>
@@ -267,7 +267,7 @@
       <div class="input-info">
         <input type="text" placeholder="Category name" class="input" name="id" id="delete-category-name-input" readonly>
       </div>
-      <button type="submit" class="btn btn--submit margin-top-small">Delete category</button>
+      <button type="submit" class="btn btn--submit margin-top-small">Delete type</button>
     </form>
   </div>
 

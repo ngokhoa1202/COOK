@@ -54,8 +54,8 @@ class AuthenticateController {
           throw new BadQueryException();
         }
     } catch (BadQueryException $ex) {
-    header("HTTP/1.1 400 Bad Request");
-    echo View::make("error/400");
+      header("HTTP/1.1 400 Bad Request");
+      echo View::make("error/400");
     }
     $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
     $password = $_POST["password"];
@@ -89,7 +89,7 @@ class AuthenticateController {
     $password = $_POST["password"];
     $confirmPassword = $_POST["confirm_password"];
 
-    $userModel = UserModel::make($email, $email, $password, $confirmPassword, "", UserRole::getRole(UserRole::MEMBER), UserStatus::getStatus((UserStatus::OFFLINE)));
+    $userModel = UserModel::make($email, $email, $password, $confirmPassword, "", UserRole::getRole(UserRole::MEMBER), UserStatus::getStatus((UserStatus::OFFLINE)), false);
     if (is_array($userModel)) {
       return json_encode($userModel);
     }

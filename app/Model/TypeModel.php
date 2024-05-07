@@ -187,6 +187,7 @@ class TypeModel extends Model {
       if (! $stmt->execute()) {
         throw new BadQueryException();
       }
+      $typeId = (int) $stmt->fetch(PDO::FETCH_ASSOC)["type_id"];
       App::getDatabaseConnection()->commit();
     } catch (PDOException | BadQueryException $ex) {
       if (App::getDatabaseConnection()->inTransaction()) {

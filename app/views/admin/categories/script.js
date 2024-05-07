@@ -7,7 +7,7 @@
 const createCategoryModal = document.querySelector(".new-category-modal");
 const overlay = document.querySelector(".overlay");
 
-const openCreateMenuModalButton = document.querySelector(".btn--new-category");
+const openCreateCategoryModalButton = document.querySelector(".btn--new-category");
 const closeCreateCategoryModalButton = document.querySelector(".btn--close-create-modal");
 
 const successNotificationModal = document.querySelector(".success-notification-modal");
@@ -45,7 +45,7 @@ function closeFailureNotificationModal() {
   overlay.classList.add("hidden");
 }
 
-openCreateMenuModalButton.addEventListener("click", (e) => openCreateProductModal());
+openCreateCategoryModalButton.addEventListener("click", (e) => openCreateProductModal());
 closeCreateCategoryModalButton.addEventListener("click", (e) => closeCreateProductModal());
 overlay.addEventListener("click", (e) => {
   closeCreateProductModal();
@@ -555,9 +555,9 @@ window.addEventListener("load", (e) => {
  * @param {Array<MutationRecord>} mutationRecords 
  * @param {MutationObserver} observer 
  */
-const EDIT_PRODUCT_URL = "/admin/products/update/id";
-const DELETE_PRODUCT_URL = "/admin/products/delete/id";
-function handleProductTableBodyMutation(mutationRecords, observer) {
+const EDIT_CATEGORY_URL = "/admin/categories/update/id";
+const DELETE_CATEGORY_URL = "/admin/categories/delete/id";
+function handleCategoryTableBodyMutation(mutationRecords, observer) {
   /*******EDIT USER************************************************** */
   const editCategoryModal = document.querySelector(".edit-category-modal");
   const editCategoryNameInput = document.querySelector("#edit-category-name-input");
@@ -704,10 +704,12 @@ function handleProductTableBodyMutation(mutationRecords, observer) {
         .then(() => {
           if (validatedId && validatedMenuName && validatedCategoryName) {
             const formData = new FormData();
-            formData.append("menu_id", validatedId);
+            formData.append("category_id", validatedId);
+            formData.append("category_name", validatedCategoryName);
             formData.append("menu_name", validatedMenuName);
             formData.append("description", validatedDescription);
-            submitProductData(formData, EDIT_PRODUCT_URL);
+            console.log(formData);
+            submitProductData(formData, EDIT_CATEGORY_URL);
           }
         });
     }
@@ -776,13 +778,13 @@ function handleProductTableBodyMutation(mutationRecords, observer) {
       validatedCategoryId = deleteIdInput.value;
       const formData = new FormData();
       formData.append("category_id", validatedCategoryId);
-      submitProductData(formData, DELETE_PRODUCT_URL);
+      submitProductData(formData, DELETE_CATEGORY_URL);
     }
     handleCategoryData();
   });
 } 
 
-const tableBodyObserver = new MutationObserver(handleProductTableBodyMutation);
+const tableBodyObserver = new MutationObserver(handleCategoryTableBodyMutation);
 tableBodyObserver.observe(tableBody, {
   attributes: false,
   childList: true,

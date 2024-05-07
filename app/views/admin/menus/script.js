@@ -471,7 +471,7 @@ window.addEventListener("load", (e) => {
  */
 const EDIT_MENU_URL = "/admin/menus/update/id";
 const DELETE_MENU_URL = "/admin/menus/delete/id";
-function handleProductTableBodyMutation(mutationRecords, observer) {
+function handleCategoryTableBodyMutation(mutationRecords, observer) {
   /*******EDIT USER************************************************** */
   const editMenuModal = document.querySelector(".edit-menu-modal");
   const editIdInput = document.querySelector("#edit-id-input");
@@ -638,7 +638,7 @@ function handleProductTableBodyMutation(mutationRecords, observer) {
   });
 } 
 
-const tableBodyObserver = new MutationObserver(handleProductTableBodyMutation);
+const tableBodyObserver = new MutationObserver(handleCategoryTableBodyMutation);
 tableBodyObserver.observe(tableBody, {
   attributes: false,
   childList: true,

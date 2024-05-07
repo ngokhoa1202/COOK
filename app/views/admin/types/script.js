@@ -188,7 +188,7 @@ function submitProductData(formData, url) {
     .then((data) => {
       if (data.includes("successfully")) {
         displaySuccessNotification(data);
-        getTypeForPage(productPageIndex);
+        getTypeForPage(typePageIndex);
       } else {
         displayFailureNotification(data);
       }
@@ -227,6 +227,7 @@ createTypeModalForm.addEventListener("submit", function (e) {
       .then(() => {
         if (validatedCategoryName && validatedMenuName) {
           const formData = new FormData();
+          formData.append("type_name", validatedTypeName);
           formData.append("category_name", validatedCategoryName);
           formData.append("menu_name", validatedMenuName);
           formData.append("description", validatedDescription);
@@ -241,13 +242,47 @@ createTypeModalForm.addEventListener("submit", function (e) {
 /*********************************************************
  *HANDLE INPUT GAINING FOUCS AND LOSING FOCUS EVENT******* 
  * *******************************************************/
+let validatedTypeName = "";
 let validatedCategoryName = "";
 let validatedMenuName = "";
 let validatedDescription = "";
 
+const createTypeNameError = document.querySelector("#create-type-name-error");
 const createCategoryNameError = document.querySelector("#create-category-name-error");
 const createMenuNameError = document.querySelector("#create-menu-name-error");
 const createDescriptionError = document.querySelector("#create-description-error");
+
+const createTypeNameInput = document.querySelector("#create-type-name-input");
+createTypeNameInput.addEventListener("focus", function (e) {
+  validateTypeName(this)
+    .then((typeName) => {
+      validatedTypeName = typeName;
+      createTypeNameError.value = "";
+    })
+    .catch((msg) => {
+      createTypeNameError.value = msg;
+    });
+});
+createTypeNameInput.addEventListener("input", function (e) {
+  validateTypeName(this)
+    .then((typeName) => {
+      validatedTypeName = typeName;
+      createTypeNameError.value = "";
+    })
+    .catch((msg) => {
+      createTypeNameError.value = msg;
+    });
+});
+createTypeNameInput.addEventListener("focusout", function (e) {
+  validateTypeName(this)
+    .then((typeName) => {
+      validatedTypeName = typeName;
+      createTypeNameError.value = "";
+    })
+    .catch((msg) => {
+      createTypeNameError.value = msg;
+    });
+});
 
 createCategoryNameInput.addEventListener("focus", function (e) {
   validateCategoryName(this)
@@ -376,7 +411,7 @@ setInterval(getSummaryFigureOfProduct, SUMMARY_FIGURE_INTERVAL);
  * *******************************************************/
 const GET_TYPE_URL = "/admin/types/list";
 const TYPE_LIST_LENGTH = 10;
-let categoryPageIndex = 1;
+let typePageIndex = 1;
 
 function removeOldTypeTableData() {
   let tableRow = null;
@@ -455,8 +490,10 @@ async function getTypeForPage(pageIndex) {
       displayFailureNotification(error);
     });
 }
-getTypeForPage(productPageIndex);
-setInterval(() => getTypeForPage(productPageIndex), PRODUCT_LIST_INTERVAL);
+
+let pageTypeIndex = 1;
+getTypeForPage(pageTypeIndex);
+setInterval(() => getTypeForPage(pageTypeIndex), TYPE_LIST_INTERVAL);
 
 /*********************************************************
  *PAGINATION************************ 
@@ -470,21 +507,21 @@ const MAX_PAGINATION_LENGTH = 5;
  * @returns {void}
  */
 function renderPageIndexForPagination(offset = 1) {
-  if (numberOfProductPages === 0) {
+  if (numberOfCategoryPages === 0) {
     return;
   }
   if (offset < 1) {
     offset = 1;
   }
   const allPaginationItems = document.querySelectorAll(".pagination-link--item");
-  if (MAX_PAGINATION_LENGTH > numberOfProductPages && numberOfProductPages > 0) {
-    for (let i = numberOfProductPages; i < MAX_PAGINATION_LENGTH; ++i) {
+  if (MAX_PAGINATION_LENGTH > numberOfCategoryPages && numberOfCategoryPages > 0) {
+    for (let i = numberOfCategoryPages; i < MAX_PAGINATION_LENGTH; ++i) {
       allPaginationItems[i].classList.add("hidden");
     }
     return;
   }
   
-  let paginationLength = Math.min(MAX_PAGINATION_LENGTH, numberOfProductPages - offset + 1);
+  let paginationLength = Math.min(MAX_PAGINATION_LENGTH, numberOfCategoryPages - offset + 1);
   for (let i = 0; i < paginationLength; ++i) {
     allPaginationItems[i].classList.remove("hidden");
     allPaginationItems[i].textContent = offset + i;
@@ -513,14 +550,14 @@ async function getNumberOTypePages() {
       return response.json();
     })
     .then((data) => {
-      numberOfProductPages = data;
+      numberOfCategoryPages = data;
     })
     .catch((error) => {
       displayFailureNotification(error);
     });
 }
 getNumberOTypePages();
-setInterval(() => getNumberOTypePages(), PRODUCT_LIST_INTERVAL);
+setInterval(() => getNumberOTypePages(), TYPE_LIST_INTERVAL);
 
 window.addEventListener("DOMContentLoaded", function (e) {
   getNumberOTypePages().then(() => {
@@ -541,9 +578,8 @@ window.addEventListener("load", (e) => {
       ev.preventDefault();
       removeAllActivePaginationItems();
       this.classList.add("pagination-link--active");
-      productPageIndex = Number.parseInt(item.textContent);
-      console.log(productPageIndex);
-      getTypeForPage(productPageIndex);
+      pageTypeIndex = Number.parseInt(item.textContent);
+      getTypeForPage(pageTypeIndex);
     })
   });
 
@@ -559,7 +595,7 @@ window.addEventListener("load", (e) => {
     } else if (item.id === "start-link") {
       offset = 1;
     } else {
-      offset = Math.floor(numberOfProductPages / MAX_PAGINATION_LENGTH) * MAX_PAGINATION_LENGTH + 1;
+      offset = Math.floor(numberOfCategoryPages / MAX_PAGINATION_LENGTH) * MAX_PAGINATION_LENGTH + 1;
     }
     item.addEventListener("click", function (ev) {
       ev.preventDefault();
@@ -578,7 +614,7 @@ window.addEventListener("load", (e) => {
  */
 const EDIT_TYPE_URL = "/admin/types/update/id";
 const DELETE_TYPE_URL = "/admin/types/delete/id";
-function handleProductTableBodyMutation(mutationRecords, observer) {
+function handleCategoryTableBodyMutation(mutationRecords, observer) {
   /*******EDIT USER************************************************** */
   const editTypeModal = document.querySelector(".edit-type-modal");
   const editTypeNameInput = document.querySelector("#edit-type-name-input");
@@ -853,7 +889,7 @@ function handleProductTableBodyMutation(mutationRecords, observer) {
   });
 } 
 
-const tableBodyObserver = new MutationObserver(handleProductTableBodyMutation);
+const tableBodyObserver = new MutationObserver(handleCategoryTableBodyMutation);
 tableBodyObserver.observe(tableBody, {
   attributes: false,
   childList: true,

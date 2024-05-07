@@ -1,7 +1,8 @@
-const SERVER_URL = "/login";
+const LOGIN_URL = "/login";
+const SIGNUP_URL = "/signup";
 const MIN_PASSWORD_LENGTH = 8;
-const EMAIL_PATTERN = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
+const EMAIL_PATTERN =
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 /* password has at least 8 characters which contain at least one numeric digit and a special character */
 const PASSWORD_PATTERN = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
@@ -36,7 +37,7 @@ radioContainerList.forEach((radioContainer) =>
 
 const emailInput = document.querySelector("#email-input");
 /**
- * 
+ *
  * @returns {Promise}
  */
 function validateEmail() {
@@ -53,7 +54,7 @@ function validateEmail() {
 
 const loginPasswordInput = document.querySelector("#login-password-input");
 /**
- * 
+ *
  * @returns {Promise}
  */
 function validateLoginPassword() {
@@ -72,7 +73,7 @@ function validateLoginPassword() {
 
 const signupPasswordInput = document.querySelector("#signup-password-input");
 /**
- * 
+ *
  * @returns {Promise}
  */
 function validateSignupPassword() {
@@ -91,7 +92,7 @@ function validateSignupPassword() {
 
 const confirmPasswordInput = document.querySelector("#confirm-password-input");
 /**
- * 
+ *
  * @returns {Promise}
  */
 function validateConfirmPassword() {
@@ -107,43 +108,48 @@ function validateConfirmPassword() {
 }
 
 const loginForm = document.querySelector(".login-form");
-loginForm.addEventListener("submit", function(e) {
+loginForm.addEventListener("submit", function (e) {
   e.preventDefault();
   /**
-   * 
+   *
    * @returns {boolean}
    */
   function isLoggingIn() {
-    return document.querySelector(".login-accordion").classList.contains("active");
+    return document
+      .querySelector(".login-accordion")
+      .classList.contains("active");
   }
 
   /**
-   * 
-   * @param {FormData} formData 
+   *
+   * @param {FormData} formData
+   * @param {string} url 
    */
-  function submitData(formData) {
-    fetch(
-      SERVER_URL, 
-      {
-        method: "POST",
-        body: formData
-      }
-    ).then((response) => {
-      if (!response.ok) {
-        throw new Error("Your network connection is not stable")
-      }
-      return response.json();
-    }).then((data) => {
-      console.log("Receive: ", data);
-    }).catch((error) => {
-      alert(error);
+  function submitData(formData, url) {
+    fetch(url, {
+      method: "POST",
+      body: formData,
     })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Your network connection is not stable");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Receive: ", data);
+      })
+      .catch((error) => {
+        alert(error);
+      });
   }
 
   const emailError = document.querySelector(".email-error");
   const loginPasswordError = document.querySelector(".login-password-error");
   const signupPasswordError = document.querySelector(".signup-password-error");
-  const confirmPasswordError = document.querySelector(".confirm-password-error");
+  const confirmPasswordError = document.querySelector(
+    ".confirm-password-error"
+  );
 
   const emailValidatorPromise = validateEmail()
     .then((email) => {
@@ -173,7 +179,7 @@ loginForm.addEventListener("submit", function(e) {
       confirmPasswordError.textContent = msg;
     })
     .finally(() => {});
-  
+
   const signupPasswordValidatorPromise = validateSignupPassword()
     .then((password) => {
       validatedPassword = password;
@@ -184,40 +190,43 @@ loginForm.addEventListener("submit", function(e) {
     .finally(() => {});
 
   function handleLoginData() {
-    Promise.allSettled([emailValidatorPromise, loginPasswordValidatorPromise]).then(() => {
+    Promise.allSettled([
+      emailValidatorPromise,
+      loginPasswordValidatorPromise,
+    ]).then(() => {
       if (validatedEmail && validatedPassword) {
-        const formData = new FormData();  
+        const formData = new FormData();
         formData.append("email", validatedEmail);
         formData.append("password", validatedPassword);
-        submitData(formData);
+        submitData(formData, LOGIN_URL);
       }
     });
   }
 
   function handleSignupData() {
-    Promise.allSettled([emailValidatorPromise, signupPasswordValidatorPromise, confirmPasswordValidatorPromise]).then(() => {
+    Promise.allSettled([
+      emailValidatorPromise,
+      signupPasswordValidatorPromise,
+      confirmPasswordValidatorPromise,
+    ]).then(() => {
       if (validatedEmail && validatedPassword && matchedPassword) {
         const formData = new FormData();
         formData.append("signup", true);
         formData.append("email", validatedEmail);
         formData.append("password", validatedPassword);
         formData.append("confirm_password", validatedPassword);
-        submitData(formData);
+        submitData(formData, SIGNUP_URL);
       }
     });
   }
 
- 
   let validatedEmail = "";
   let validatedPassword = "";
   let matchedPassword = false;
   if (isLoggingIn()) {
     handleLoginData();
-  } else { // signup
+  } else {
+    // signup
     handleSignupData();
   }
 });
-
-
-
-

@@ -69,7 +69,7 @@ document.addEventListener("keydown", (e) => {
  * VALIDATE AND SEND USER DATA**************************** 
  * *******************************************************/
 
-const CREATE_PRODUCT_URL = "/admin/categories/new";
+const CREATE_PRODUCT_URL = "/admin/products/new";
 const PRODUCT_NAME_PATTERN = /^[a-zA-Z][a-zA-Z0-9_\s]+$/;
 const TYPE_NAME_PATTERN = /^[a-zA-Z][a-zA-Z0-9_\s]+$/;
 const CATEGORY_NAME_PATTERN = /^[a-zA-Z][a-zA-Z0-9_\s]+$/;
@@ -248,20 +248,22 @@ createProductModalForm.addEventListener("submit", function (e) {
       createDescriptionError.textContent = msg;
     });
   
-  function handleCategoryData() {
+  function handleProductData() {
     Promise.all([categoryNameValidatorPromise, menuNameValidatorPromise, descriptionValidatorPromise])
       .then(() => {
-        if (validatedCategoryName && validatedMenuName) {
+        if (validatedProductName && validatedCategoryName && validatedMenuName && validatedTypeName) {
           const formData = new FormData();
+          formData.append("product_name", validatedProductName);
+          formData.append("type_name", validatedTypeName);
           formData.append("category_name", validatedCategoryName);
           formData.append("menu_name", validatedMenuName);
           formData.append("description", validatedDescription);
-          submitProductData(formData, CREATE_CATEGORY_URL);
+          submitProductData(formData, CREATE_PRODUCT_URL);
         }
       })
       .finally(() => {});
   }
-  handleCategoryData();
+  handleProductData();
 });
 
 /*********************************************************
@@ -307,6 +309,37 @@ createProductNameInput.addEventListener("focusout", function (e) {
     })
     .catch((msg) => {
       createProductNameError.textContent = msg;
+    });
+});
+
+createTypeNameInput.addEventListener("focus", function (e) {
+  validateTypeName(this)
+    .then((typeName) => {
+      validatedTypeName = typeName;
+      createTypeNameError.textContent = "";
+    })
+    .catch((msg) => {
+      createTypeNameError.textContent = msg;
+    })
+});
+createTypeNameInput.addEventListener("input", function (e) {
+  validateTypeName(this)
+    .then((typeName) => {
+      validatedTypeName = typeName;
+      createTypeNameError.textContent = "";
+    })
+    .catch((msg) => {
+      createTypeNameError.textContent = msg;
+    });
+});
+createTypeNameInput.addEventListener("focusout", function (e) {
+  validateTypeName(this)
+    .then((typeName) => {
+      validatedTypeName = typeName;
+      createTypeNameError.textContent = "";
+    })
+    .catch((msg) => {
+      createTypeNameError.textContent = msg;
     });
 });
 
@@ -639,7 +672,7 @@ window.addEventListener("load", (e) => {
  */
 const EDIT_PRODUCT_URL = "/admin/products/update/id";
 const DELETE_PRODUCT_URL = "/admin/products/delete/id";
-function handleProductTableBodyMutation(mutationRecords, observer) {
+function handleCategoryTableBodyMutation(mutationRecords, observer) {
   /*******EDIT USER************************************************** */
   const editProductModal = document.querySelector(".edit-product-modal");
   const editCategoryNameInput = document.querySelector("#edit-category-name-input");
@@ -881,7 +914,7 @@ function handleProductTableBodyMutation(mutationRecords, observer) {
         descriptionValidatorPromise
       ]).then(() => {
         if (validatedId && validatedMenuName && validatedCategoryName && validatedTypeName) {
-          const formData = new FormData();
+          const formData = new FormData()
           formData.append("menu_id", validatedId);
           formData.append("menu_name", validatedMenuName);
           formData.append("category_name", validatedCategoryName);
@@ -965,7 +998,7 @@ function handleProductTableBodyMutation(mutationRecords, observer) {
   });
 } 
 
-const tableBodyObserver = new MutationObserver(handleProductTableBodyMutation);
+const tableBodyObserver = new MutationObserver(handleCategoryTableBodyMutation);
 tableBodyObserver.observe(tableBody, {
   attributes: false,
   childList: true,
