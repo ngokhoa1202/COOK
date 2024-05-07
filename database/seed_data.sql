@@ -169,7 +169,7 @@ VALUES (NULL, '10', 'One person', 'Main meals have portion size for one person.'
       (NULL, '11', 'Chicken meals', 'Main meals made from chicken.'),
       (NULL, '11', 'Pork meals', 'Main meals made from pork.'),
       (NULL, '11', 'Beef meals', 'Main meals made from beef.'),
-      (NULL, '12', 'Vegan meals', 'Main meals for people who avoid all animal foods and eat only plant-based food.')
+      (NULL, '12', 'Vegan meals', 'Main meals for people who avoid all animal foods and eat only plant-based food.'),
       (NULL, '12', 'Lacto-vegatarian meals', 'Main meals for people who do not eat meat, seafood and eggs, but include dairy foods and plant foods.'),
       (NULL, '14', 'BBQ', 'Provide your party with our savoury, moreish BBQ dishes'),
       (NULL, '14', 'Formal celebration', 'Prepare your formal celebration such as weddings, business meeting or anniversary.'),
