@@ -32,7 +32,7 @@ CREATE TABLE `categories` (
   `menu_id` int NOT NULL,
   `category_name` varchar(255) DEFAULT NULL,
   `description` varchar(1022) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB ;
 
 --
 -- Dumping data for table `categories`
@@ -66,7 +66,7 @@ CREATE TABLE `comments` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `like_count` int NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB ;
 
 -- --------------------------------------------------------
 
@@ -79,7 +79,7 @@ CREATE TABLE `ingredients` (
   `serve_id` int NOT NULL,
   `ingredient_name` varchar(255) NOT NULL,
   `percentage` varchar(16) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB ;
 
 -- --------------------------------------------------------
 
@@ -91,7 +91,7 @@ CREATE TABLE `menus` (
   `menu_id` int NOT NULL,
   `menu_name` varchar(255) NOT NULL,
   `description` varchar(1022) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB ;
 
 --
 -- Dumping data for table `menus`
@@ -115,7 +115,7 @@ CREATE TABLE `nutritions` (
   `typical_values` varchar(255) NOT NULL,
   `per_100g` varchar(32) DEFAULT NULL,
   `per_portion` varchar(32) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB ;
 
 -- --------------------------------------------------------
 
@@ -133,7 +133,7 @@ CREATE TABLE `orders` (
   `delivery_date` date NOT NULL DEFAULT (curdate()),
   `leave_order_when_absent` varchar(255) DEFAULT NULL,
   `payment_method` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB ;
 
 -- --------------------------------------------------------
 
@@ -147,7 +147,7 @@ CREATE TABLE `order_products` (
   `serve_id` int NOT NULL,
   `quantity` int NOT NULL DEFAULT '1',
   `total_product_cost` int NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB ;
 
 -- --------------------------------------------------------
 
@@ -160,7 +160,7 @@ CREATE TABLE `products` (
   `type_id` int NOT NULL,
   `product_name` varchar(255) NOT NULL,
   `description` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB ;
 
 --
 -- Dumping data for table `products`
@@ -188,7 +188,7 @@ CREATE TABLE `product_images` (
   `product_id` int NOT NULL,
   `image_name` varchar(255) NOT NULL,
   `image_url` varchar(4096) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB ;
 
 -- --------------------------------------------------------
 
@@ -204,7 +204,7 @@ CREATE TABLE `serves` (
   `discount` int NOT NULL DEFAULT '0',
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `instruction` varchar(8192) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB ;
 
 -- --------------------------------------------------------
 
@@ -217,7 +217,7 @@ CREATE TABLE `types` (
   `category_id` int NOT NULL,
   `type_name` varchar(255) DEFAULT NULL,
   `description` varchar(1022) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB ;
 
 --
 -- Dumping data for table `types`
@@ -252,7 +252,7 @@ CREATE TABLE `users` (
   `status` varchar(255) NOT NULL DEFAULT 'active',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB ;
 
 --
 -- Dumping data for table `users`
