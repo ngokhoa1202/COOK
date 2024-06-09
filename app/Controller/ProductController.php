@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Exception\BadQueryException;
 use App\Exception\BadRequestException;
-use App\Exception\EntityNotFoundException;
+use App\Exception\ClassNotFoundException;
 use App\Model\ProductModel;
 use PDOException;
 use App\View;
@@ -24,13 +24,13 @@ class ProductController {
 
       $product = ProductModel::getById($productId);
       if (!$product) {
-        throw new EntityNotFoundException('Product');
+        throw new ClassNotFoundException('Product');
       }
   
       // Convert product data to ProductModel object
       return json_encode($product);
   
-    } catch (EntityNotFoundException $ex) {
+    } catch (ClassNotFoundException $ex) {
       return json_encode(['error' => 'Product not found']);
     } catch (PDOException $ex) {
       throw new BadQueryException('Failed to get product details: ' . $ex->getMessage());
@@ -108,11 +108,11 @@ class ProductController {
       $isDeleted = ProductModel::delete($productId);
 
       if (!$isDeleted) {
-        throw new EntityNotFoundException('Product');
+        throw new ClassNotFoundException('Product');
       }
       return json_encode('Product deleted successfully');
       
-    } catch (EntityNotFoundException $ex) {
+    } catch (ClassNotFoundException $ex) {
       return json_encode(['error' => 'Product not found']);
     } catch (PDOException $ex) {
       throw new BadQueryException('Failed to delete product: ' . $ex->getMessage());
@@ -133,7 +133,7 @@ class ProductController {
   
       $productModel = ProductModel::getById($productId);
       if (!$productModel) {
-        throw new EntityNotFoundException('Product');
+        throw new ClassNotFoundException('Product');
       }
   
       $isUpdated = ProductModel::updateProduct($productId, $productName, $description);
@@ -147,7 +147,7 @@ class ProductController {
     } catch (BadRequestException $ex) {
       header("HTTP/1.1 400 Bad Request");
       return json_encode(['error' => 'Invalid product data']);
-    } catch (EntityNotFoundException $ex) {
+    } catch (ClassNotFoundException $ex) {
       return json_encode(['error' => 'Product not found']);
     } catch (PDOException $ex) {
       throw new BadQueryException('Failed to update product: ' . $ex->getMessage());

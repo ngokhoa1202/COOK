@@ -134,7 +134,8 @@ body {
 }
 
 .nav-link:hover,
-.nav-link:active {
+.nav-link:active,
+.nav-link--active {
   background-color: #3f728a;
   color: #efefef;
 }

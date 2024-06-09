@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Exception\BadQueryException;
-use App\Exception\EntityNotFoundException;
+use App\Exception\ClassNotFoundException;
 use App\Exception\BadRequestException;
 use App\Model\ServeModel;
 use App\View;
@@ -47,12 +47,12 @@ class ServeController {
       
             $serve = ServeModel::getById($serveId);
             if (!$serve) {
-              throw new EntityNotFoundException('Serve');
+              throw new ClassNotFoundException('Serve');
             }
         
             return json_encode($serve);
         
-        } catch (EntityNotFoundException $ex) {
+        } catch (ClassNotFoundException $ex) {
         return json_encode(['error' => 'Serve not found']);
         } catch (PDOException $ex) {
         throw new BadQueryException('Failed to get serve details: ' . $ex->getMessage());
@@ -108,7 +108,7 @@ class ServeController {
 
             $serveModel = ServeModel::getById($serveId);
             if (!$serveModel) {
-                throw new EntityNotFoundException('serve');
+                throw new ClassNotFoundException('serve');
             }
 
             $isUpdated = ServeModel::updateServe($serveId, $serveName, $price, $discount, $status, $instruction);
@@ -121,7 +121,7 @@ class ServeController {
         } catch (BadRequestException $ex) {
             header("HTTP/1.1 400 Bad Request");
             return json_encode(['error' => 'Invalid serve data']);
-        } catch (EntityNotFoundException $ex) {
+        } catch (ClassNotFoundException $ex) {
             return json_encode(['error' => 'Serve not found']);
         } catch (PDOException $ex) {
             throw new BadQueryException('Failed to update serve: ' . $ex->getMessage());
@@ -140,11 +140,11 @@ class ServeController {
             $isDeleted = ServeModel::deleteServe($serveId);
         
             if (!$isDeleted) {
-                throw new EntityNotFoundException('Serve');
+                throw new ClassNotFoundException('Serve');
             }
             return json_encode('Serve deleted successfully');
             
-        } catch (EntityNotFoundException $ex) {
+        } catch (ClassNotFoundException $ex) {
             return json_encode(['error' => 'Product not found']);
         } catch (PDOException $ex) {
             throw new BadQueryException('Failed to delete product: ' . $ex->getMessage());

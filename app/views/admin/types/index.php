@@ -24,7 +24,7 @@
       </header>
 
       <nav class="side-nav margin-bottom-small">
-        <a class="nav-link" href="/admin/home">
+        <a class="nav-link" href="/admin">
           <ion-icon name="home-outline" class="icon-link"></ion-icon>
           <p>Dashboard</p>
         </a>

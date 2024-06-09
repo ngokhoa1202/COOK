@@ -24,31 +24,6 @@ class AuthenticateController {
   }
 
   public function login(): string | false {
-    // try {
-    //   if (!array_key_exists("email", $_POST) || !array_key_exists("password", $_POST)) {
-    //     throw new BadQueryException();
-    //   }
-    // } catch (BadQueryException $ex) {
-    //   header("HTTP/1.1 400 Bad Request");
-    //   echo View::make("error/400");
-    // }
-    // $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
-    // $password = $_POST["password"];
-    // $userModel = UserModel::make($email, $email, $password, $password, "", UserRole::getRole(UserRole::MEMBER), UserStatus::getStatus(UserStatus::OFFLINE));
-    // $returnedResult = $userModel->authenticate();
-    // if (is_array($returnedResult)) {
-    //   return json_encode($returnedResult);
-    // }
-    // try {
-    //   $this->setUpSession();
-    //   $_SESSION[static::SESSION_USER_USERNAME] = $email;
-    //   $_SESSION[static::SESSION_USER_PASSWORD] = $password;
-    //   return json_encode(static::LOGIN_SUCCESS_MSG);
-    // } catch (ForbiddenException $ex) {
-    //   header("HTTP/1.1 403 Forbidden");
-    //   echo View::make("error/403");
-    // }
-
     try {
         if (!array_key_exists("email", $_POST) || !array_key_exists("password", $_POST)) {
           throw new BadQueryException();

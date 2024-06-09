@@ -3,9 +3,14 @@
 namespace App;
 
 use App\Exception\RouteNotFoundException;
+use App\Service\CategoryService;
+use App\Service\MenuService;
+use App\Model\MenuModel;
 
 class App {
   private static Database $databaseConnection;
+
+  public static Container $container;
   private static Encryption $encryption;
   private static int $sessionInterval;
   public const DEFAULT_VIEW_FILE = "index.php";
@@ -16,6 +21,8 @@ class App {
     static::$databaseConnection = new Database($config->database);
     static::$encryption = new Encryption($config->encryption);
     static::$sessionInterval = $config->session["interval"];
+
+    static::$container = new Container();
   }
 
   public static function make(Router $router, array $request, Configuration $config): static {

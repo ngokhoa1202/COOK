@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Exception\BadQueryException;
-use App\Exception\EntityNotFoundException;
+use App\Exception\ClassNotFoundException;
 use App\Model\ServeModel;
 use App\View;
 use PDOException;

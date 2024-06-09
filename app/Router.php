@@ -3,6 +3,8 @@
 namespace App;
 
 use App\Exception\RouteNotFoundException;
+use Brick\Math\Exception\RoundingNecessaryException;
+use Ramsey\Collection\Exception\OutOfBoundsException;
 
 class Router {
   private array $routes = [];
@@ -32,21 +34,26 @@ class Router {
 
   public function resolve(string $requestUri, string $requestMethod): string {
     $route = explode("?", $requestUri)[0];
-    if (!array_key_exists($route, $this->routes[$requestMethod])) {
+
+    $action = $this->routes[$requestMethod][$route] ?? null;
+    if (! $action) {
       throw new RouteNotFoundException();
     }
-
-    
-    $action = $this->routes[$requestMethod][$route];
 
     if (is_array($action)) {
       [$class, $method] = $action;
       if (class_exists($class)) {
         $obj = new $class();
-        return call_user_func([$obj, $method], []);
+        if (method_exists($obj, $method)) {
+          return call_user_func([$obj, $method], []);
+        }
       }
     }
+    throw new RouteNotFoundException();
+  }
 
+  public function routes(): array {
+    return $this->routes;
   }
 }
 

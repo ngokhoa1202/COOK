@@ -10,29 +10,59 @@ use PDO;
 use PDOException;
 
 class MenuModel extends Model {
-  protected int $menuId;
+  protected int $menuId = 0;
   protected string $menuName;
   protected string $description;
 
-  private function __construct(string $menuName, string $description, int $menuId = 0) {
+  public function __construct() {
     parent::__construct();
-    $this->menuName = $menuName;
-    $this->description = $description;
-    $this->menuId = $menuId;
+    $this->menuId = 0;
+    $this->menuName = "";
+    $this->description = "";
   }
 
-  public static function make(string $menuName, string $description, int $menuId = 0): MenuModel {
-    $menuName = filter_var($menuName, FILTER_SANITIZE_SPECIAL_CHARS);
-    $description = filter_var($description, FILTER_SANITIZE_SPECIAL_CHARS);
+  /**
+   * @return string
+   */
+  public function getMenuName(): string {
+    return $this->menuName;
+  }
+
+  /**
+   * @param string $menuName
+   */
+  public function setMenuName(string $menuName): void {
+    $this->menuName = $menuName;
+  }
+
+  /**
+   * @return string
+   */
+  public function getDescription(): string {
+    return $this->description;
+  }
+
+  /**
+   * @param string $description
+   */
+  public function setDescription(string $description): void {
+    $this->description = $description;
+  }
+
+
+
+  public static function make(string $menuName = "", string $description = "", int $menuId = 0): MenuModel {
+    
     return new MenuModel($menuName, $description, $menuId);
   }
 
   /**
    * Insert a menu into table menu with its menuName and description
    *
-   * @return int id of inserted menu. -1 means failed to insert
+   * @return array contains menu information
    */
-  public function create(): int {
+  public function create(): array {
+    $menu = [];
     try {
       $this->database->beginTransaction();
       $query = "
@@ -47,13 +77,14 @@ class MenuModel extends Model {
       }
       $this->menuId = (int) $this->database->lastInsertId();
       $this->database->commit();
+      $menu = (array) $this;
     } catch (PDOException | BadQueryException $ex) {
       if ($this->database->inTransaction()) {
         $this->database->rollBack();
       }
       $this->menuId = 0;
     }
-    return $this->menuId;
+    return $menu;
   }
 
   /**
@@ -64,14 +95,13 @@ class MenuModel extends Model {
   }
 
   /**
-   * Find menu id by menu name
+   * Find meny bu menu name
    *
    * @param string $menuName
-   * @return int menu id of menu. -1 if error
+   * @return array contains a menu
    */
-  public static function findMenuIdByName(string &$menuName): int {
-    $menuName = filter_var($menuName, FILTER_SANITIZE_SPECIAL_CHARS);
-    $menuId = 0;
+  public static function findMenuByMenuName(string &$menuName): array {
+    $menu = null;
     try {
       App::getDatabaseConnection()->beginTransaction();
       $query = "SELECT * FROM menus WHERE menus.menu_name = :menuName";
@@ -80,87 +110,16 @@ class MenuModel extends Model {
       if (! $stmt->execute()) {
         throw new BadQueryException();
       }
-      $menuId = (int) $stmt->fetch(PDO::FETCH_ASSOC)["menu_id"];
+      $menu = $stmt->fetch(PDO::FETCH_ASSOC);
       App::getDatabaseConnection()->commit();
     } catch (PDOException | BadQueryException $ex) {
       if (App::getDatabaseConnection()->inTransaction()) {
         App::getDatabaseConnection()->rollBack();
       }
     }
-    return $menuId;
+    return $menu;
   }
 
-  /**
-   * @return array -1 if failed, array of menu if successful
-   */
-  public static function getAllMenus(): array {
-    $menus = [];
-    try {
-      App::getDatabaseConnection()->beginTransaction();
-      $query = "SELECT * FROM menus;";
-      $stmt = App::getDatabaseConnection()->prepare($query);
-      if (!$stmt->execute()) {
-        throw new BadQueryException();
-      }
-      $menus = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-      App::getDatabaseConnection()->commit();
-    } catch (PDOException | BadQueryException $ex) {
-      if (App::getDatabaseConnection()->inTransaction()) {
-        App::getDatabaseConnection()->rollBack();
-      }
-    }
-
-    return $menus;
-  }
-
-  public static function countNumberOfMenus(): int {
-    $totalMenus = 0;
-    try {
-      App::getDatabaseConnection()->beginTransaction();
-      $query = "SELECT COUNT(*) FROM menus";
-      $stmt = App::getDatabaseConnection()->prepare($query);
-      if (! $stmt->execute()) {
-        throw new BadQueryException();
-      }
-      $totalMenus = $stmt->fetchColumn();
-      App::getDatabaseConnection()->commit();
-    } catch (PDOException | BadQueryException $ex) {
-      if (App::getDatabaseConnection()->inTransaction()) {
-        App::getDatabaseConnection()->rollBack();
-      }
-    }
-
-    return $totalMenus;
-  }
-
-  public static function getAllMenusInRange(int $offset, int $limit): array {
-    $menus = [];
-    try {
-      App::getDatabaseConnection()->beginTransaction();
-      $query = "SELECT * FROM menus LIMIT :limit OFFSET :offset;";
-      $stmt = App::getDatabaseConnection()->prepare($query);
-      $stmt->bindValue(":offset", $offset);
-      $stmt->bindValue(":limit", $limit);
-      if (!$stmt->execute()) {
-        throw new BadQueryException();
-      }
-
-      $menus = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-      App::getDatabaseConnection()->commit();
-    } catch (PDOException | BadQueryException) {
-      if (App::getDatabaseConnection()->inTransaction()) {
-        App::getDatabaseConnection()->rollBack();
-      }
-    }
-    return $menus;
-  }
-
-  public static function countNumberOfMenuPages(int $length): int {
-    $numberOfMenus = static::countNumberOfMenus();
-    return ($numberOfMenus % $length === 0) ? intdiv($numberOfMenus, $length) : (intdiv($numberOfMenus, $length) + 1);
-  }
 
   public function update(): int {
     return MenuModel::updateByMenuId($this->menuId, $this->menuName, $this->description);
@@ -187,7 +146,7 @@ class MenuModel extends Model {
         throw new BadQueryException();
       }
       App::getDatabaseConnection()->commit();
-      
+
     } catch (PDOException | BadQueryException $ex) {
       if (App::getDatabaseConnection()->inTransaction()) {
         App::getDatabaseConnection()->rollBack();
@@ -215,7 +174,68 @@ class MenuModel extends Model {
     }
     return $menuId;
   }
-  
+
+  public static function countNumberOfMenus(): int {
+    $totalMenus = 0;
+    try {
+      App::getDatabaseConnection()->beginTransaction();
+      $query = "SELECT COUNT(*) FROM menus";
+      $stmt = App::getDatabaseConnection()->prepare($query);
+      if (! $stmt->execute()) {
+        throw new BadQueryException();
+      }
+      $totalMenus = $stmt->fetchColumn();
+      App::getDatabaseConnection()->commit();
+    } catch (PDOException | BadQueryException $ex) {
+      if (App::getDatabaseConnection()->inTransaction()) {
+        App::getDatabaseConnection()->rollBack();
+      }
+    }
+
+    return $totalMenus;
+  }
+
+  public static function countNumberOfMenuPages(): int {
+    $totalCategories = 0;
+    try {
+      App::getDatabaseConnection()->beginTransaction();
+      $query = "SELECT COUNT(*) FROM categories;";
+      $stmt = App::getDatabaseConnection()->prepare($query);
+      if (!$stmt->execute()) {
+        throw new BadQueryException();
+      }
+      $totalCategories = $stmt->fetchColumn();
+      App::getDatabaseConnection()->commit();
+    } catch (PDOException | BadQueryException $ex) {
+      if (App::getDatabaseConnection()->inTransaction()) {
+        App::getDatabaseConnection()->rollBack();
+      }
+    }
+    return $totalCategories;
+  }
+
+  public static function getAllMenusInRange(int $offset, int $limit): array {
+    $menus = [];
+    try {
+      App::getDatabaseConnection()->beginTransaction();
+      $query = "SELECT * FROM menus LIMIT :limit OFFSET :offset;";
+      $stmt = App::getDatabaseConnection()->prepare($query);
+      $stmt->bindValue(":offset", $offset);
+      $stmt->bindValue(":limit", $limit);
+      if (!$stmt->execute()) {
+        throw new BadQueryException();
+      }
+
+      $menus = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+      App::getDatabaseConnection()->commit();
+    } catch (PDOException | BadQueryException) {
+      if (App::getDatabaseConnection()->inTransaction()) {
+        App::getDatabaseConnection()->rollBack();
+      }
+    }
+    return $menus;
+  }
 }
 
 

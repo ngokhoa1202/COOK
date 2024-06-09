@@ -7,7 +7,7 @@ use App\App;
 use App\Database;
 use App\Exception\BadQueryException;
 use App\Exception\BadRequestException;
-use App\Exception\EntityNotFoundException;
+use App\Exception\ClassNotFoundException;
 use App\View;
 use PDO;
 use PDOException;
@@ -73,10 +73,10 @@ class ProductModel extends Model {
         }
         $productData = $stmt->fetch(PDO::FETCH_ASSOC);
         if (!$productData) {
-            throw new EntityNotFoundException('Product');
+            throw new ClassNotFoundException('Product');
         }
         return $productData;
-    } catch (PDOException | EntityNotFoundException $ex) {
+    } catch (PDOException | ClassNotFoundException $ex) {
         return null;
     }
   }

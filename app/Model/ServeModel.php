@@ -4,7 +4,7 @@ namespace App\Model;
 
 use App\App;
 use App\Database;
-use App\Exception\EntityNotFoundException;
+use App\Exception\ClassNotFoundException;
 use App\Exception\BadQueryException;
 use App\View;
 use PDOException;
@@ -80,7 +80,7 @@ class ServeModel extends Model {
 
             $serveData = $stmt->fetchAll(PDO::FETCH_ASSOC);
             if (!$serveData) {
-                throw new EntityNotFoundException('serve');
+                throw new ClassNotFoundException('serve');
             }
             
             App::getDatabaseConnection()->commit();
@@ -102,11 +102,11 @@ class ServeModel extends Model {
             }
             $serveData = $stmt->fetch(PDO::FETCH_ASSOC);
             if (!$serveData) {
-                throw new EntityNotFoundException('serve');
+                throw new ClassNotFoundException('serve');
             }
             return $serveData;
         }
-        catch (PDOException | EntityNotFoundException $ex) {
+        catch (PDOException | ClassNotFoundException $ex) {
             return [$ex];
         }
     }
